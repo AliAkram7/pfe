@@ -1,0 +1,112 @@
+
+.main-page-name {
+    position: relative;
+    background-color: whitesmoke;
+    padding: 30px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* border-width: 0px 0px 8px 0px; */
+
+}
+
+.main-page-name::before {
+
+    content: '';
+    position: absolute;
+    height: 5px;
+    width: 18%;
+    background-color: gold;
+    bottom: 0;
+    left: 0;
+    /* margin: 10px auto; */
+
+}
+
+
+.main-page-name h1 {
+    position: relative;
+    font-size: 41px;
+    /* font-weight: 100; */
+    height: 60px;
+}
+
+
+
+.main .table-section {
+
+    /* border: 1px solid black; */
+    width: 100%;
+    /* height: 100c; */
+    /* overflow: scroll; */
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.main .table-section h1{
+
+    height: 30%;
+    padding: 30px;
+    margin:   50px auto 20px  ;
+}
+
+.main .table-ranking {
+    width: 80%;
+    height: 50%;
+    background-color: whitesmoke;
+    
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),rgba(0, 0, 0, 0.05) 0px 20px 25px -5px,rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
+
+.main  .table-section .table-ranking ,tr,td,th {
+/* 
+    border: 1px solid #050505;
+    border-collapse: collapse; */
+}
+
+.main .table-section .table-ranking tr{
+    width: 40%;
+    height: 50px;
+}
+
+.main .table-ranking tr:nth-child(even){
+    background-color: #FFFFFF;
+}
+.ranking-search-bar{
+    width: 100%;
+    padding: 13px  10px;
+    border: none;
+}
+.ranking-search-bar:focus{
+    outline: none;
+    border: 2px solid green;
+}
+
+.select-obs{
+    width: 100%;
+    padding: 13px 10px ;
+    background-color: #FFFFFF;
+    /* background: none; */
+    border: none;
+}
+.select-obs option  {
+    font-size: 1.2rem;
+}
+
+.ranking-result-search{
+    border: 2px solid green;
+}
+.ranking-result-search td { 
+    border: 2px solid green;
+    transition: all 0.5s;
+
+}
+.main .table-ranking tr td {
+    padding: 0 10px ;
+    text-align: center;
+}

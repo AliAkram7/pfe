@@ -1,0 +1,79 @@
+.wrapper {
+    min-height: 100%;
+    background-size: "cover";
+
+    background-image: url(../../imges/dep1.jpg);
+}
+
+.form {
+    /* display: none; */
+    background-color: #FFFFFF;
+    border-right: 1px solid;
+    min-height: 830px;
+    max-width: 550px;
+    padding-top: 80px;
+}
+
+@media only screen and (max-width:850px) and (min-width:200px) {
+
+.form {
+ 
+ 
+ 
+  max-width: 100%;
+ 
+
+}
+}
+
+.title {
+    color: black;
+}
+
+
+.box .inputBox {
+    position: relative;
+  }
+
+
+  .box .SubmitBtn {
+    width: 100%;
+    outline: none;
+    color: black;
+    border: var(--border);
+    padding: 0.625rem 1.25rem;
+    cursor: pointer;
+    border-radius: 0.312rem;
+    font-size: 1rem;
+    float: right;
+    margin-top: 20px;
+    transition: background-color 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .box .SubmitBtn:hover {
+    background-color: var(--MainColor);
+    box-shadow: 0 1px 1px 0 rgba(66,133,244,0.45), 0 1px 3px 1px rgba(66,133,244,0.3);
+    color: #FFFFFF;
+  }
+
+
+  .back-btn{
+    margin-top: 130px;
+      background:none ;
+      border: var(--border);
+      border-color: black;
+  }
+  .back-btn a {
+    text-decoration: none;
+    color: black;
+    padding: 100px;
+  }
+  
+  .back-btn:hover{
+    background:none ;
+    
+  }

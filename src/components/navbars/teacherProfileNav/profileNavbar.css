@@ -1,0 +1,398 @@
+.sidbar--header-main {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+
+.header-main {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 85%;
+    height: 100%;
+    overflow: scroll;
+    transition: all 0.2s;
+}
+
+
+
+
+header {
+    right: 0;
+    /* position: fixed; */
+    height: 70px;
+    width: 100%;
+    background-color: #FFFFFF;
+}
+
+.header-content {
+    background-color: #21d121;
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+}
+
+.profile-navbar {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 73%;
+    overflow: visible;
+    padding-left: 30px;
+}
+
+.profile-navbar-img {
+    /* margin: 10px; */
+    width: 55px;
+    height: 45px;
+}
+
+
+
+.profile-navbar-content {
+
+    height: 100%;
+    /* width:15%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-navbar-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.compte-ProfileLogo {
+    padding: 10px 13px;
+    background-color: #FFFFFF;
+    text-align: center;
+    font-size: 24px;
+    border-radius: 50%;
+}
+
+.compte-logo i {
+    color: #050505;
+}
+
+
+
+.ProfileUniv-name {
+    font-weight: 600;
+    font-size: .9em;
+    color: #FFFFFF;
+}
+
+.page-name {
+    /* font-weight: 700; */
+    font-size: 1.2em;
+    text-transform: capitalize;
+    color: #050505;
+    /* height: 80%; */
+}
+
+hr {
+    border: .3px solid whitesmoke;
+    height: 70%;
+}
+
+/* profile dropdown  */
+
+
+.compte-logo {
+    position: relative;
+    display: flex;
+}
+
+.profile-menu {
+    position: absolute;
+    width: 240px;
+    height: 200px;
+    left: -336%;
+    top: 130%;
+    z-index: 1;
+    background-color: #FFFFFF;
+    /* padding: 20px; */
+    border: 1px solid #ccc;
+    /* padding: 10px 0; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    gap: 13px;
+
+}
+
+.profile-menu::before {
+    position: absolute;
+    content: "";
+    width: 20px;
+    height: 20px;
+    background-color: #FFFFFF;
+    ;
+    top: -4%;
+    left: 82%;
+    transform: rotate(45deg);
+}
+
+
+
+.profile-menu h3 {
+    font-weight: 400;
+    font-size: 30px;
+    width: 100%;
+    padding: 15px;
+    border: #ccc solid;
+    border-width: 0px 0px 1px 0px;
+}
+
+.profile-menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    height: 70%;
+}
+
+.profile-menu ul li {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 8px;
+    /* border: 1px solid #ccc; */
+    text-align: center;
+}
+
+.profile-menu ul li a {
+
+    font-size: 1em;
+    font-weight: 100;
+    height: 100%;
+    width: 60%;
+    margin: auto;
+    /* background-color: aqua; */
+    text-decoration: none;
+    text-transform: capitalize;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+
+
+    color: #3d3d3d;
+
+    transition: color 0.5s;
+
+}
+
+.profile-menu ul li a i {
+    transition: color 0.5s;
+}
+
+
+.profile-menu ul li a:hover {
+    color: gold;
+}
+
+.profile-menu ul li a:hover i {
+    color: gold;
+    transition: color 0.5s;
+}
+
+.profile-menu ul li .logout:hover {
+
+    color: red;
+}
+
+.profile-menu ul li .logout:hover i {
+
+    color: red;
+}
+
+
+.profile-menu ul li::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    /* left: 0; */
+    /* left: 0; */
+    right: 0%;
+    width: 0%;
+    height: 2px;
+    background-color: gold;
+    transition: 0.5s;
+}
+
+
+.profile-menu ul li:hover::before {
+    width: 100%;
+}
+
+.profile-menu ul li:last-child::before {
+    background-color: red;
+}
+
+
+
+/* side bar css  */
+
+.sidebar {
+    /* position: fixed; */
+
+    width: 15%;
+    background-color: #050505;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    /* transition: width 0s; */
+    overflow: scroll;
+
+}
+
+.menu-name {
+    width: 90%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 25px;
+    border: solid #FFFFFF;
+    border-width: 0px 0px 1px 0px;
+    padding: 20px;
+    /* margin-bottom: 10px; */
+}
+
+.menu-btn {
+    /* background-color: #21d121; */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 7px;
+    transition: gap 0.5s;
+}
+
+.menu-btn span {
+    content: "";
+    width: 100%;
+    height: 3px;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    transition: width .5s, transform .5s;
+}
+
+
+
+
+.menu-name h3 {
+    color: #FFFFFF;
+    font-size: 31px;
+    font-weight: 400;
+}
+
+
+
+.menu-list {
+    height: 700px;
+    width: 100%;
+}
+
+.menu-list ul {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 260px;
+    width: 100%;
+
+}
+
+.menu-list ul li {
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+   
+
+}
+
+.menu-list ul li a {
+    /* font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+    text-transform: capitalize;
+    font-size: 1em;
+    width: 90%;
+    color: #FFFFFF;
+    text-decoration: none;
+    background-color: #3837378f;
+    padding: 10% 20%;
+}
+
+
+
+.main {
+    background-color: #FFFFFF;
+    /* position: absolute; */
+    width: 100%;
+    /* the height of the main must be as the hieght of th content  */
+    /* height 100% distroy the experience  in screen hieght small  */
+    overflow: hidden;
+    min-height: 100%;
+    /* max-height: 100%; */
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* gap: 20px; */
+    z-index: -1;
+}
+
+.main-page-name {
+    position: relative;
+    background-color: whitesmoke;
+    /* padding: 30px; */
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+    justify-content: flex-start;
+    /* border-width: 0px 0px 8px 0px; */
+
+}
+
+.main-page-name::before {
+
+    content: '';
+    position: absolute;
+    height: 5px;
+    width: 25%;
+    background-color: gold;
+    bottom: 0;
+    left: 0;
+    /* margin: 10px auto; */
+
+}
+
+
+.main-page-name h1 {
+    position: relative;
+    font-size: 31px;
+    font-weight: 500;
+
+}

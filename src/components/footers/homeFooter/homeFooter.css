@@ -1,0 +1,115 @@
+.homeFooter {
+    background-color: #050505;;
+    height: 30vw;
+}
+
+.homeFooter .univ-info {
+    margin: auto;
+    width: 90%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* gap: 10%; */
+    align-items: center;
+}
+
+.homeFooter .location {
+    /* background-color: aqua; */
+    /* width: 40%; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.homeFooter .location .images {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.homeFooter .location .images .location-img img {
+    width: 230px;
+}
+
+.homeFooter .location .images .univ-img img {
+    border: white 2px solid;
+    width: 230px;
+}
+
+.homeFooter .univ-info hr {
+    display: block;
+    margin: auto 0;
+    height: 60%;
+    color: #474747;
+}
+
+.homeFooter .contact-info {
+    font-size: .9em;
+    height: 100%;
+    position: relative;
+    bottom: 40px;
+    color: #2D99F3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.homeFooter .contact-info h4 {
+    font-size: .9em;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: whitesmoke;
+}
+
+.homeFooter .contact-info .tel span {
+    display: block;
+    color: white;
+}
+
+.homeFooter .copy-right {
+    width: 100%;
+    height: 10%;
+    background-color: #474747;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.homeFooter .copy-right h5 {
+    font: caption;
+    margin-left: 4%;
+    color: #FFFFFF;
+    font-weight: 300;
+}
+
+.homeFooter .suivez-nous {
+    width: 40%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+}
+
+.homeFooter .suivez-nous h3 {
+    font-size: 1em;
+    color: white;
+    font-weight: 400;
+}
+
+.homeFooter .suivez-nous ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.homeFooter .suivez-nous ul li {
+
+
+}
+
+.homeFooter .suivez-nous ul li svg {
+    color: white;
+}

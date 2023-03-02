@@ -1,0 +1,57 @@
+.container-blog-section{
+
+    min-height: 700px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top:40px ;
+}
+
+.blog-section{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.blog-section h1{
+    text-transform: capitalize;
+}
+
+.team-info{
+    position: sticky;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center ;
+
+}
+.team-supervisor, .team-members{
+    display: flex;
+    flex-direction:column ;
+    align-items: center;
+    gap: 8px;
+    width: 80%;
+}
+.separator{
+    border: 1px solid #EEEEF5  ;
+}
+.team-more-info{
+    margin: 20px;
+    width: 80%;
+}
+
+.team-section-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+}
+.team-section-nav a{
+    text-transform:capitalize;
+    padding: 9px;
+       color: black;
+    text-decoration: underline;
+
+}

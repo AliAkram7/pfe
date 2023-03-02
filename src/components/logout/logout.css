@@ -1,0 +1,36 @@
+.group-Logout{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.group-Logout button {
+    background: none    ;
+    border: var(--border);
+    height: 64px;
+
+    font-size: 1.5em;
+    font-weight: 300 ;
+    transition: all .5s;
+}
+
+.group-Logout button:hover {
+    cursor: pointer;
+    background-color: var(--MainColor);
+}
+
+.group-Logout button:nth-child(2):hover a , .group-Logout button:nth-child(2) {
+    cursor: pointer;
+    background-color:white ;
+    color:  #DC3545 ;
+    border-color: #DC3545 ;
+}
+
+.group-Logout button  a {
+    display: block;
+    text-decoration: none;
+    text-transform: capitalize;
+    color: black;
+
+    padding: 14px ;
+}

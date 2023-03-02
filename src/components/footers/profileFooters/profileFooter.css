@@ -1,0 +1,28 @@
+footer {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFFFFF;
+    justify-content: flex-end;
+}
+
+.copy-right {
+    width: 100%;
+    height: 50%;
+    background-color: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.copy-right h5 {
+    color: #FFFFFF;
+    font: caption;
+}
+
+.copy-right h5 a{
+    padding-right: 10px;
+    color: gold;
+}

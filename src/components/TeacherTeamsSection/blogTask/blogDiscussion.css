@@ -1,0 +1,19 @@
+.discussion-block{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.discussion-title{
+    padding: 16px;  
+    text-decoration: underline 2px ;
+}
+.discussion-description{
+    font-weight: 300;
+    font: 16px;
+    /* overflow: scroll;
+ */
+
+}

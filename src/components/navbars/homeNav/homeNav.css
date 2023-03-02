@@ -1,0 +1,196 @@
+/*  TODO  make navbar Responsive  #  */
+/* *  desktop   #  */
+/* *  tablet   #  */
+/* *  mobile   #  */
+
+.main-header {
+    position: relative;
+    height: 120px;
+    width: 100%;
+    background-color: #21d121;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+}
+
+.nav-container {
+    padding: 0 20px;
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.yellow-color {
+    width: 30%;
+    height: 14%;
+    background-color: gold;
+    display: block;
+    border: solid #FFFFFF;
+    border-width: 1px 4px 0px 0px;
+}
+
+.MainLogo {
+    width: 40%;
+    display: flex;
+    align-items: center;
+
+}
+
+
+/* TODO responsive in width 450 and <<   */
+.MainLogo-img {
+    margin: 10px;
+    width: 60px;
+    height: 55px;
+}
+
+.MainLogo-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.MainUniv-name {
+    display: block;
+    text-transform: uppercase;
+    font-size: 1.8vw;
+    font-weight: 500;
+}
+
+.univ-sp-fac{
+    display: inline-block;
+    /* transform: rotate(90deg);  */
+    width: 1px;
+    height: 20px;
+    margin:0  8px ;
+    padding: 0px;
+    background-color: #333333;
+}
+.univ-name span {
+    font-size: 1.4vw;
+    font-weight: 100;
+    text-transform: uppercase;
+}
+
+.gest-action {
+    width: 12vw;
+    height: 4.5vw;
+}
+
+.btn {
+    border: .4px solid black;
+    background: none;
+    width: 100%;
+    height: 100%;
+    transition: border-width .1s, background-color .5s;
+}
+
+.gest-action .btn a {
+    display: block;
+    /* background-color: #21d121; */
+    padding: 10px;
+    font-size: 1.6vw;
+    text-transform: capitalize;
+    text-decoration: none;
+    color: black;
+    transition: color .3s;
+}
+
+.btn:hover {
+    border-width: 0px;
+    background-color:  #21d121   ;
+}
+
+.btn:hover a {
+    color: #FFFFFF;
+}
+
+.switch-menu {
+    width: 100%;
+    height: 38%;
+    /* background-color: blue; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.switch-menu .list {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.switch-menu .list .list-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+
+}
+
+.switch-menu .list .list-item:hover {
+    background-color: rgba(0, 0, 0, .5);
+
+}
+
+.switch-menu .list .list-item a {
+    width: 100%;
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 1.4em;
+    /* background-color: aqua; */
+    padding: 10%;
+}
+@media only screen and (max-width:650px) and (min-width:200px) {
+    /* .MainLogo-img {
+        margin: 10px;
+        width: 55px;
+        height: 45px;
+    } */
+    .univ-name {
+        font-size: 2.8vw;
+        font-weight: 500;
+    }
+
+    .univ-name span {
+        font-size: 2.8vw;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+
+    .gest-action {
+        width: 25vw;
+        height: 10vw;
+    }
+
+
+    .gest-action .btn a {
+        font-size: 5vw;
+    }
+    .main-header {   
+        height: 90px;
+        width: 100%;
+    }
+    .nav-container {
+        padding: 0 10px;
+        background-color: #FFFFFF;
+        width: 100%;
+        height: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .univ-sp-fac{
+        display: none;
+
+    }
+
+
+}
