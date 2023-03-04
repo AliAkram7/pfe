@@ -5,11 +5,11 @@ import jwt_decode from 'jwt-decode';
 import { StudentContextProvider } from '../contexts/studentContext';
 import axiosClient from '../axois-client';
 
+
+
 function StuentLayout() {
 
-
     const { token, role, setToken } = useStateContext();
-
 
 
     if (!token) {
@@ -30,12 +30,13 @@ function StuentLayout() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            refreshToken();
+            RefreshToken();
         }, 300000); // 5 minutes in milliseconds
         return () => clearInterval(interval);
     }, []);
 
-    function refreshToken() {
+     function RefreshToken() {
+        const { token, role, setToken } = useStateContext();
         const decodedToken = jwt_decode(token);
         const expTime = decodedToken.exp;
         //* Get the current time in seconds
@@ -53,6 +54,7 @@ function StuentLayout() {
                 });
         }
     }
+       
 
 
 
@@ -65,4 +67,5 @@ function StuentLayout() {
     )
 }
 
-export default StuentLayout
+
+export default StuentLayout;

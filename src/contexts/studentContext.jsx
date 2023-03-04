@@ -18,17 +18,22 @@ const studentContext = createContext({
     setRoomDiscription: () => { },
     setRoomName: () => { },
     setRoomId: () => { },
+    firstLogin: null,
+    setFirstLogin: () => { }
 })
 
 export const StudentContextProvider = ({ children }) => {
     const [student, setStudent] = useState({})
-    const [studentToken, _setStudentToken] = useState(null)
+    const [studentToken, _setStudentToken] = useState(Cookies.get('token'))
     const [isInTeam, setIsInTeam] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).isInTeam : false)
     const [roomDiscription, setRoomDiscription] = useState(null)
     const [roomName, setRoomName] = useState(null)
     const [roomId, setRoomId] = useState(null)
+    const [firstLogin, setFirstLogin] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).first_login : null)
 
-    // !! decode the special information from the token and check the token if is hase role student !! 
+
+//!!  decode the special information from the token and check the token if is has role student  !! 
+
 
     const setStudentToken = (token) => {
         if (token) {
@@ -36,15 +41,16 @@ export const StudentContextProvider = ({ children }) => {
             if (decodedToken.role === 'student') {
                 _setStudentToken(token)
                 setIsInTeam(decodedToken.isInTeam)
-            }else{
-                Cookies.remove('token'); 
+                setFirstLogin(decodedToken.first_login)
+            } else {
+                Cookies.remove('token');
                 return <Navigate to='/' />
             }
         }
     }
     return (<studentContext.Provider value={
         {
-            student, setStudent, studentToken, setStudentToken, isInTeam, setIsInTeam, setRoomDiscription, setRoomName, setIsInTeam, setRoomId, roomDiscription, roomName, roomId
+            student, setStudent, studentToken, setStudentToken, isInTeam, setIsInTeam, setRoomDiscription, setRoomName, setIsInTeam, setRoomId, roomDiscription, roomName, roomId, firstLogin, setFirstLogin
         }
     }> {children} </studentContext.Provider>)
 }

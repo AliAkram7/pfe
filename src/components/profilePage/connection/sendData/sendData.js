@@ -5,7 +5,7 @@ import { sendUpdatedData } from "./axiosUrl"
 
 
 export const useSendStudentUpdatedData = () => {
-    const queryClient = useQueryClient() ; 
+    const queryClient = useQueryClient();
     return useMutation(sendUpdatedData, {
         onError: (response) => {
             console.log(response.message);
@@ -15,8 +15,8 @@ export const useSendStudentUpdatedData = () => {
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
-        }, 
-        onSuccess:(response)=>{
+        },
+        onSuccess: (response) => {
 
             showNotification({
                 title: 'information updated seccusfully',

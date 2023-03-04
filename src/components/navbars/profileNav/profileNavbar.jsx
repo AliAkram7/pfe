@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./profileNavbar.css";
-
 import { Modal } from "@mantine/core";
-
 import logo from "../../../imges/1669627809076.png";
 import ProfileMenu from "../../profileMenu/profileMenu";
 import Logout from "../../logout/logout";
@@ -12,14 +10,25 @@ import { Link } from "react-router-dom";
 import ProfileFooter from "../../footers/profileFooters/profileFooter";
 import { completeNavigationProgress, NavigationProgress, startNavigationProgress } from "@mantine/nprogress";
 import { useFetchStudentData } from "../../profilePage/connection/receiveData/fetchData";
-
-
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { useGetStudentTeamInformation } from "../../teamSection/connection/receiveData/fetchData";
 import { useStudentContext } from "../../../contexts/studentContext";
+import jwt_decode from 'jwt-decode';
+import ChangeInfo from "../../profilePage/changeInfo";
+import { useDisclosure } from "@mantine/hooks";
+import { HeaderStudent } from "./header";
+import { SideBarStudent } from "./sidebar";
+
+
 function ProfileNavbar() {
     const [openSide, setOpenSide] = useState(false);
     const [opened, setOpened] = useState(false);
+
+    const [firstLoginOpened, {
+        close: firstLoginClose,
+        open: firstLoginOpen,
+    }
+    ] = useDisclosure(false);
 
 
     const chn = useLocation()
@@ -36,14 +45,21 @@ function ProfileNavbar() {
 
 
     //** ------------------------------------------------------------------------ student context ------------------------------------------------------------------------  */
-    const { user, token, setRole } = useStateContext()
-    const { student, setStudent, setStudentToken, setIsInTeam, isInTeam } = useStudentContext()
+    const { user, token, setRole, ndToken, setNdToken } = useStateContext()
+    const { student, setStudent, setStudentToken, setIsInTeam, isInTeam, studentToken, setFirstLogin, firstLogin } = useStudentContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
+
+
 
     useEffect(() => {
         setStudentToken(token);
         setStudent(user);
-    }, [])
+        const decodedToken = jwt_decode(token)
+        setFirstLogin(decodedToken.first_login)
+        console.log('studentTokenUpdated', firstLogin)
+    }, [token, user])
+
+
 
 
     const onSuccess = () => {
@@ -68,9 +84,16 @@ function ProfileNavbar() {
 
 
 
-    return (
+
+
+
+    const x = (
         <>
+
+            <ChangeInfo opened={firstLoginOpened}
+                close={firstLoginClose} />
             <NavigationProgress color='gold' />
+
             <Modal opened={opened}
                 onClose={
                     () => setOpened(false)
@@ -78,6 +101,8 @@ function ProfileNavbar() {
                 title='are you sure !'>
                 <Logout setOpened={setOpened} />
             </Modal>
+
+
             <div className='sidbar--header-main'>
                 <div className='header-main'
                     style={
@@ -108,7 +133,7 @@ function ProfileNavbar() {
 
                         <Outlet />
 
-                        
+
                     </section>
 
                     <ProfileFooter />
@@ -173,6 +198,25 @@ function ProfileNavbar() {
             </div>
         </>
     );
+
+    return (<>
+        <div className="sidbar--header-main" >
+            <SideBarStudent />
+            <div className='header-main'    style={
+                        !openSide ? {
+                            width: "81%"
+                        } : null}  >
+            <HeaderStudent />
+            <section className='main'>
+
+<Outlet />
+
+
+</section>
+            </div>
+        </div>
+    </>)
+
 }
 
 export default ProfileNavbar;

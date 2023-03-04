@@ -37,12 +37,18 @@ function TeacherLayout() {
   }, []);
 
   function refreshToken() {
+
     const decodedToken = jwt_decode(token);
+
     const expTime = decodedToken.exp;
+
     //* Get the current time in seconds
+
     const currentTime = Math.floor(Date.now() / 1000);
+
     //* Refresh the token if it is close to expiring
-    if (expTime - currentTime < 60) { //* Refresh the token if less than 60 seconds left before expiration
+    if (expTime - currentTime < 60 ) { //* Refresh the token if less than 60 seconds left before 
+      
       axiosClient.post("/teacher/refreshToken")
         .then(({ data }) => {
           if (data.token) {

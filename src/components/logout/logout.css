@@ -5,18 +5,18 @@
 }
 
 .group-Logout button {
-    background: none    ;
-    border: var(--border);
-    height: 64px;
+    /* background: none    ; */
+    /* border: var(--border); */
+    /* height: 64px; */
 
-    font-size: 1.5em;
+    /* font-size: 1.5em; */
     font-weight: 300 ;
     transition: all .5s;
 }
 
 .group-Logout button:hover {
     cursor: pointer;
-    background-color: var(--MainColor);
+    /* background-color: var(--MainColor); */
 }
 
 .group-Logout button:nth-child(2):hover a , .group-Logout button:nth-child(2) {

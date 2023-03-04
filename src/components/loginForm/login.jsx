@@ -12,7 +12,7 @@ import { completeNavigationProgress, startNavigationProgress } from "@mantine/np
 import { axiosClient } from "../../axois-client";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { showNotification } from "@mantine/notifications";
-import { IconX } from "@tabler/icons";
+import { IconArrowBack, IconArrowLeft, IconX } from "@tabler/icons";
 import { useStudentContext } from "../../contexts/studentContext";
 import { useQueryClient } from "react-query";
 import jwt_decode from 'jwt-decode';
@@ -160,13 +160,13 @@ function Login() {
                     label='password'
                     name='password'
                   />
-                  <button
+                  <Button  color='teal' size='lg'
                     type='submit'
                     className='SubmitBtn'
                     disabled={!Formik.isValid}
                   >
                     login
-                  </button>
+                  </Button>
                 </Form>
               </div>
             );
@@ -174,9 +174,8 @@ function Login() {
         </Formik>
 
 
-        <Button fullWidth mt="xl" size="md" className="back-btn" >
-
-          <Link to='/' > back to home  </Link>
+        <Button fullWidth mt="xl" size="lg" className="back-btn" variant="outline" color='teal'   >
+          <Link to='/' ><IconArrowLeft size={15}   /> back to home  </Link>
         </Button>
 
 

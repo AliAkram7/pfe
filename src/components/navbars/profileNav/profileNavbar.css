@@ -1,6 +1,6 @@
 .sidbar--header-main {
     display: flex;
-    width: 100%;
+    width: 80%;
     height: 100vh;
     justify-content: space-between;
 }
@@ -10,7 +10,7 @@
     position: fixed;
     right: 0;
     bottom: 0;
-    width: 85%;
+    width: 75%;
     height: 100%;
     overflow: scroll;
     transition: all 0.2s;

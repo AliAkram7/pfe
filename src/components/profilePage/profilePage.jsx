@@ -5,7 +5,7 @@ import ChangeInfo from "./changeInfo";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 import { useFetchStudentData } from "./connection/receiveData/fetchData";
-import { LoadingOverlay } from "@mantine/core";
+import { Button, LoadingOverlay } from "@mantine/core";
 import { useStudentContext } from "../../contexts/studentContext";
 
 
@@ -68,9 +68,12 @@ function ProfilePage() {
                         <h5 className='person-code'>(N){student?.code}</h5>
 
                         <h3 className='person-info-change'>
-                            <button className="btn-change-info"
-                                onClick={open}>
-                                change information</button>
+                            <Button 
+                            color='teal' size="sm"
+                            // className="btn-change-info"
+                                onClick={open}
+                                >
+                                change information</Button>
                         </h3>
                     </div>
 

@@ -7,8 +7,6 @@ import { useDeleteStudent, useLockStudentAccount, useUnLockStudentAccount } from
 function StudentOption(props) {
 
 
-
-    // * delete # 
     const {mutate : deleteStudent } = useDeleteStudent() ; 
     const onDelete=()=>{
         const payload ={
@@ -17,9 +15,6 @@ function StudentOption(props) {
         deleteStudent(payload)    
     }
 
-
-
-    // !! lock 
     const {mutate : lockStudentAccount } = useLockStudentAccount() ; 
     const onLock=()=>{
         const payload ={
@@ -28,7 +23,7 @@ function StudentOption(props) {
         lockStudentAccount(payload)    
     }    
 
-    // !! unlock 
+
 
     const {mutate : unLockStudentAccount } = useUnLockStudentAccount() ; 
     const onUnLock=()=>{
@@ -38,8 +33,6 @@ function StudentOption(props) {
         unLockStudentAccount(payload)    
     }    
 
-
-    // !! update keep at last 
 
 
 
@@ -53,8 +46,10 @@ function StudentOption(props) {
       <Menu.Dropdown   >
         <Menu.Label>options</Menu.Label>
         <Menu.Item icon={<IconEdit size={14} />}   onClick={()=>{props.setEdit()  ; queryClient.invalidateQueries('fetchStudentsData')}}   >edit information </Menu.Item>
-        <Menu.Item   color='red'  icon={<IconLockOff color='red' size={14}   />} onClick={onLock}  >lock  account</Menu.Item>
+    { props.row.account_status !== 'locked' ? 
+     <Menu.Item   color='red'  icon={<IconLockOff color='red' size={14}   />} onClick={onLock}  >lock  account</Menu.Item> : 
         <Menu.Item   color='teal'  icon={<IconLockOpen color='teal' size={14} /> } onClick={onUnLock}    > unlock  account</Menu.Item>
+        }
         <Menu.Item   color='red'  icon={<IconX color='red' size={14}   /> } onClick={onDelete}    >delete account</Menu.Item>
 
       </Menu.Dropdown>

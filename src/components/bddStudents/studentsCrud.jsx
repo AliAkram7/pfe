@@ -16,6 +16,8 @@ import { IconSearch, IconLockOff, IconLockOpen } from '@tabler/icons';
 import { useFetchStudentsData } from './connection/fetchData/fetchData';
 import { useTeacherContext } from '../../contexts/teacherContext';
 import StudentOption from './studentOptions';
+import { useUpdateStudent } from './connection/sendData/sendData';
+import { useQueryClient } from 'react-query';
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -110,12 +112,13 @@ export function StudentsCrud() {
     data = data = fetchStudentsData?.data.list_accounts.map(obj => ({
       code: String(obj.code),
       name: String(obj.name),
+      email: String(obj.email),
+      tel:String(obj.tel),
       default_password: String(obj.default_password),
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
       Edit: 'false'
-
     }));
     setSortedData(data)
 
@@ -130,6 +133,8 @@ export function StudentsCrud() {
       code: String(obj.code),
       name: String(obj.name),
       default_password: String(obj.default_password),
+      email: String(obj.email),
+      tel:String(obj.tel),
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
@@ -150,16 +155,17 @@ export function StudentsCrud() {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    data = fetchStudentsData?.data.list_accounts.map(obj => ({
+      data = fetchStudentsData?.data.list_accounts.map(obj => ({
       code: String(obj.code),
       name: String(obj.name),
       default_password: String(obj.default_password),
+      email: String(obj.email),
+      tel:String(obj.tel),
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
       Edit: 'false'
     }));
-    console.log(data)
     setSortedData(sortData(data, { sortBy: field, reversed, search }));
   };
 
@@ -170,6 +176,9 @@ export function StudentsCrud() {
     data = fetchStudentsData?.data.list_accounts.map(obj => ({
       code: String(obj.code),
       name: String(obj.name),
+
+      email: String(obj.email),
+      tel:String(obj.tel),
       default_password: String(obj.default_password),
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
@@ -180,27 +189,56 @@ export function StudentsCrud() {
   };
 
 
-  
-
-  function  RenderUpdateRow (props)  {
 
 
-    const onUpdate =()=>{
-      
+  function RenderUpdateRow(props) {
+
+
+    const [name, setName] = useState(props.row.name)
+    const [code, setCode] = useState(props.row.code)
+    const [default_password, setDefault_password] = useState(props.row.default_password)
+    const default_value = { name: props.row.name, code: props.row.code, default_password: props.row.default_password }
+
+
+    const { mutate: updateStudent } = useUpdateStudent()
+    const queryClient = useQueryClient() ;
+    const onUpdate = () => {
+      let payload = {}
+
+      props.row.Edit = 'false'
+
+      if (name !== props.row.name) {
+        payload = { ...payload, name: name }
+      }
+      if (code !== props.row.code) {
+        payload = { ...payload, updated_code: Number(code) }
+      }
+      if (default_password !== props.row.default_password) {
+        payload = { ...payload, default_password: default_password }
+      }
+
+
+      if (payload.name || payload.updated_code || payload.default_password) {
+        payload = { ...payload, code: Number(props.row.code) }
+        updateStudent(payload)
+      }
+
+      queryClient.invalidateQueries('fetchStudentsData')
+
     }
 
-      const default_value = {name : props.row.name , code : props.row.code}
-      const [code, setCode] = useState( props.row.code)
-      const [name, setName] = useState( props.row.name)
 
     return (<>
-      
-      <td><Input type='text'   value={code} onChange={(e)=>{setCode(e.target.value) }}     ></Input >
-      <Button value='save' variant='outline' color='teal'  onClick={()=>{setCode(default_value.code)}}   >reset code</Button>
+
+      <td><Input type='text' value={code} onChange={(e) => { setCode(e.target.value) }}     ></Input >
+        <Button value='save' variant='outline' color='teal' onClick={() => { setCode(default_value.code) }}   >reset</Button>
       </td>
-      <td><Input type='text'  value={name}  onChange={(e)=>{setName(e.target.value)  }} ></Input>
-        <Button value='save' variant='outline' color='teal' onClick={()=>{setName(default_value.name) }}   >reset name</Button>
-        <Button value='save' variant='filled' color='teal'   onClick={onUpdate}      >save</Button>
+      <td><Input type='text' value={name} onChange={(e) => { setName(e.target.value) }} ></Input>
+        <Button value='save' variant='outline' color='teal' onClick={() => { setName(default_value.name) }}   >reset</Button>
+      </td>
+      <td><Input type='text' value={default_password} onChange={(e) => { setDefault_password(e.target.value) }} ></Input>
+        <Button value='save' variant='outline' color='teal' onClick={() => { setDefault_password(default_value.default_password) }}  >reset</Button>
+        <Button value='save' variant='filled' color='teal' onClick={onUpdate}>save</Button>
       </td>
     </>)
   }
@@ -224,12 +262,15 @@ export function StudentsCrud() {
           (<>
             <td>{row.code}</td>
             <td>{row.name}</td>
+            <td>{row.default_password}</td>
           </>) :
-          <RenderUpdateRow  row={row}  />}
-
-        <td>{row.email}</td>
-        <td>{row.tel}</td>
-        <td>{row.default_password}</td>
+          <RenderUpdateRow row={row} />}
+        <td>{row.email ==='null'  ?   <Badge variant="outline" color='teal' fullWidth>
+          no information
+        </Badge> : row.email }</td>
+        <td>{row.tel  ==='null'  ?   <Badge variant="outline" color='teal' fullWidth>
+          no information
+        </Badge> : row.tel }</td>
         <td>{row.logged === 'logged' ? <Badge variant="filled" color='teal' fullWidth>
           logged
         </Badge> : <Badge variant="filled" color='red' fullWidth>
@@ -260,7 +301,7 @@ export function StudentsCrud() {
           <Table
             horizontalSpacing="xs"
             verticalSpacing="lg"
-            sx={{ tableLayout: 'revert', minWidth: 1200, maxWidth:1600 ,   minHeight: 260 }}
+            sx={{ tableLayout: 'revert', minWidth: 1300, maxWidth: 1600, minHeight: 260 }}
 
           >
             <thead>
@@ -273,6 +314,10 @@ export function StudentsCrud() {
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('name')}
                   children='Name'
+                /><Th sorted={sortBy === 'default_password'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('default_password')}
+                  children='Default password'
                 /><Th sorted={sortBy === 'email'}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('email')}
@@ -281,10 +326,6 @@ export function StudentsCrud() {
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('tel')}
                   children='Phone number'
-                /><Th sorted={sortBy === 'default_password'}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting('default_password')}
-                  children='Default password'
                 /><Th sorted={sortBy === 'logged'}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('logged')}

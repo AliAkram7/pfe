@@ -6,6 +6,8 @@ export const useGetStudentTeamInformation =(onSuccess, onError)=>{
         onSuccess, 
         onError,
         // refetchInterval: 1000, 
+        refetchOnWindowFocus:false, 
+        retry:false , 
     },
     )
 }

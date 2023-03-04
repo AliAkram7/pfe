@@ -1,4 +1,4 @@
-import { LoadingOverlay, Overlay } from "@mantine/core";
+import { Button, LoadingOverlay, Overlay } from "@mantine/core";
 import { useContext } from "react";
 import { useQueryClient } from "react-query";
 import { Link, Navigate, useNavigate } from "react-router-dom";
@@ -30,12 +30,12 @@ function Logout(props) {
   }
   return (
     <div className='group-Logout'>
-      <button   >
+      <Button  color='teal' variant="outline"  size="lg" >
         <Link onClick={() => props.setOpened(false)} to='/'>keep me here </Link>
-      </button>
-      <button onClick={handleLogout}  >
+      </Button>
+      <Button onClick={handleLogout}   size="lg">
         <Link to='/'>log me out </Link>
-      </button>
+      </Button>
     </div>
   );
 }

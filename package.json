@@ -45,7 +45,8 @@
     "react-router-dom": "^6.6.1",
     "redux": "^4.2.0",
     "redux-toolkit": "^1.1.2",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "yup-phone-lite": "^2.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

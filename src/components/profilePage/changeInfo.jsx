@@ -1,15 +1,22 @@
 
 import * as Yup from 'yup'
+import "yup-phone-lite";
 import React, { useEffect, useState } from 'react'
 import { Form, Formik } from 'formik';
-import { LoadingOverlay, Modal } from '@mantine/core';
+import { Button, LoadingOverlay, Modal } from '@mantine/core';
 import FormikControl from '../FormControl/FormikControl';
 
 import { useSendStudentUpdatedData } from './connection/sendData/sendData';
 import { useStudentContext } from '../../contexts/studentContext';
+import axiosClient from '../../axois-client';
+import { useStateContext } from '../../contexts/ContextProvider';
+import jwt_decode from 'jwt-decode';
 
 function ChangeInfo(props) {
-  const { student } = useStudentContext();
+
+  const { student, firstLogin, setFirstLogin, setStudentToken } = useStudentContext();
+  const { token, role, setToken, setNdToken } = useStateContext();
+
   const [Overlay, setOverlay] = useState(false)
   const initialValues = {
     email: student?.email,
@@ -21,6 +28,9 @@ function ChangeInfo(props) {
   const validationSchema = Yup.object({
     email: Yup.string().email("invalid email format !"),
     // TODO make the password validation require number and small case
+    tel: Yup.string()
+      .phone("DZ", "Please enter a valid phone number")
+      .required("A phone number is required"),
     prPassword: Yup.string()
       .required("Please Enter your password")
       .min(
@@ -28,6 +38,7 @@ function ChangeInfo(props) {
         "password must contain 8 or more characters with at least one of each: lowercase , number "
       )
       .max(16, "password more long than its alowd [8-16] "),
+
     newPassword: Yup.string()
       .matches(
 
@@ -43,8 +54,37 @@ function ChangeInfo(props) {
       .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
     ,
   });
+  const notLoggedValidationSchema = Yup.object({
+    email: Yup.string().required("required !").email("invalid email format !"),
+
+    tel: Yup.string()
+      .phone("DZ", "Please enter a valid phone number")
+      .required("A phone number is required"),
+
+    // prPassword: Yup.string()
+    //   .required("Please Enter your password")
+    //   .min(
+    //     8,
+    //     "password must contain 8 or more characters with at least one of each: lowercase , number "
+    //   )
+    //   .max(16, "password more long than its alowd [8-16] "),
+
+    newPassword: Yup.string().required('change password is required !')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+        "Must Contain at least  one Uppercase, One Lowercase and one Number "
+      )
+      .min(
+        8,
+        "password must contain 8 or more characters with at least one of each: lowercase , number "
+      )
+      .max(16, "password more long than its alowd [8-16] "),
+    confirm: Yup.string()
+      .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
+    ,
+  });
   const { mutate: updateInfo, isLoading, isSuccess } = useSendStudentUpdatedData()
-  const onSubmit =  (value) => {
+  const onSubmit = (value) => {
     // console.log(value);
     let sendData = {}
     if (value.email !== student.email) {
@@ -58,11 +98,11 @@ function ChangeInfo(props) {
         tel: value.tel
       }
     }
-    if ((value.newPassword !== "" && value.confirm !== "" )&&   value.newPassword !== value.prPassword ) {
+    if ((value.newPassword !== "" && value.confirm !== "") && value.newPassword !== value.prPassword) {
       sendData = {
         ...sendData,
-        newPassword: value.newPassword, 
-        confirm:value.confirm,
+        newPassword: value.newPassword,
+        confirm: value.confirm,
       }
     }
     if (value.prPassword !== "") {
@@ -77,24 +117,51 @@ function ChangeInfo(props) {
     if (sendData.prPassword && (sendData.email || sendData.newPassword || sendData.tel)) {
       updateInfo(sendData)
     }
-  };
-  useEffect(() => {
-    if (isSuccess) {
-      props.close();
+    else if( firstLogin && sendData.newPassword &&  sendData.email && sendData.newPassword && sendData.tel){
+      updateInfo(sendData)
     }
+
+    props.close();
+
+  };
+
+
+  useEffect(() => {
+
+    if (isSuccess && firstLogin ) {
+      
+      axiosClient.post("/student/refreshToken")
+        .then(({ data }) => {
+          if (data.token) {
+            setToken(null)
+            setToken(data.token);
+            const decodedToken = jwt_decode(data.token);
+            setFirstLogin(decodedToken.first_login)
+          }
+        })
+        .catch(error => {
+          console.error("Error refreshing token:", error);
+        });
+    }
+
   }, [isSuccess]);
+
+
+
+
+
   return (
     <Modal
       withCloseButton={true}
       closeOnClickOutside={false}
-      opened={props.opened}
+      opened={props.opened || firstLogin}
       onClose={props.close}
       size={600}
       title="change information"
-        closeOnEscape={false}
+      closeOnEscape={false}
     >
-      <LoadingOverlay 
-      visible={isLoading}
+      <LoadingOverlay
+        visible={isSuccess}
         overlayBlur={1}
         loaderProps={{ size: 'md', color: 'gold' }}
         overlayOpacity={0.3}
@@ -104,7 +171,7 @@ function ChangeInfo(props) {
       </h4>
       <Formik
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        validationSchema={!firstLogin ? validationSchema : notLoggedValidationSchema}
         onSubmit={onSubmit}
       >
         {(Formik) => {
@@ -123,12 +190,15 @@ function ChangeInfo(props) {
                   label='phone number'
                   name='tel'
                 />
+
+                {firstLogin == false ? 
                 <FormikControl
                   control='input'
                   type='password'
                   label='previos password'
                   name='prPassword'
-                />
+                /> :  null 
+              }
 
                 <FormikControl
                   control='input'
@@ -142,17 +212,16 @@ function ChangeInfo(props) {
                   label='confirm '
                   name='confirm'
                 />
-                <button
+                <Button color='teal'  size='lg'
                   type='submit'
                   className='SubmitBtn'
-                // disabled={!Formik.isValid}
-
+                disabled={!Formik.isValid}
                 // onClick={() => {onSubmit}
                 // }
 
                 >
                   confirm change
-                </button>
+                </Button>
               </Form>
             </div>
           );

@@ -29,6 +29,7 @@ import TeacherBlogTask from "./components/TeacherTeamsSection/blogTask/blogTask"
 import TeacherBlogDiscussion from "./components/TeacherTeamsSection/blogTask/blogDiscussion";
 import { StudentsCrud } from "./components/bddStudents/studentsCrud";
 import StudentsManagement from "./components/bddStudents/StudentsManagement";
+import { HeaderStudent } from "./components/navbars/profileNav/header";
 
 
 

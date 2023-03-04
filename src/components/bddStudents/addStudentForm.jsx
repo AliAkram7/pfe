@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { Form, Formik } from 'formik';
 import React from 'react'
 import * as Yup from 'yup'
+import "yup-phone-lite";
 import { useTeacherContext } from '../../contexts/teacherContext';
 import FormikControl from '../FormControl/FormikControl';
 import { useAddStudent } from './connection/sendData/sendData';
@@ -39,7 +40,10 @@ function AddStudentForm(props) {
     };
     const validationSchema = Yup.object({
         name: Yup.string().required("required !"),
-        code: Yup.string().min(8, 'invalid code format !').max(13, 'invalid code format !')
+        code:  Yup.string().required('required !').matches(
+            /(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/,
+            "not valid"
+          ).min(8, 'code must be at least 8 digit')
     });
     const onSubmit = (value) => {
             // console.log(value);
@@ -86,9 +90,6 @@ function AddStudentForm(props) {
                                     label='code'
                                     name='code'
                                 />
-
-
-
                                 <button
                                     type='submit'
                                     className='SubmitBtn'

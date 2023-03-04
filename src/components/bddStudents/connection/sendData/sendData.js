@@ -72,7 +72,6 @@ export const useUpdateStudent = () => {
             })
         },  
         onSuccess:()=>{
-            console.log('file uploaded')
                 QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
@@ -90,7 +89,6 @@ export const useLockStudentAccount = () => {
             })
         },  
         onSuccess:()=>{
-            console.log('file uploaded')
                 QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
@@ -107,7 +105,6 @@ export const useUnLockStudentAccount = () => {
             })
         },  
         onSuccess:()=>{
-            console.log('file uploaded')
                 QueryClient.invalidateQueries('fetchStudentsData')
         }
     })

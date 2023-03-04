@@ -1,10 +1,11 @@
+import { Button, Group } from "@mantine/core";
 import { setNavigationProgress } from "@mantine/nprogress";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../../contexts/ContextProvider";
 import "./loginTo.css";
 function LoginTo() {
 
-  const {setRole} = useStateContext(); 
+  const { setRole } = useStateContext();
 
 
   return (
@@ -13,17 +14,23 @@ function LoginTo() {
 
 
     <div className='group-loginTo'>
-      <button>
-        <Link to='/login'  onClick={()=>{setRole('student')}}     >
+
+        <Button size="md" color='teal' >
+      <Link to='/login' onClick={() => { setRole('student') }}  >
           student
+      </Link>
+        </Button>
+      <Button size="md" color='teal' >
+        <Link to='/login' onClick={() => { setRole('teacher') }}    >
+          teacher
         </Link>
-      </button>
-      <button>
-        <Link to='/login'  onClick={()=>{setRole('teacher')}}    >teacher</Link>
-      </button>
-      <button>
-        <Link to='/login'  onClick={()=>{setRole('admin')}}    >Admin</Link>
-      </button>
+      </Button>
+      <Button size="md" color='teal' >
+        <Link to='/login' onClick={() => { setRole('admin') }}>
+          Admin
+          </Link>
+      </Button>
+
     </div>
   );
 }

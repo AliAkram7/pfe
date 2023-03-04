@@ -21,7 +21,7 @@ function StudentsManagement() {
     }
 
     const { data: FetchDepartmentInfo } = useFetchDepartmentInfo(onSuccess)
-    const {setSelectedSpeciality} = useTeacherContext()
+    const { setSelectedSpeciality } = useTeacherContext()
     const [_selectedSpeciality, _setSelectedSpeciality] = useState(FetchDepartmentInfo?.data.speciality_info[0])
     const [contextSet, setContextSet] = useState(false)
 
@@ -35,8 +35,8 @@ function StudentsManagement() {
     useEffect(() => {
         setSelectedSpeciality(_selectedSpeciality)
     }, [_selectedSpeciality])
-    
-    
+
+
 
     const specialties_list = FetchDepartmentInfo?.data?.speciality_info.map((specialty) => {
 
@@ -56,8 +56,8 @@ function StudentsManagement() {
     ] = useDisclosure(false);
 
     const [helpOpened, {
-        close:helpClose,
-        open:helpOpen
+        close: helpClose,
+        open: helpOpen
     }
     ] = useDisclosure(true);
 
@@ -72,36 +72,38 @@ function StudentsManagement() {
 
         <>
             <Modal
+                position={'bottom'}
                 withCloseButton={true}
                 closeOnClickOutside={false}
                 opened={opened}
                 onClose={close}
-
                 title="add students"
                 closeOnEscape={false}
                 size="calc(100vw - 80px)"
+                
             >
                 <div className='add-students' >
                     <div className='xlsx-method' >
-                        <UploadFile  closeModel={close}  />
+                        <UploadFile closeModel={close} />
                     </div>
                     <div className='byStudents'>
-                        <AddStudentForm  closeModel={close} />
+                        <AddStudentForm closeModel={close} />
                     </div>
                 </div>
 
 
-        <Modal    title='quick help'  opened={helpOpened}  onClose={helpClose}  size="calc(80vw - 30rem)"  >
-            <div  className='upload-help'   >
-                <h3>make sure that the file .xlsx  is in the form bellow </h3>
-                <div className='upload-help-img' >
-                <img src={UploadHelp} alt="help image" />
-                </div>
-                </div>
-                <Button color='teal'  onClick={helpClose}    >
-                    i got it 
-                </Button>
-        </Modal>
+                <Modal title='quick help' opened={helpOpened} onClose={helpClose} size="calc(80vw - 30rem)" overlayBlur={3}
+                    overlayOpacity={0.55}  >
+                    <div className='upload-help'   >
+                        <h3>make sure that the file .xlsx  is in the form bellow </h3>
+                        <div className='upload-help-img' >
+                            <img src={UploadHelp} alt="help image" />
+                        </div>
+                    </div>
+                    <Button color='teal' onClick={helpClose}    >
+                        i got it
+                    </Button>
+                </Modal>
 
             </Modal>
 
@@ -151,7 +153,7 @@ function StudentsManagement() {
 
                     <Outlet />
                     <Tooltip label="add students">
-                        <Button color='teal' onClick={()=>{open() ; helpOpen()}} >
+                        <Button color='teal' onClick={() => { open(); helpOpen() }}   >
                             <IconPlus size={20} />
                         </Button>
                     </Tooltip>
