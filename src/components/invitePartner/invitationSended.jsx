@@ -1,4 +1,4 @@
-import {  LoadingOverlay } from '@mantine/core'
+import {  LoadingOverlay, ScrollArea } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconX } from '@tabler/icons';
 import React, { useEffect, useState } from 'react'
@@ -47,11 +47,14 @@ function InvitationSended() {
 
 
 
+
+
     return (
         <>
             <div className='section-invitation-sended-list'>
-                <h1>invitation sended
-                </h1>
+                {InvitationSended?.data.length > 0   &&  <h1>invitation sended
+                </h1> }
+                <ScrollArea   offsetScrollbars={false}  scrollHideDelay={1000} >
                 <ul>
                     <LoadingOverlay visible={overlayAction}
                         overlayBlur={1}
@@ -88,7 +91,6 @@ function InvitationSended() {
 
                                         {item.isAccepted !=1 ?
                                             <div className="section-invitation-list-action">
-                                        
                                                 <button className='btn-refuse-inv'
                                                     name="annuler"
                                                     onClick={
@@ -102,6 +104,7 @@ function InvitationSended() {
                             )
                         })
                     } </ul>
+                    </ScrollArea>
             </div>
         </>
     )

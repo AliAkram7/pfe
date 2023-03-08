@@ -46,7 +46,7 @@ export const useDeleteStudent = () => {
     const QueryClient = useQueryClient();
     return useMutation(deleteStudent, {
         onError: (response) => {
-            console.log(response.message);
+           
             showNotification({
                 title: 'error',
                 message: 'some things goes wrong try again later',

@@ -1,4 +1,4 @@
-import { LoadingOverlay } from '@mantine/core'
+import { LoadingOverlay, ScrollArea } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck } from '@tabler/icons';
 import React, { useEffect, useState } from 'react'
@@ -56,8 +56,8 @@ const handleAction = (codeSender, e) => {
 
     setTimeout(() => {
         setOverlayAction(false);
-        showNotification({ title: 'invitation accpted', autoClose: 3000, color: 'green', icon: <IconCheck /> })
-    }, 3000);
+        // showNotification({ title: 'invitation accpted', autoClose: 3000, color: 'green', icon: <IconCheck /> })
+    }, 2000);
 
 
 }
@@ -69,6 +69,8 @@ return (
         <div className='section-invitation-list'>
             <h1>Partners
             </h1>
+
+            <ScrollArea   offsetScrollbars={false}  scrollHideDelay={1000} >
             <ul>
                 <LoadingOverlay visible={overlayAction}
                     overlayBlur={1}
@@ -125,6 +127,7 @@ return (
                         )
                     })
                 } </ul>
+                </ScrollArea>
         </div>
     </>
 )

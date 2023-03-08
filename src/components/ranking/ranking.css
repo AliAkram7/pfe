@@ -14,14 +14,14 @@
 
 .main-page-name::before {
 
-    content: '';
+    /* content: '';
     position: absolute;
     height: 5px;
     width: 18%;
     background-color: gold;
     bottom: 0;
     left: 0;
-    /* margin: 10px auto; */
+    margin: 10px auto; */
 
 }
 

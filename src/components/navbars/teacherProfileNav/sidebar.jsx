@@ -11,10 +11,16 @@ import {
     IconPuzzle2,
     IconSquareArrowUp,
     IconUserPlus,
+    IconManualGearbox,
+    IconListCheck,
+    IconBrandTelegram,
+    IconBulb,
 } from '@tabler/icons';
-import { Link } from 'react-router-dom';
+import { Await, Link } from 'react-router-dom';
 import { useStudentContext } from '../../../contexts/studentContext';
 import { useDisclosure } from '@mantine/hooks';
+import { useStateContext } from '../../../contexts/ContextProvider';
+import { useTeacherContext } from '../../../contexts/teacherContext';
 // import { MantineLogo } from '@mantine/ds';
 
 const useStyles = createStyles((theme) => ({
@@ -88,7 +94,7 @@ const useStyles = createStyles((theme) => ({
         boxSizing: 'border-box',
         display: 'flex',
         alignItems: 'center',
-        gap:'20px',
+        gap: '20px',
         textDecoration: 'none',
         borderTopRightRadius: theme.radius.md,
         borderBottomRightRadius: theme.radius.md,
@@ -126,75 +132,66 @@ const useStyles = createStyles((theme) => ({
 
 
 
-export function SideBarStudent(props) {
+export function SideBarTeacher(props) {
     const { classes, cx } = useStyles();
     const [active, setActive] = useState('Home');
     const [activeLink, setActiveLink] = useState('/student');
-    const { isInTeam } = useStudentContext()
+
+
+    //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
+    const { user, token, setRole } = useStateContext()
+    const { teacher, isDepartmentManager, isInTeam } = useTeacherContext()
+    //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
     // const [opened, {toggle}] = useDisclosure(false);
     const mainLinksMockdata = [
-        { item: <Burger  opened={!props.opened} onClick={props.toggle} size={20}   />, label: '' },
+        { item: <Burger opened={!props.opened} onClick={props.toggle} size={20} />, label: '' },
     ];
 
-
-    // const linksMockdata = [
-    //     'home',
-    //     'ranking',
-    //     !isInTeam ? 'join-Team' : 'team-section',
-    // ];
-
-
-
-         const  linksMockdata   = [
-            {label : 'home'  ,  icon: IconHome2 },
-            {label : 'ranking' ,icon  : IconSquareArrowUp   },
-            ! isInTeam ? { label :  'join team' , icon :  IconUserPlus}  :  { label :   'team-section'  ,icon :IconPuzzle2 } ,
-        ];
-        
-
-        
-
-
-
     
+    let linksMockdata = [
+        { label: 'home', icon: IconHome2 },
+        {label : 'suggestion_theme', icon : IconBulb  }, 
+        isDepartmentManager == 1 ? { label: 'students_management', icon: IconListCheck } : { label: '', icon: IconGauge },
+        isInTeam ==true ? { label: 'teams-section', icon: IconPuzzle2 } : { label: '', icon: IconGauge },
+    ]
 
-
-
+    // debugger
 
     const mainLinks = mainLinksMockdata.map((link) => (
-   
-            <UnstyledButton
-                // onClick={() => setActive(link.label)}
-                className={cx(classes.mainLink, { [classes.mainLinkActive]: link.label === active })}
-            >
-                {/* <link.icon size="1.4rem" stroke={1.5} /> */}
-                {link.item}
-            </UnstyledButton>
+
+        <UnstyledButton
+            // onClick={() => setActive(link.label)}
+            className={cx(classes.mainLink, { [classes.mainLinkActive]: link.label === active })}
+        >
+            {/* <link.icon size="1.4rem" stroke={1.5} /> */}
+            {link.item}
+        </UnstyledButton>
 
     ));
 
     const links = linksMockdata.map((link) => (
-        <Link
-            className={cx(classes.link, { [classes.linkActive]: activeLink === link.label })}
-            to={link.label === 'home' ? '/student' : link.label === 'join team' ?  'join-Team' : link.label }
-            onClick={(event) => {
-                // event.preventDefault();
-                setActiveLink(link.label);
-                setActive(link.label)
-            }}
-            key={link.label}
+        link.label !== '' ?
+            <Link
+                className={cx(classes.link, { [classes.linkActive]: activeLink === link.label })}
+                to={link.label === 'home' ? '/teacher' : link.label}
+                onClick={(event) => {
+                    setActiveLink(link.label);
+                    setActive(link.label)
+                }}
+                key={link.label}
 
-        >
-            <ThemeIcon variant='filled' color='teal'  size={24} >
-                <link.icon   />
-            </ThemeIcon>
-            {link.label}
-        </Link>
+            >
+                <ThemeIcon variant='filled' color='teal' size={24} >
+                    <link.icon />
+                </ThemeIcon>
+                {link.label}
+            </Link>
+            : null
     ));
 
     return (
-        
+
         <Navbar height={"100vh"} width={!props.opened ? { sm: 260 } : { sm: 0 }} className={classes.Parentnavbar}     >
             <Navbar.Section grow className={classes.wrapper}  >
                 <div className={classes.aside}>
@@ -203,7 +200,7 @@ export function SideBarStudent(props) {
                     </div>
                     {mainLinks}
                 </div>
-                <div className={classes.mainLinks}  style={ props.opened ?  {display:'none'}  : null }  >
+                <div className={classes.mainLinks} style={props.opened ? { display: 'none' } : null}  >
                     <Title order={4} className={classes.title}>
                         {active}
                     </Title>

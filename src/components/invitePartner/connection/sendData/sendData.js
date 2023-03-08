@@ -9,6 +9,7 @@ export const useResponse =()=>{
     return useMutation(sendResponse, {
         onSuccess:()=>{
             queryClient.invalidateQueries('fetchInvitationSended')
+            queryClient.invalidateQueries('fetchInvitationRecived')
         }
     })
 }

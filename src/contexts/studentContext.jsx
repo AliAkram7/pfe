@@ -25,7 +25,7 @@ const studentContext = createContext({
 export const StudentContextProvider = ({ children }) => {
     const [student, setStudent] = useState({})
     const [studentToken, _setStudentToken] = useState(Cookies.get('token'))
-    const [isInTeam, setIsInTeam] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).isInTeam : false)
+    const [isInTeam, setIsInTeam] = useState( false)
     const [roomDiscription, setRoomDiscription] = useState(null)
     const [roomName, setRoomName] = useState(null)
     const [roomId, setRoomId] = useState(null)
@@ -40,7 +40,7 @@ export const StudentContextProvider = ({ children }) => {
             const decodedToken = jwt_decode(token)
             if (decodedToken.role === 'student') {
                 _setStudentToken(token)
-                setIsInTeam(decodedToken.isInTeam)
+                // setIsInTeam(decodedToken.isInTeam)   
                 setFirstLogin(decodedToken.first_login)
             } else {
                 Cookies.remove('token');

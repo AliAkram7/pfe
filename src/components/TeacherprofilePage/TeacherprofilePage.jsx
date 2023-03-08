@@ -57,9 +57,9 @@ function TeacherProfilePage(props) {
 
             <ChangeInfo opened={opened}
                 close={close} />
-            <div   className='main-page-name'>
+            {/* <div   className='main-page-name'>
                 <h1>profile</h1>
-            </div>
+            </div> */}
             <div    className="pageWrapper">
                 <div className='person-card'>
                     <div className='circle-name'>

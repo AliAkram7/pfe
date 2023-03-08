@@ -18,7 +18,7 @@ function TeamInfo() {
 
 
 
-    const { teacher, setTeamSelected, teamSelected } = useTeacherContext();
+    const { teacher, setTeamSelected, teamSelected, setIsInTeam } = useTeacherContext();
 
   
     
@@ -26,18 +26,24 @@ function TeamInfo() {
 
 
     
+    let list_of_Team = null
 
-    const list_of_Team = getTeamsInformation?.data.teams_list?.map((team) => {
-        return (
-            <>
-                <List.Item><Link key={team.team_id} onClick={() => { setTeamSelected(team.team_id) }}  >
-                    {team[0].map((member) => {
-                        return member.name + ", "
-                    })}
-                </Link></List.Item>
-            </>
-        )
-    })
+    if (getTeamsInformation?.data?.teams_list?.length > 0 ) {
+        list_of_Team = getTeamsInformation?.data.teams_list?.map((team) => {
+            return (
+                <>
+                    <List.Item><Link key={team.team_id} onClick={() => { setTeamSelected(team.team_id) }}  >
+                        {team[0]?.map((member) => {
+                            return member?.name + ", "
+                        })}
+                    </Link></List.Item>
+                </>
+            )
+        })   
+    }
+
+
+     
 
 
   
@@ -49,17 +55,20 @@ function TeamInfo() {
         getTeamsInformation?.data.teams_list.map((team) => {
             if (team.team_id === teamSelected) {
                 team_members = team[0].map((student) => {
-                    return (<UserAvatar key={student.code} username={student?.name}
+                    return (<UserAvatar key={student?.code} username={student?.name}
                         userinfo={student?.email} tel={student?.tel} />)
                 })
             }
         })
-    } else if(!error) {
+    } else if(!error && getTeamsInformation?.data?.teams_list[0][0].length > 0  ) {
+
         team_members = getTeamsInformation?.data.teams_list[0][0]?.map((student) => {
-            return (<UserAvatar key={student.code} username={student?.name}
+            return (<UserAvatar key={student?.code} username={student?.name}
                 userinfo={student?.email} tel={student?.tel} />)
 
         })
+
+
     }
 
 

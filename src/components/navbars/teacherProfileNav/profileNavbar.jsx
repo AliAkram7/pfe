@@ -14,15 +14,19 @@ import { completeNavigationProgress, NavigationProgress, startNavigationProgress
 import { useFetchStudentData } from "../../profilePage/connection/receiveData/fetchData";
 
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { useGetStudentTeamInformation } from "../../teamSection/connection/receiveData/fetchData";
-import { useStudentContext } from "../../../contexts/studentContext";
+// import { useGetStudentTeamInformation } from "../../teamSection/connection/receiveData/fetchData";
+// import { useStudentContext } from "../../../contexts/studentContext";
 import { useTeacherContext } from "../../../contexts/teacherContext";
 import { useFetchTeacherData } from "../../TeacherprofilePage/connection/receiveData/fetchData";
 import TeacherProfileMenu from "../../teacherProfileMenu/profileMenu";
+import { useDisclosure } from "@mantine/hooks";
+import { SideBarTeacher } from "./sidebar";
+import { HeaderTeacher } from "./header";
+import { useGetTeamsInformation } from "../../TeacherTeamsSection/connection/receiveData/fetchData";
+
 function TeaherProfileNavbar() {
     const [openSide, setOpenSide] = useState(false);
     const [opened, setOpened] = useState(false);
-
 
     const chn = useLocation()
     useEffect(() => {
@@ -35,41 +39,44 @@ function TeaherProfileNavbar() {
         }, 200);
     }, [chn.pathname]);
 
-
-
+    //!! Teacher Function  ------------------------------------------------------------------------------------------------------------------------------------------------------------
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
-    const { teacher, setTeacher, setTeacherToken, isDepartmentManager } = useTeacherContext()
+    const { teacher, setTeacher, setTeacherToken, isDepartmentManager, setIsInTeam } = useTeacherContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
-
     useEffect(() => {
         setTeacherToken(token);
         setTeacher(user);
     }, [])
 
-
     const onSuccess = () => {
         setTeacher(data?.data.user);
         setRole(data?.data.role)
-        // if (getStudentTeamInformation?.data.length == 2) {
-        //     setIsInTeam(true)
-        // }
     }
 
     const onError = () => {
     }
-
     const { data } = useFetchTeacherData(onSuccess, onError)
-
+    // !!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     // const { data: getStudentTeamInformation } = useGetStudentTeamInformation()
 
 
 
+    const { data: getTeamsInformation , error} = useGetTeamsInformation()
+
+
+    useEffect(() => {
+        
+    if (getTeamsInformation?.data.teams_list.length > 0 ) { 
+        setIsInTeam(true)
+    }
+    }, [getTeamsInformation?.data.teams_list])
+    
 
 
 
-    return (
+    const x =  (
         <>
             <NavigationProgress color='gold' />
             <Modal opened={opened}
@@ -106,13 +113,8 @@ function TeaherProfileNavbar() {
                         </div>
                     </header>
                     <section className='main'>
-
-                        
                         <Outlet />
-
-
                     </section>
-
                     <ProfileFooter />
                 </div>
 
@@ -174,6 +176,30 @@ function TeaherProfileNavbar() {
             </div>
         </>
     );
+
+    const [openedSide, { toggle }] = useDisclosure(false);
+
+    return (<>
+      <NavigationProgress color='gold' />
+        <div className="sidbar--header-main" >
+            <SideBarTeacher opened={openedSide} toggle={toggle} />
+            {/* <ChangeInfo opened={firstLoginOpened}
+                close={firstLoginClose} /> */}
+            <div className='header-main' style={
+                openedSide ? {
+                    width: "96.8%"
+                } : { width: "80.8%" }}  >
+                <HeaderTeacher />
+                <section className='main'>
+                    <Outlet />
+                </section>
+                <ProfileFooter />
+            </div>
+        </div>
+    </>)
+
+
+
 }
 
 export default TeaherProfileNavbar;

@@ -52,8 +52,8 @@ function TeamInfo() {
 
                 <div className='team-supervisor'>
                     <h3>supervisor</h3>
-                    <UserAvatar username={getStudentTeamInformation?.data.supervsorInfo.name}
-                        userinfo={getStudentTeamInformation?.data.supervsorInfo.institutional_email} />
+                    <UserAvatar username={getStudentTeamInformation?.data?.supervsorInfo?.name  ?  getStudentTeamInformation?.data?.supervsorInfo?.name : 'supervisor information  '  }
+                        userinfo={getStudentTeamInformation?.data?.supervsorInfo?.institutional_email} />
                 </div>
 
                 <div className='team-members'>

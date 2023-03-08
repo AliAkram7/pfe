@@ -12,8 +12,8 @@
     bottom: 0;
     width: 85%;
     height: 100%;
-    overflow: scroll;
-    transition: all 0.2s;
+    /* overflow: scroll; */
+    /* transition: all 0.2s; */
 }
 
 
@@ -362,7 +362,7 @@ hr {
     background-color: whitesmoke;
     /* padding: 30px; */
     width: 100%;
-    height: 70px;
+    height: 30px;
     display: flex;
     align-items: center;
     padding-left: 40px;
@@ -373,14 +373,14 @@ hr {
 
 .main-page-name::before {
 
-    content: '';
+    /* content: '';
     position: absolute;
     height: 5px;
     width: 25%;
     background-color: gold;
     bottom: 0;
     left: 0;
-    /* margin: 10px auto; */
+    margin: 10px auto; */
 
 }
 

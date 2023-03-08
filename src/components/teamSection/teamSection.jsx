@@ -9,17 +9,11 @@ function TeamSection() {
 
 
    const {isInTeam} = useStudentContext() ; 
+
     
-
-
-
     return (
         isInTeam == true ? (
         <>
-            <div className='main-page-name'>
-                <h1>Team Section</h1>
-
-            </div>
             <div className='container-blog-section'>
 
                 <Outlet/>
@@ -28,7 +22,7 @@ function TeamSection() {
                 <TeamInfo />
 
             </div>
-        </>) : <Navigate to='/student' />  
+        </>) : <Navigate to='/student/join-Team' />  
 
 
     )

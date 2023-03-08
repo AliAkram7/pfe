@@ -2,7 +2,7 @@ import { Button, Drawer, List, LoadingOverlay, Modal, ThemeIcon, Tooltip, useMan
 import { useDisclosure } from '@mantine/hooks'
 import { IconArrowLeft, IconPaperclip, IconPlus } from '@tabler/icons'
 import React, { useEffect, useState } from 'react'
-import { Await, Outlet } from 'react-router'
+import { Await, Navigate, Outlet } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useStateContext } from '../../contexts/ContextProvider'
 import { useTeacherContext } from '../../contexts/teacherContext'
@@ -15,11 +15,14 @@ function StudentsManagement() {
 
 
 
-
+                //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
+                const { user, token, setRole } = useStateContext()
+                const { teacher, isDepartmentManager } = useTeacherContext()
+                //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
+            
 
     const onSuccess = () => {
     }
-
     const { data: FetchDepartmentInfo } = useFetchDepartmentInfo(onSuccess)
     const { setSelectedSpeciality } = useTeacherContext()
     const [_selectedSpeciality, _setSelectedSpeciality] = useState(FetchDepartmentInfo?.data.speciality_info[0])
@@ -69,7 +72,7 @@ function StudentsManagement() {
     ] = useDisclosure(false);
 
     return (
-
+        isDepartmentManager == 1  ? 
         <>
             <Modal
                 position={'bottom'}
@@ -108,7 +111,7 @@ function StudentsManagement() {
             </Modal>
 
             <div className='main-page-name'>
-                <h1>Students Management
+                <h1>
                     <Tooltip label={FetchDepartmentInfo?.data.department_name?.name}>
                         <Button color='teal' onClick={drawerOpen} >
                             <IconArrowLeft size={20} />
@@ -164,7 +167,7 @@ function StudentsManagement() {
             </div>
 
 
-        </>
+        </> :  <Navigate  to='/teacher' />
     )
 }
 

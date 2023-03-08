@@ -9,6 +9,8 @@ import { Button, LoadingOverlay } from "@mantine/core";
 import { useStudentContext } from "../../contexts/studentContext";
 
 
+
+
 function ProfilePage() {
     const [opened, {
         close,
@@ -45,15 +47,15 @@ function ProfilePage() {
     if (isLoading) return <LoadingOverlay loaderProps={{ size: 'xl', color: 'gold', variant: 'rotate', }} />;
     if (isError) return <p>Error :(</p>;
 
-    return (
+    return  (
 
 
         <>
             <ChangeInfo opened={opened}
                 close={close} />
-            <div className='main-page-name'>
+            {/* <div className='main-page-name'>
                 <h1>my profile</h1>
-            </div>
+            </div> */}
             <div className="pageWrapper">
                 <div className='person-card'>
                     <div className='circle-name'>
@@ -84,6 +86,14 @@ function ProfilePage() {
             </div>
         </>
     );
+
+
+
+      
+
+
 }
+
+
 
 export default ProfilePage;

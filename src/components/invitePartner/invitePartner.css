@@ -22,6 +22,12 @@
 /* .section-invit-binom{
     background-color: violet;
 } */
+
+.section-invitation-list, .section-invitation-sended-list  { 
+    /* background-color: #11BD7E ;  */
+    height: 300px;
+}
+
 .section-invit-binom,
 .section-invitation-list, .section-invitation-sended-list {
     width: 100%;
@@ -30,6 +36,7 @@
     justify-content: center;
     gap: 30px;
     /* height: 300px; */
+
 }
 .section-invitation-list h1 {
     text-align: center;
@@ -44,7 +51,7 @@
     display: flex;
     flex-direction: column;
     gap: 40px;
-    overflow: scroll;
+    /* overflow: scroll; */
     padding: 0 30px;
 
 }

@@ -62,9 +62,9 @@ function Ranking() {
 
     return (
         <>
-            <div className='main-page-name'>
+            {/* <div className='main-page-name'>
                 <h1>ranking</h1>
-            </div>
+            </div> */}
 
             <div className='table-section'>
                 <h1>Classment des Etudiants de la Spécialité {ranking?.data.speciality_name} {ranking?.data.year_scholar}

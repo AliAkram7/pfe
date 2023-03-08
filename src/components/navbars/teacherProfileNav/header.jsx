@@ -7,7 +7,8 @@ import { Outlet } from 'react-router';
 import logo from "../../../imges/1669627809076.png";
 import Logout from '../../logout/logout';
 import ProfileMenu from '../../profileMenu/profileMenu';
-import { SideBarStudent } from './sidebar';
+import TeacherProfileMenu from '../../teacherProfileMenu/profileMenu';
+import { SideBarTeacher } from './sidebar';
 
 
 const useStyles = createStyles((theme) => ({
@@ -72,7 +73,7 @@ const links = [
 ];
 
 
-export function HeaderStudent(props) {
+export function HeaderTeacher(props) {
     const [opened, { toggle }] = useDisclosure(false);
     const [openedLogout, setOpenedLogout] = useState(false);
 
@@ -147,7 +148,7 @@ export function HeaderStudent(props) {
                         </div>
                         <Group spacing={5} className={classes.links}>
                             {/* {items} */}
-                            <ProfileMenu setOpened={setOpenedLogout} />
+                            <TeacherProfileMenu setOpened={setOpenedLogout} />
 
                         </Group>
                         <Burger

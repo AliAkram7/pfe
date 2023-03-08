@@ -9,6 +9,9 @@ import App from "./App";
 import { ContextProvider } from "./contexts/ContextProvider";
 import "./index.css";
 import router from "./router";
+// import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+// import "@fortawesome/fontawesome-free/css/all.min.css";
+
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

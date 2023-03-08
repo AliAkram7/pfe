@@ -42,9 +42,9 @@ function Login() {
     code: "",
     password: "",
   };
+
   const validationSchema = Yup.object({
     code: Yup.string().required("Please enter your code ").min(8, 'code is invalide'),
-    // TODO make the password validation require number and small case
     password: Yup.string()
       .required("Please enter your password")
       .min(
@@ -68,6 +68,7 @@ function Login() {
     const payload = {
       code: value.code,
       password: value.password
+      
     }
 
 

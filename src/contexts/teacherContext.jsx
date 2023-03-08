@@ -25,18 +25,18 @@ const teacherContext = createContext({
     selectedSpeciality: null,
     setSelectedSpeciality: () => { },
     selectedSpeciality_id: null,
-    setSelectedSpeciality_id:()=>{} 
+    setSelectedSpeciality_id: () => { }
 
 })
 
 export const TeacherContextProvider = ({ children }) => {
     const [teacher, setTeacher] = useState({})
     const [teacherToken, _setTeacherToken] = useState(null)
-    const [isInTeam, setIsInTeam] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).isInTeam : false)
+    const [isInTeam, setIsInTeam] = useState(false)
     const [roomDiscription, setRoomDiscription] = useState(null)
     const [roomName, setRoomName] = useState(null)
     const [roomId, setRoomId] = useState(null)
-    const [isDepartmentManager, setIsDepartmentManager] = useState()
+    const [isDepartmentManager, setIsDepartmentManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).department_manager :  0  )
     const [teamSelected, setTeamSelected] = useState();
     const [selectedSpeciality, setSelectedSpeciality] = useState()
     const [selectedSpeciality_id, setSelectedSpeciality_id] = useState()
@@ -45,11 +45,14 @@ export const TeacherContextProvider = ({ children }) => {
 
     const setTeacherToken = (token) => {
         if (token) {
-            const decodedToken = jwt_decode(token)
-            console.log(decodedToken)
+            const decodedToken = jwt_decode(token)  
 
             if (decodedToken.role === 'teacher') {
                 _setTeacherToken(token)
+                jwt_decode(token)
+                console.log(decodedToken)
+            
+
             } else {
                 Cookies.remove('token');
                 return <Navigate to='/' />
@@ -63,7 +66,7 @@ export const TeacherContextProvider = ({ children }) => {
     }
     return (<teacherContext.Provider value={
         {
-            teacher, setTeacher, teacherToken, setTeacherToken, setIsInTeam, setRoomDiscription, setRoomName, setIsInTeam, setRoomId, roomDiscription, roomName, roomId,
+            teacher, setTeacher, teacherToken, setTeacherToken, setRoomDiscription, setRoomName, setRoomId, roomDiscription, roomName, roomId,setIsInTeam , isInTeam , 
             teamSelected, setTeamSelected, isDepartmentManager, setIsDepartmentManager, setSelectedSpeciality, selectedSpeciality, selectedSpeciality_id, setSelectedSpeciality_id
         }
     }> {children} </teacherContext.Provider>)

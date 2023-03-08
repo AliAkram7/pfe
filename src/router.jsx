@@ -30,6 +30,7 @@ import TeacherBlogDiscussion from "./components/TeacherTeamsSection/blogTask/blo
 import { StudentsCrud } from "./components/bddStudents/studentsCrud";
 import StudentsManagement from "./components/bddStudents/StudentsManagement";
 import { HeaderStudent } from "./components/navbars/profileNav/header";
+import { SuggestionTheme } from "./components/SuggestionTheme/SuggestionForm";
 
 
 
@@ -78,23 +79,23 @@ const router = createBrowserRouter([
                     {
                         path: 'team-section',
                         element: <TeamSection />,
-                        errorElement:<PageNotFound/> , 
+                        // errorElement:<PageNotFound/> , 
                         children: [
                             {
                                 path: 'select_theme',
                                 element: <DisserForm />, 
-                                errorElement:<PageNotFound/> , 
+                                // errorElement:<PageNotFound/> , 
                             },
                             {
                                 index: true,
                                 element: <BlogTask />,
-                                errorElement:<PageNotFound/> 
+                                // errorElement:<PageNotFound/> 
                             },
                             {
                                 path: 'room',
                                 
                                 element: <BlogDiscussion />,
-                                errorElement:<PageNotFound/> 
+                                // errorElement:<PageNotFound/> 
                             }
                         ]
                     }
@@ -134,6 +135,10 @@ const router = createBrowserRouter([
                         element : <StudentsCrud/>
                         }]
                     },
+                    {
+                        path: 'suggestion_theme',
+                        element: < SuggestionTheme/>
+                    }, 
                     {
                         path: 'teams-section',
                         element: <TeamsSection />, 

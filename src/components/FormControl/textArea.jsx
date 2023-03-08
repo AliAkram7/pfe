@@ -8,6 +8,7 @@ function TextArea(props) {
     const {
         label,
         name,
+        row , 
         ...rest
     } = props;
 
@@ -22,13 +23,13 @@ function TextArea(props) {
                         color: "var(--MainColor)",
                         backgroundColor: '#FFFFFF',
                         padding: '0   10px',
-                        paddingBottom: '1px',
-                        
+                        paddingBottom: '1px',   
                     }
             }>
                 {label} </label>
-            <Field as="textarea" id={name}
+            <Field as="textarea" id={name} style = {{width:`${row}rem`}}
                 name={name}
+                autoize = {false}
                 {...rest}  
                 
                 />
@@ -39,3 +40,4 @@ function TextArea(props) {
 }
 
 export default TextArea;
+

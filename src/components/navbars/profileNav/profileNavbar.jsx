@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./profileNavbar.css";
-import { Modal } from "@mantine/core";
+import { Modal, ScrollArea, Transition } from "@mantine/core";
 import logo from "../../../imges/1669627809076.png";
 import ProfileMenu from "../../profileMenu/profileMenu";
 import Logout from "../../logout/logout";
@@ -24,19 +24,13 @@ function ProfileNavbar() {
     const [openSide, setOpenSide] = useState(false);
     const [opened, setOpened] = useState(false);
 
-    const [firstLoginOpened, {
-        close: firstLoginClose,
-        open: firstLoginOpen,
-    }
-    ] = useDisclosure(false);
-
+    const [firstLoginOpened, { close: firstLoginClose, open: firstLoginOpen, }] = useDisclosure(false);
 
     const chn = useLocation()
     useEffect(() => {
         setTimeout(() => {
             startNavigationProgress();
         }, 100);
-
         setTimeout(() => {
             completeNavigationProgress();
         }, 200);
@@ -50,14 +44,14 @@ function ProfileNavbar() {
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
 
-
     useEffect(() => {
         setStudentToken(token);
         setStudent(user);
         const decodedToken = jwt_decode(token)
         setFirstLogin(decodedToken.first_login)
-        console.log('studentTokenUpdated', firstLogin)
     }, [token, user])
+
+
 
 
 
@@ -65,34 +59,38 @@ function ProfileNavbar() {
     const onSuccess = () => {
         setStudent(data?.data.user);
         setRole(data?.data.role)
-        if (getStudentTeamInformation?.data.length == 2) {
+        if (getStudentTeamInformation?.data.team_members.length == 2) {
             setIsInTeam(true)
+        }else{
+            setIsInTeam(false)
         }
     }
 
-    const onError = () => {
 
+
+    const onError = () => {
     }
     const { data } = useFetchStudentData(onSuccess, onError)
 
-
     const { data: getStudentTeamInformation } = useGetStudentTeamInformation()
 
-
-    //** check  if students enter in team  */
-
-
-
+    useEffect(() => {
+        if (getStudentTeamInformation?.data.team_members.length == 2) {
+            setIsInTeam(true)
+        }else{
+            setIsInTeam(false)
+        }
+    }, [getStudentTeamInformation?.data.team_members.length])
 
 
 
 
     const x = (
         <>
-
             <ChangeInfo opened={firstLoginOpened}
                 close={firstLoginClose} />
             <NavigationProgress color='gold' />
+            const [opened, setOpened] = useState(false);
 
             <Modal opened={opened}
                 onClose={
@@ -130,15 +128,10 @@ function ProfileNavbar() {
                         </div>
                     </header>
                     <section className='main'>
-
                         <Outlet />
-
-
                     </section>
-
                     <ProfileFooter />
                 </div>
-
                 <div className='sidebar'>
                     <div className='menu-name'>
                         <div className='menu-btn'
@@ -199,21 +192,28 @@ function ProfileNavbar() {
         </>
     );
 
+
+    const [openedSide, { toggle }] = useDisclosure(false);
+
     return (<>
+        <NavigationProgress color='gold' />
+
         <div className="sidbar--header-main" >
-            <SideBarStudent />
-            <div className='header-main'    style={
-                        !openSide ? {
-                            width: "81%"
-                        } : null}  >
-            <HeaderStudent />
-            <section className='main'>
-
-<Outlet />
-
-
-</section>
+            <SideBarStudent opened={openedSide} toggle={toggle} isInTeam={isInTeam} />
+            <ChangeInfo opened={firstLoginOpened}
+                close={firstLoginClose} />
+            {/* <ScrollArea offsetScrollbars={false}   > */}
+            <div className='header-main' style={
+                openedSide ? {
+                    width: "96.8%"
+                } : { width: "80.8%" }}  >
+                <HeaderStudent />
+                <section className='main'>
+                    <Outlet />
+                </section>
+                <ProfileFooter />
             </div>
+            {/* </ScrollArea> */}
         </div>
     </>)
 

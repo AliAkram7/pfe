@@ -167,8 +167,8 @@ function ChangeInfo(props) {
         overlayOpacity={0.3}
         overlayColor="whitesmoke"
       />
-      <h4>- strong password required. Enter 8-16 characters, Do not include common words or names, Combine uppercase letters, lowercase letters and numbers <br /> <br />
-      </h4>
+      <h6>- strong password required. Enter 8-16 characters, Do not include common words or names, Combine uppercase letters, lowercase letters and numbers <br /> <br />
+      </h6>
       <Formik
         initialValues={initialValues}
         validationSchema={!firstLogin ? validationSchema : notLoggedValidationSchema}

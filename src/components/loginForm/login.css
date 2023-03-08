@@ -38,8 +38,8 @@
   .box .SubmitBtn {
     width: 100%;
     outline: none;
-    color: white;
-    border: var(--border);
+    /* color: white; */
+    /* border: var(--border); */
     padding: 0.625rem 1.25rem;
     cursor: pointer;
     border-radius: 0.312rem;

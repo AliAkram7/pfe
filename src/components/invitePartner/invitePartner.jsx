@@ -12,13 +12,9 @@ export function InvitePartner() {
 
 
     const { isInTeam } = useStudentContext();
-
     return (
-        isInTeam == false ? (
+        isInTeam === false ? (
             <>
-                <div className="main-page-name">
-                    <h1>Join Team</h1>
-                </div>
                 <div className='container-invit-binom' >
                     <div className='invit-section'>
                         <InvitePartnerForm />
