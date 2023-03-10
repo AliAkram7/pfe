@@ -1,27 +1,34 @@
-import {LoadingOverlay, Modal} from '@mantine/core'
+import {Button, List, LoadingOverlay, Modal, ThemeIcon} from '@mantine/core'
 import { showNotification } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons';
+import { IconCheck, IconCircleDashed } from '@tabler/icons';
 import React from 'react'
-// import { useSendChoice } from './connection/sendData/sendData';
+import { useSendChoice } from './connection/sendData/sendData';
 
-function SendData(props) {
+function sendData(props) {
 
-    // # const {mutate:sendChoice } = useSendChoice()
+     const {mutate:sendChoice, isLoading , isSuccess } = useSendChoice()
 
 
-    const sendData = () => {
+    const onSubmit = () => {
         let sendedData = props.data.map(({id}) => id);
         // sendedData [1, 2, 3, 4]
-        console.log(sendedData)
-        // * sended data tested and ready to post
-        // # sendChoice(sendedData);
-        // console.log(props.data)
+
+        let payload   =  { theme_list  : sendedData } ; 
+
+        payload =   payload
+
+
+        
+        sendChoice(payload)
+
+
     }
     return (
-
+        <>
+        <LoadingOverlay  visible = {isLoading}  />
         <Modal withCloseButton={true}
             opened={
-                props.opened
+                props.opened 
             }
             onClose={
                 props.close
@@ -29,7 +36,7 @@ function SendData(props) {
             closeOnClickOutside={false}
             size={600}>
 
-            <LoadingOverlay overlayBlur={1}
+            <LoadingOverlay overlayBlur={1} 
                 loaderProps={
                     {
                         size: 'md',
@@ -43,44 +50,45 @@ function SendData(props) {
                 </h3>
 
                 <div className="final-list">
-                    <ul> {
+                    <List size={20} > {
 
-                        props.data.map((item, idx) => {
-                            return <li key={
+                        props?.data?.map((item, idx) => {
+                            return <List.Item
+                            
+                            icon={
+                                <ThemeIcon  size={24} radius="xl">
+                                  <IconCheck size="1rem" />
+                                </ThemeIcon>
+                              }
+                            key={
                                 item.id
                             }>
                                 <span> {
                                     idx + 1
                                 } </span>
                                 - {
-                                item.id
-                            }: {
-                                item.name
-                            } </li>
+                                // item.id
+                            } {
+                                item.title
+                            } </List.Item>
 
                     })
-                    } </ul>
+                    } </List>
                 </div>
-                <h3>
-                    as your final choice?</h3>
-                {/*  TODO this button will send data   ''theme '' to server  */}
-                <button className="btn-conf"
+                <h3>     </h3>
+                {/*  // TODO this button will send data   ''theme '' to server  */}
+                <Button variant='outline'
+                    size='md'
                     onClick={
-                        () => {
-                            sendData
-                            showNotification({
-                                title: 'change information secces', message: '', color: 'green',
-                                // loading: true,
-                                icon: <IconCheck size={20}/>
-                            });
-                        }
+                        onSubmit 
                 }>complete operation
-                </button>
+                </Button>
 
             </div>
         </Modal>
+        </>
 
     )
 }
 
-export default SendData
+export default sendData ; 

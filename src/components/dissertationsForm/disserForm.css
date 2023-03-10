@@ -87,11 +87,11 @@
     gap: 24px;
 }
 .conformation-form  .final-list{
-    border-radius: 10px;
-    padding: 10px;
-    background-color: #11bd7e;
+    /* border-radius: 10px; */
+    /* padding: 10px; */
+    /* background-color: #11bd7e; */
 }
-.conformation-form  .final-list ul {
+/* .conformation-form  .final-list ul {
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -104,16 +104,16 @@
 }
 .conformation-form  .final-list ul li span{
     color: #FFFFFF;
-}
+} */
 
-.conformation-form  button{
-    background: none;
+/* .conformation-form  button{ */
+    /* background: none;
 border: var(--border);
-height: 64px;
-font-size: 1.5em;
-font-weight: 300;
-transition: all .5s;
-}
+/* height: 64px; */
+    /* font-size: 1.5em;
+    font-weight: 300;
+    transition: all .5s; */
+/* }  */
 .conformation-form  .btn-conf:hover{
     background-color: #11bd7e;
 }

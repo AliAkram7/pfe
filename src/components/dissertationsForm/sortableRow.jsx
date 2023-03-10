@@ -9,7 +9,7 @@ export function Row(props) { //
         setNodeRef,
         transform,
         transition
-    } = useSortable({id: props.id});
+    } = useSortable({id: props?.id});
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -29,9 +29,9 @@ export function Row(props) { //
                 <IconGripVertical size={18}
                     stroke={1.5}/>
             </td>
-            <td>{
+            {/* <td>{
                 props.id
-            }</td>
+            }</td> */}
             <td>{
                 props.name
             }</td>

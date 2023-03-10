@@ -31,6 +31,9 @@ import { StudentsCrud } from "./components/bddStudents/studentsCrud";
 import StudentsManagement from "./components/bddStudents/StudentsManagement";
 import { HeaderStudent } from "./components/navbars/profileNav/header";
 import { SuggestionTheme } from "./components/SuggestionTheme/SuggestionForm";
+import ThemeManagement from "./components/BddThemes/themesManagement";
+import { Children } from "react";
+import { ThemeCrud } from "./components/BddThemes/ThemesCrud";
 
 
 
@@ -138,6 +141,14 @@ const router = createBrowserRouter([
                     {
                         path: 'suggestion_theme',
                         element: < SuggestionTheme/>
+                    }, 
+                    {
+                        path: 'themes_management',
+                        element: <ThemeManagement/>, 
+                        children:[{
+                            index:true , 
+                            element: <ThemeCrud/>
+                        }]
                     }, 
                     {
                         path: 'teams-section',

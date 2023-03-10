@@ -15,11 +15,11 @@ function StudentsManagement() {
 
 
 
-                //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
-                const { user, token, setRole } = useStateContext()
-                const { teacher, isDepartmentManager } = useTeacherContext()
-                //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
-            
+    //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
+    const { user, token, setRole } = useStateContext()
+    const { teacher, isDepartmentManager } = useTeacherContext()
+    //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
+
 
     const onSuccess = () => {
     }
@@ -72,102 +72,102 @@ function StudentsManagement() {
     ] = useDisclosure(false);
 
     return (
-        isDepartmentManager == 1  ? 
-        <>
-            <Modal
-                position={'bottom'}
-                withCloseButton={true}
-                closeOnClickOutside={false}
-                opened={opened}
-                onClose={close}
-                title="add students"
-                closeOnEscape={false}
-                size="calc(100vw - 80px)"
-                
-            >
-                <div className='add-students' >
-                    <div className='xlsx-method' >
-                        <UploadFile closeModel={close} />
-                    </div>
-                    <div className='byStudents'>
-                        <AddStudentForm closeModel={close} />
-                    </div>
-                </div>
+        isDepartmentManager == 1 ?
+            <>
+                <Modal
+                    position={'bottom'}
+                    withCloseButton={true}
+                    closeOnClickOutside={false}
+                    opened={opened}
+                    onClose={close}
+                    title="add students"
+                    closeOnEscape={false}
+                    size="calc(100vw - 80px)"
 
-
-                <Modal title='quick help' opened={helpOpened} onClose={helpClose} size="calc(80vw - 30rem)" overlayBlur={3}
-                    overlayOpacity={0.55}  >
-                    <div className='upload-help'   >
-                        <h3>make sure that the file .xlsx  is in the form bellow </h3>
-                        <div className='upload-help-img' >
-                            <img src={UploadHelp} alt="help image" />
+                >
+                    <div className='add-students' >
+                        <div className='xlsx-method' >
+                            <UploadFile closeModel={close} />
+                        </div>
+                        <div className='byStudents'>
+                            <AddStudentForm closeModel={close} />
                         </div>
                     </div>
-                    <Button color='teal' onClick={helpClose}    >
-                        i got it
-                    </Button>
+
+
+                    <Modal title='quick help' opened={helpOpened} onClose={helpClose} size="calc(80vw - 30rem)" overlayBlur={3}
+                        overlayOpacity={0.55}  >
+                        <div className='upload-help'   >
+                            <h3>make sure that the file .xlsx  is in the form bellow </h3>
+                            <div className='upload-help-img' >
+                                <img src={UploadHelp} alt="help image" />
+                            </div>
+                        </div>
+                        <Button color='teal' onClick={helpClose}    >
+                            i got it
+                        </Button>
+                    </Modal>
+
                 </Modal>
 
-            </Modal>
+                <div className='main-page-name'>
+                    <h1>
+                        <Tooltip label={FetchDepartmentInfo?.data.department_name?.name}>
+                            <Button color='teal' onClick={drawerOpen} >
+                                <IconArrowLeft size={20} />
+                            </Button>
+                        </Tooltip>
+                    </h1>
+                </div>
+                <div className='Student-managment'>
 
-            <div className='main-page-name'>
-                <h1>
-                    <Tooltip label={FetchDepartmentInfo?.data.department_name?.name}>
-                        <Button color='teal' onClick={drawerOpen} >
-                            <IconArrowLeft size={20} />
-                        </Button>
-                    </Tooltip>
-                </h1>
-            </div>
-            <div className='Student-managment'>
+                    <Drawer
+                        opened={DrawerOpened}
+                        onClose={drawerClose}
+                        overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+                        overlayOpacity={0.3}
+                        overlayBlur={3}
+                        position='right'
+                        size="xl"
+                    >
+                        <div className='Student-managment-nav'>
+                            <List
+                                spacing="xs"
+                                size="md"
 
-                <Drawer
-                    opened={DrawerOpened}
-                    onClose={drawerClose}
-                    overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
-                    overlayOpacity={0.3}
-                    overlayBlur={3}
-                    position='right'
-                    size="xl"
-                >
-                    <div className='Student-managment-nav'>
-                        <List
-                            spacing="xs"
-                            size="md"
+                                icon={
+                                    <ThemeIcon color="teal" size={30} >
+                                        <IconPaperclip size={20} />
+                                    </ThemeIcon>
+                                }
+                                className="team-section-nav"
+                            >
+                                {/* // ! fetch this links depend the chef department */}
+                                {specialties_list}
+                            </List>
+                        </div>
 
-                            icon={
-                                <ThemeIcon color="teal" size={30} >
-                                    <IconPaperclip size={20} />
-                                </ThemeIcon>
-                            }
-                            className="team-section-nav"
-                        >
-                            {/* // ! fetch this links depend the chef department */}
-                            {specialties_list}
-                        </List>
+                    </Drawer>
+
+
+
+                    <div className='Student-managment-menu'  >
+                        <div className='specialtyName' > <h3> {_selectedSpeciality?.fullname}</h3> </div>
+
+                        <Outlet />
+                        <Tooltip label="add students">
+                            <Button color='teal' onClick={() => { open(); helpOpen() }}   >
+                                <IconPlus size={20} />
+                            </Button>
+                        </Tooltip>
                     </div>
 
-                </Drawer>
 
 
-
-                <div className='Student-managment-menu'  >
-                    <div className='specialtyName' > <h3> {_selectedSpeciality?.fullname}</h3> </div>
-
-                    <Outlet />
-                    <Tooltip label="add students">
-                        <Button color='teal' onClick={() => { open(); helpOpen() }}   >
-                            <IconPlus size={20} />
-                        </Button>
-                    </Tooltip>
                 </div>
 
 
-
-            </div>
-
-
-        </> :  <Navigate  to='/teacher' />
+            </> : <Navigate to='/teacher' />
     )
 }
 

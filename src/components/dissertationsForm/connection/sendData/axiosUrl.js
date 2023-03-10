@@ -1,6 +1,5 @@
-import axois from "axios";
-
-export const sendChoice =(sendedSata)=>{
-    // return axois.post("apiAddress", sendeData)
+import axiosClient  from "../../../../axois-client" 
+export const sendChoice =(payload)=>{
+    return axiosClient.post("/student/updateListOfThemeChooses", payload) ; 
 }
 

@@ -22,6 +22,9 @@ const teacherContext = createContext({
     setTeamSelected: () => { },
     isDepartmentManager: null,
     setIsDepartmenManager: () => { },
+    isSpecialtyManager :  null ,  
+    setIsSpecialtyManager:()=>{}, 
+
     selectedSpeciality: null,
     setSelectedSpeciality: () => { },
     selectedSpeciality_id: null,
@@ -37,9 +40,10 @@ export const TeacherContextProvider = ({ children }) => {
     const [roomName, setRoomName] = useState(null)
     const [roomId, setRoomId] = useState(null)
     const [isDepartmentManager, setIsDepartmentManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).department_manager :  0  )
-    const [teamSelected, setTeamSelected] = useState();
+    const [teamSelected, setTeamSelected] = useState(null);
     const [selectedSpeciality, setSelectedSpeciality] = useState()
     const [selectedSpeciality_id, setSelectedSpeciality_id] = useState()
+    const  [isSpecialtyManager, setIsSpecialtyManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).specialty_manager :  0)
 
     // !! decode the special information from the token and check the token if is hase role teacher !! 
 
@@ -51,14 +55,16 @@ export const TeacherContextProvider = ({ children }) => {
                 _setTeacherToken(token)
                 jwt_decode(token)
                 console.log(decodedToken)
-            
 
             } else {
                 Cookies.remove('token');
                 return <Navigate to='/' />
             }
-            if (decodedToken.department_manager) {
+            if (decodedToken.department_manager == 1 ) {
                 setIsDepartmentManager(true);
+            }
+            if(decodedToken.specialty_manager){
+                setIsSpecialtyManager(true)
             }
 
 
@@ -67,7 +73,8 @@ export const TeacherContextProvider = ({ children }) => {
     return (<teacherContext.Provider value={
         {
             teacher, setTeacher, teacherToken, setTeacherToken, setRoomDiscription, setRoomName, setRoomId, roomDiscription, roomName, roomId,setIsInTeam , isInTeam , 
-            teamSelected, setTeamSelected, isDepartmentManager, setIsDepartmentManager, setSelectedSpeciality, selectedSpeciality, selectedSpeciality_id, setSelectedSpeciality_id
+            teamSelected, setTeamSelected, isDepartmentManager, setIsDepartmentManager, setSelectedSpeciality, selectedSpeciality, selectedSpeciality_id, setSelectedSpeciality_id, 
+            isSpecialtyManager, setIsSpecialtyManager
         }
     }> {children} </teacherContext.Provider>)
 }

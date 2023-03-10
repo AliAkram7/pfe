@@ -15,6 +15,7 @@ import {
     IconListCheck,
     IconBrandTelegram,
     IconBulb,
+    IconSchool,
 } from '@tabler/icons';
 import { Await, Link } from 'react-router-dom';
 import { useStudentContext } from '../../../contexts/studentContext';
@@ -140,7 +141,7 @@ export function SideBarTeacher(props) {
 
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
-    const { teacher, isDepartmentManager, isInTeam } = useTeacherContext()
+    const { teacher, isDepartmentManager, isInTeam , isSpecialtyManager} = useTeacherContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
     // const [opened, {toggle}] = useDisclosure(false);
@@ -154,6 +155,7 @@ export function SideBarTeacher(props) {
         {label : 'suggestion_theme', icon : IconBulb  }, 
         isDepartmentManager == 1 ? { label: 'students_management', icon: IconListCheck } : { label: '', icon: IconGauge },
         isInTeam ==true ? { label: 'teams-section', icon: IconPuzzle2 } : { label: '', icon: IconGauge },
+        isSpecialtyManager == 1 ? { label: 'themes_management', icon: IconSchool } : { label: '', icon: IconGauge },
     ]
 
     // debugger

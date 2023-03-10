@@ -1,8 +1,8 @@
-import axois from "axios";
+import axiosClient from "../../../../axois-client";
 
 
 // ! receive a table of theme
-export const fetchTheme =()=>{
-    // return axois.get("apiAddress")
+export const fetchTheme = () => {
+    return axiosClient.get('/student/fetchThemePublished') ; 
 }
 

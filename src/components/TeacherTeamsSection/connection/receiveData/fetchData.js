@@ -6,6 +6,8 @@ export const useGetTeamsInformation =(onSuccess, onError)=>{
         onSuccess, 
         onError,
         // refetchInterval: 1000, 
+        retry : false , 
+        
     },
     )
 }
