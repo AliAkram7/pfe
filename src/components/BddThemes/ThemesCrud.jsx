@@ -282,7 +282,7 @@ export function ThemeCrud(props) {
                         ) : (
                             <tr>
                                 <td >
-                                    <Text weight={500} align="center">
+                                    <Text weight={500} align="center"  >
                                         Nothing found
                                     </Text>
                                 </td>

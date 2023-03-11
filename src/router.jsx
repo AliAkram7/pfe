@@ -34,6 +34,8 @@ import { SuggestionTheme } from "./components/SuggestionTheme/SuggestionForm";
 import ThemeManagement from "./components/BddThemes/themesManagement";
 import { Children } from "react";
 import { ThemeCrud } from "./components/BddThemes/ThemesCrud";
+import RankManagement from "./components/bddStudentRank/rankManagement";
+import { RankCrud } from "./components/bddStudentRank/rankCrud";
 
 
 
@@ -148,6 +150,14 @@ const router = createBrowserRouter([
                         children:[{
                             index:true , 
                             element: <ThemeCrud/>
+                        }]
+                    },
+                    {
+                        path: 'rank_management',
+                        element: <RankManagement/>, 
+                        children:[{
+                            index:true , 
+                            element: <RankCrud />
                         }]
                     }, 
                     {

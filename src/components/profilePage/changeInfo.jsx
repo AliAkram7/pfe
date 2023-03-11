@@ -11,6 +11,7 @@ import { useStudentContext } from '../../contexts/studentContext';
 import axiosClient from '../../axois-client';
 import { useStateContext } from '../../contexts/ContextProvider';
 import jwt_decode from 'jwt-decode';
+import { useForm } from '@mantine/form';
 
 function ChangeInfo(props) {
 
@@ -25,6 +26,27 @@ function ChangeInfo(props) {
     newPassword: "",
     confirm: "",
   };
+  
+  const update = useForm({
+    initialValues: {
+      email: student?.email,
+      tel: student?.tel,
+      prPassword: "",
+      newPassword: "",
+      confirm: ""
+    },
+
+    validate: {
+      code: (value) => (value.length == 0 ? 'email is required !' : null),
+      password: (value) => (value.length < 8 ? 'password is required !' : null),
+
+    },
+  });
+
+
+
+
+
   const validationSchema = Yup.object({
     email: Yup.string().email("invalid email format !"),
     // TODO make the password validation require number and small case
@@ -60,14 +82,6 @@ function ChangeInfo(props) {
     tel: Yup.string()
       .phone("DZ", "Please enter a valid phone number")
       .required("A phone number is required"),
-
-    // prPassword: Yup.string()
-    //   .required("Please Enter your password")
-    //   .min(
-    //     8,
-    //     "password must contain 8 or more characters with at least one of each: lowercase , number "
-    //   )
-    //   .max(16, "password more long than its alowd [8-16] "),
 
     newPassword: Yup.string().required('change password is required !')
       .matches(
@@ -117,7 +131,7 @@ function ChangeInfo(props) {
     if (sendData.prPassword && (sendData.email || sendData.newPassword || sendData.tel)) {
       updateInfo(sendData)
     }
-    else if( firstLogin && sendData.newPassword &&  sendData.email && sendData.newPassword && sendData.tel){
+    else if (firstLogin && sendData.newPassword && sendData.email && sendData.newPassword && sendData.tel) {
       updateInfo(sendData)
     }
 
@@ -128,8 +142,8 @@ function ChangeInfo(props) {
 
   useEffect(() => {
 
-    if (isSuccess && firstLogin ) {
-      
+    if (isSuccess && firstLogin) {
+
       axiosClient.post("/student/refreshToken")
         .then(({ data }) => {
           if (data.token) {
@@ -167,8 +181,8 @@ function ChangeInfo(props) {
         overlayOpacity={0.3}
         overlayColor="whitesmoke"
       />
-      <h6>- strong password required. Enter 8-16 characters, Do not include common words or names, Combine uppercase letters, lowercase letters and numbers <br /> <br />
-      </h6>
+      <h3>- strong password required. Enter 8-16 characters, Do not include common words or names, Combine uppercase letters, lowercase letters and numbers <br /> <br />
+      </h3>
       <Formik
         initialValues={initialValues}
         validationSchema={!firstLogin ? validationSchema : notLoggedValidationSchema}
@@ -191,14 +205,14 @@ function ChangeInfo(props) {
                   name='tel'
                 />
 
-                {firstLogin == false ? 
-                <FormikControl
-                  control='input'
-                  type='password'
-                  label='previos password'
-                  name='prPassword'
-                /> :  null 
-              }
+                {firstLogin == false ?
+                  <FormikControl
+                    control='input'
+                    type='password'
+                    label='previos password'
+                    name='prPassword'
+                  /> : null
+                }
 
                 <FormikControl
                   control='input'
@@ -212,10 +226,10 @@ function ChangeInfo(props) {
                   label='confirm '
                   name='confirm'
                 />
-                <Button color='teal'  size='lg'
+                <Button color='teal' size='lg'
                   type='submit'
                   className='SubmitBtn'
-                disabled={!Formik.isValid}
+                  disabled={!Formik.isValid}
                 // onClick={() => {onSubmit}
                 // }
 

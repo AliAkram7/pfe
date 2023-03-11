@@ -16,6 +16,8 @@ import {
     IconBrandTelegram,
     IconBulb,
     IconSchool,
+    IconMilitaryRank,
+    IconChartArrowsVertical,
 } from '@tabler/icons';
 import { Await, Link } from 'react-router-dom';
 import { useStudentContext } from '../../../contexts/studentContext';
@@ -156,6 +158,7 @@ export function SideBarTeacher(props) {
         isDepartmentManager == 1 ? { label: 'students_management', icon: IconListCheck } : { label: '', icon: IconGauge },
         isInTeam ==true ? { label: 'teams-section', icon: IconPuzzle2 } : { label: '', icon: IconGauge },
         isSpecialtyManager == 1 ? { label: 'themes_management', icon: IconSchool } : { label: '', icon: IconGauge },
+        isSpecialtyManager == 1 ? { label: 'rank_management', icon: IconChartArrowsVertical } : { label: '', icon: IconGauge },
     ]
 
     // debugger

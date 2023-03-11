@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Paper, Title, Button } from "@mantine/core";
+import { Paper, Title, Button, TextInput, PasswordInput, SimpleGrid } from "@mantine/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import FormikControl from "../FormControl/FormikControl";
@@ -12,10 +12,11 @@ import { completeNavigationProgress, startNavigationProgress } from "@mantine/np
 import { axiosClient } from "../../axois-client";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { showNotification } from "@mantine/notifications";
-import { IconArrowBack, IconArrowLeft, IconX } from "@tabler/icons";
+import { IconArrowBack, IconArrowLeft, IconAt, IconLock, IconX } from "@tabler/icons";
 import { useStudentContext } from "../../contexts/studentContext";
 import { useQueryClient } from "react-query";
 import jwt_decode from 'jwt-decode';
+import { isNotEmpty, useForm } from "@mantine/form";
 function Login() {
 
   const navigate = useNavigate()
@@ -36,24 +37,14 @@ function Login() {
 
 
 
-
-
-  const initialValues = {
-    code: "",
-    password: "",
-  };
-
-  const validationSchema = Yup.object({
-    code: Yup.string().required("Please enter your code ").min(8, 'code is invalide'),
-    password: Yup.string()
-      .required("Please enter your password")
-      .min(
-        8,
-        "password must contain 8 or more characters with at least one of each: lowercase , number "
-      )
-      .max(256, "password more long than its alowd [8-256] "),
+  const form = useForm({
+    initialValues: {code: "",password: ""},
+    validate: {
+      code: (value) => (value.length == 0 ? 'email is required !' : null),
+      password: (value) => (value.length < 8 ? 'password is required !' : null),
+    
+    },
   });
-
 
   const { setToken, role, setUser } = useStateContext()
 
@@ -63,22 +54,21 @@ function Login() {
 
   const queryClient = useQueryClient()
 
-  const onSubmit = (value) => {
+  const handleSubmit = (values) => {
 
     const payload = {
-      code: value.code,
-      password: value.password
-      
+      code: values.code,
+      password: values.password
     }
 
-
+    
 
     if (role === 'student') {
       axiosClient.post('/student/login', payload)
         .then(({ data }) => {
           setToken(data.token)
           setUser(data.user);
-          const decodedToken = jwt_decode(data.token);  
+          const decodedToken = jwt_decode(data.token);
           console.log(decodedToken)
           queryClient.invalidateQueries('fetchStudentData')
           queryClient.invalidateQueries('getStudentTeamInformation')
@@ -99,35 +89,30 @@ function Login() {
         })
 
     }
-     else if (role === 'teacher') {
+    else if (role === 'teacher') {
       axiosClient.post('/teacher/login', payload)
-      .then(({ data }) => {
-        setToken(data.token)
-        setUser(data.user)
-        // console.log(data)
-        return <Navigate to='/teacher' />
-      }).catch((err) => {
-        const response = err.response;
-        if (response && response.status === 422 || response.status === 401) {
-          showNotification({
-            title: `${response.data.message}`, message: `code or password is incorrect `, color: 'red',
-            autoClose: true,
-            disallowClose: true,
+        .then(({ data }) => {
+          setToken(data.token)
+          setUser(data.user)
+          // console.log(data)
+          return <Navigate to='/teacher' />
+        }).catch((err) => {
+          const response = err.response;
+          if (response && response.status === 422 || response.status === 401) {
+            showNotification({
+              title: `${response.data.message}`, message: `code or password is incorrect `, color: 'red',
+              autoClose: true,
+              disallowClose: true,
 
-            icon: <IconX size={20} />
+              icon: <IconX size={20} />
+            }
+            );
           }
-          );
-        }
-      })
+        })
     }
-    // } else if (role === 'admin') {
+    // // } else if (role === 'admin') {
 
-    // }
-
-
-
-
-
+    // // }
   }
 
   return (
@@ -139,44 +124,45 @@ function Login() {
 
         </Title>
 
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
+        <div className='box'>
 
-        >
-          {(Formik) => {
-            return (
-              <div className='box'>
-                <Form>
-                  <FormikControl
-                    control='input'
-                    type='text'
-                    label='code'
-                    name='code'
-                  />
-                  <FormikControl
-                    control='input'
-                    type='password'
-                    label='password'
-                    name='password'
-                  />
-                  <Button  color='teal' size='lg'
-                    type='submit'
-                    className='SubmitBtn'
-                    disabled={!Formik.isValid}
-                  >
-                    login
-                  </Button>
-                </Form>
-              </div>
-            );
-          }}
-        </Formik>
+          <form  onSubmit={form.onSubmit(handleSubmit)} >
 
 
-        <Button fullWidth mt="xl" size="lg" className="back-btn" variant="outline" color='teal'   >
-          <Link to='/' ><IconArrowLeft size={15}   /> back to home  </Link>
+            <SimpleGrid spacing={20} >
+
+         
+              <TextInput 
+              label='code or email'
+               placeholder="code or email" 
+              size='md' 
+              icon={<IconAt size="1rem" />} 
+              {...form.getInputProps('code')} 
+              />
+               <PasswordInput
+              label='password'
+               placeholder="your password" 
+              size='md' 
+              icon={<IconLock size="1rem" />}
+              {...form.getInputProps('password')} 
+              />
+           
+              <Button color='teal' size='md'
+                type='submit'
+              >
+                login
+              </Button>
+            </SimpleGrid>
+
+
+          </form>
+        </div>
+
+
+
+
+        <Button fullWidth mt="xl" size="sm" className="back-btn" variant="outline" color='teal'   >
+          <Link to='/' ><IconArrowLeft size={15} /> back to home  </Link>
         </Button>
 
 

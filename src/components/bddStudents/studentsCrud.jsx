@@ -192,16 +192,14 @@ export function StudentsCrud() {
 
 
   function RenderUpdateRow(props) {
-
-
     const [name, setName] = useState(props.row.name)
     const [code, setCode] = useState(props.row.code)
     const [default_password, setDefault_password] = useState(props.row.default_password)
     const default_value = { name: props.row.name, code: props.row.code, default_password: props.row.default_password }
-
-
     const { mutate: updateStudent } = useUpdateStudent()
     const queryClient = useQueryClient() ;
+
+    
     const onUpdate = () => {
       let payload = {}
 
@@ -216,8 +214,6 @@ export function StudentsCrud() {
       if (default_password !== props.row.default_password) {
         payload = { ...payload, default_password: default_password }
       }
-
-
       if (payload.name || payload.updated_code || payload.default_password) {
         payload = { ...payload, code: Number(props.row.code) }
         updateStudent(payload)
@@ -227,9 +223,7 @@ export function StudentsCrud() {
 
     }
 
-
     return (<>
-
       <td><Input type='text' value={code} onChange={(e) => { setCode(e.target.value) }}     ></Input >
         <Button value='save' variant='outline' color='teal' onClick={() => { setCode(default_value.code) }}   >reset</Button>
       </td>

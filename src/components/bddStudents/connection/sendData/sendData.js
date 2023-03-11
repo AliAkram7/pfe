@@ -35,7 +35,6 @@ export const useAddStudent = () => {
             })
         },  
         onSuccess:()=>{
-            console.log('file uploaded')
                 QueryClient.invalidateQueries('fetchStudentsData')
         }
     })

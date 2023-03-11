@@ -1,6 +1,6 @@
 import { Button, LoadingOverlay, Text, Tooltip, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconArrowLeft, IconBrandTelegram, IconClipboard } from '@tabler/icons'
+import { IconArrowLeft, IconBrandTelegram, IconClipboard, IconShare } from '@tabler/icons'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -88,7 +88,7 @@ function ThemeManagement() {
 
                         <Tooltip label="Provide access to themes for academic exploration">
                             <Button color='teal' onClick={handlePublish}   >
-                                <IconClipboard size={20} />
+                                <IconShare size={20} />
                             </Button>
                         </Tooltip>
                     </div>
