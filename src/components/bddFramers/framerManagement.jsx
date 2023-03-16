@@ -6,18 +6,21 @@ import { Navigate, Outlet } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useStateContext } from '../../contexts/ContextProvider'
 import { useTeacherContext } from '../../contexts/teacherContext'   
-import AddStudentForm from '../bddStudents/addStudentForm'
-import UploadFile from '../bddStudents/uploadfile'
+
 import { useFetchSpecialtyInformation } from '../BddThemes/connetion/fetchData'
 
 import './../bddStudents/StudentsManagement.css'
-import AddRankForm from './addRankForm'
+import AddFramerFrom from './addFramerForm'
+import { usePublishListOfFarmers } from './connection/connection'
+import { FramerCrud } from './framerCrud'
+// import AddRankForm from './addRankForm'
+// import { FramerCrud } from './framerCrud'
 // import {  } from './connetion/fetchData'
-import { RankCrud } from './rankCrud'
-import UploadRanks from './uploadRanks'
+// import { RankCrud } from './rankCrud'
+// import UploadRanks from './uploadRanks'
 
 
-function RankManagement() {
+function FramerManagement() {
 
 
     // ! fetch specialty information for Specialty manager 
@@ -26,7 +29,7 @@ function RankManagement() {
 
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
-    const { teacher, isSpecialtyManager } = useTeacherContext()
+    const { teacher, isSpecialtyManager, affectationMethod } = useTeacherContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
 
@@ -58,13 +61,15 @@ function RankManagement() {
 
 
 
-    // const { mutate: publishListOfTheme , isLoading : publishLoading,  } = usePublishListOfTheme();
+    const { mutate: publishListOfFramer , isLoading : publishLoading,  } = usePublishListOfFarmers();
 
-
+const handlePublishing=()=>{
+    publishListOfFramer() ; 
+}
 
 
     return (
-        isSpecialtyManager == true ?
+        isSpecialtyManager == true  &&  affectationMethod==2   ?
             <>
 
 <Transition mounted={opened} transition="fade" duration={500} timingFunction="ease">
@@ -82,11 +87,9 @@ function RankManagement() {
 
                 >
                     <div className='add-students' >
-                        <div className='xlsx-method' >
-                            <UploadRanks closeModel={close} />
-                        </div>
+           
                         <div className='byStudents'>
-                            <AddRankForm closeModel={close} />
+                            <AddFramerFrom closeModel={close} />
                         </div>
                     </div>
                     </Drawer>  }
@@ -103,18 +106,18 @@ function RankManagement() {
                     <div className='Student-managment-menu'  >
 
                         {specialtyInformation ?
-                            <div className='specialtyName' ><h3 style={{textTransform : 'capitalize'}} ><Text fz="lg" color='teal' >{specialtyInformation.fullname}</Text> list of ranking </h3> </div>
+                            <div className='specialtyName' ><h3 style={{textTransform : 'capitalize'}} ><Text fz="lg" color='teal' >{specialtyInformation.fullname}</Text> list of framer teacher </h3> </div>
                             : <h3>loading...</h3>
                         }
                         <Group spacing={20} >
-                        <RankCrud   />
-                        <Tooltip label="add student">
+                        <FramerCrud  publishLoading={publishLoading}  />
+                        <Tooltip label="add teacher framer">
                             <Button color='teal' onClick={open}   >
                                 <IconPlus size={20} />
                             </Button>
                         </Tooltip>
-                        <Tooltip label="publish the list of rankings for students">
-                            <Button color='teal'    >
+                        <Tooltip label="publish the list of framer for students">
+                            <Button color='teal'  onClick={handlePublishing}  >
                                 <IconShare size={20} />
                             </Button>
                         </Tooltip>
@@ -126,4 +129,4 @@ function RankManagement() {
     )
 }
 
-export default RankManagement ; 
+export default FramerManagement ; 

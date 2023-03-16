@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createStyles, Navbar, UnstyledButton, Tooltip, Title, ThemeIcon, Burger } from '@mantine/core';
+import { createStyles, Navbar, UnstyledButton, Tooltip, Title, ThemeIcon, Burger, Drawer } from '@mantine/core';
 import {
     IconHome2,
     IconGauge,
@@ -18,6 +18,7 @@ import {
     IconSchool,
     IconMilitaryRank,
     IconChartArrowsVertical,
+    IconListDetails,
 } from '@tabler/icons';
 import { Await, Link } from 'react-router-dom';
 import { useStudentContext } from '../../../contexts/studentContext';
@@ -105,7 +106,7 @@ const useStyles = createStyles((theme) => ({
         // padding: ` ${theme.spacing.lg}`,
         padding: ' 0 15px',
 
-        fontSize: theme.fontSizes.sm,
+        fontSize: theme.fontSizes.lg,
         marginRight: theme.spacing.md,
         fontWeight: 500,
         height: '44px',
@@ -140,15 +141,16 @@ export function SideBarTeacher(props) {
     const [active, setActive] = useState('Home');
     const [activeLink, setActiveLink] = useState('/student');
 
+        
 
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
-    const { teacher, isDepartmentManager, isInTeam , isSpecialtyManager} = useTeacherContext()
+    const { teacher, isDepartmentManager, isInTeam , isSpecialtyManager, affectationMethod} = useTeacherContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
-
+    const [opened , {open , close}] = useDisclosure()
     // const [opened, {toggle}] = useDisclosure(false);
     const mainLinksMockdata = [
-        { item: <Burger opened={!props.opened} onClick={props.toggle} size={20} />, label: '' },
+        { item: <Burger   opened={opened}  />, label: '' },
     ];
 
     
@@ -159,6 +161,10 @@ export function SideBarTeacher(props) {
         isInTeam ==true ? { label: 'teams-section', icon: IconPuzzle2 } : { label: '', icon: IconGauge },
         isSpecialtyManager == 1 ? { label: 'themes_management', icon: IconSchool } : { label: '', icon: IconGauge },
         isSpecialtyManager == 1 ? { label: 'rank_management', icon: IconChartArrowsVertical } : { label: '', icon: IconGauge },
+        isSpecialtyManager == 1 ? { label: 'teams_management', icon: IconListDetails } : { label: '', icon: IconGauge },
+        // TODO create framer_management section 
+        isSpecialtyManager == 1 && affectationMethod ==2  ? { label: 'framer_management', icon: IconListDetails } : { label: '', icon: IconGauge },
+        
     ]
 
     // debugger
@@ -168,11 +174,12 @@ export function SideBarTeacher(props) {
         <UnstyledButton
             // onClick={() => setActive(link.label)}
             className={cx(classes.mainLink, { [classes.mainLinkActive]: link.label === active })}
+            onClick={opened ? close : open} size={20}
         >
             {/* <link.icon size="1.4rem" stroke={1.5} /> */}
             {link.item}
         </UnstyledButton>
-
+        
     ));
 
     const links = linksMockdata.map((link) => (
@@ -197,7 +204,7 @@ export function SideBarTeacher(props) {
 
     return (
 
-        <Navbar height={"100vh"} width={!props.opened ? { sm: 260 } : { sm: 0 }} className={classes.Parentnavbar}     >
+        <Navbar height={"100vh"} width={{ sm: 0 }} className={classes.Parentnavbar}     >
             <Navbar.Section grow className={classes.wrapper}  >
                 <div className={classes.aside}>
                     <div className={classes.logo}>
@@ -205,12 +212,16 @@ export function SideBarTeacher(props) {
                     </div>
                     {mainLinks}
                 </div>
-                <div className={classes.mainLinks} style={props.opened ? { display: 'none' } : null}  >
+                <Drawer opened={opened}   onClose={close} withCloseButton={true}  
+                        zIndex={99999}
+                >
+                <div className={classes.mainLinks}  >
                     <Title order={4} className={classes.title}>
                         {active}
                     </Title>
                     {links}
                 </div>
+                </Drawer>
             </Navbar.Section>
         </Navbar>
     );

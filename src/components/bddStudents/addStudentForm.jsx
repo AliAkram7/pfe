@@ -1,4 +1,6 @@
-import { createStyles, LoadingOverlay } from '@mantine/core';
+import { Button, createStyles, Group, LoadingOverlay, SimpleGrid, TextInput } from '@mantine/core';
+import { isEmail, isNotEmpty, useForm,hasLength, matches } from '@mantine/form';
+
 import { Form, Formik } from 'formik';
 import React from 'react'
 import * as Yup from 'yup'
@@ -10,48 +12,71 @@ import { useAddStudent } from './connection/sendData/sendData';
 
 const useStyles = createStyles((theme) => ({
     outside: {
-      opacity: 0,
+        opacity: 0,
     },
 
     weekend: {
-      color: `${theme.colors.green[6]} !important`,
-    },
-  
-    selected: {
-      color: `${theme.white} !important`,
-      backgroundColor:`${theme.colors.green[6]} !important`
+        color: `${theme.colors.green[6]} !important`,
     },
 
-  }));
+    selected: {
+        color: `${theme.white} !important`,
+        backgroundColor: `${theme.colors.green[6]} !important`
+    },
+
+}));
 
 function AddStudentForm(props) {
     const { classes, cx } = useStyles();
 
 
 
-    const {mutate:addStudent} = useAddStudent()
-    const {selectedSpeciality} = useTeacherContext()
-    const initialValues = {
-        name: '',
-        code: '',
-    };
-    const validationSchema = Yup.object({
-        name: Yup.string().required("required !"),
-        code:  Yup.string().required('required !').matches(
-            /(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/,
-            "not valid"
-          ).min(8, 'code must be at least 8 digit')
-    });
-    const onSubmit = (value) => {
-            // console.log(value);
-        const payload ={ 
-            name:value.name, 
-            code :value.code, 
-            specialty_id : selectedSpeciality?.id
-        }
-          addStudent(payload) ; 
+    const { mutate: addStudent } = useAddStudent()
+    const { selectedSpeciality } = useTeacherContext()
 
-          props.closeModel()
+    function combineValidators(...validators) {
+        return (value) => {
+          for (let i = 0; i < validators.length; i += 1) {
+            const error = validators[i](value);
+            if (error) {
+              return error;
+            }
+          }
+          return null;
+        };
+      }
+
+    const form = useForm({
+
+        initialValues: {
+            name: '',
+            code: '',
+        },
+
+        validate: {
+            name: combineValidators(
+                hasLength({ min: 3, max: 26 }, 'Name must be 2-35 characters long'),
+                matches(/^[^0-9]*$/gm, 'Name should not contain numbers'),
+              ),
+            code:combineValidators(
+                hasLength({ min: 8, max: 12 }, 'code must be 8-12  long'),
+                matches(/[0-9]+$/gm, 'Name should contain at least one number', true),
+              ),
+        }
+
+
+    })
+
+    const onSubmit = (values) => {
+        // console.log(value);
+        const payload = {
+            name: values.name,
+            code: values.code,
+            specialty_id: selectedSpeciality?.id
+        }
+        addStudent(payload);
+
+        props.closeModel()
     };
 
 
@@ -65,44 +90,29 @@ function AddStudentForm(props) {
                 overlayColor="whitesmoke"
             />
 
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
-            >
-                {(Formik) => {
-                    return (
-                        <div className='box'>
-                            <Form>
-                                <FormikControl
-                                    control='input'
-                                    type='text'
-                                    label='full name'
-                                    name='name'
-                                />
-                          
-                                <FormikControl
-                                    control='input'
-                                    type='text'
-                                    label='code'
-                                    name='code'
-                                />
-                                <button
-                                    type='submit'
-                                    className='SubmitBtn'
-                                // disabled={!Formik.isValid}
 
-                                // onClick={() => {onSubmit}
-                                // }
+            <div className='box'>
+                <form onSubmit={form.onSubmit(onSubmit)}   >
+                    <SimpleGrid >
+                    <TextInput
+                        label='Full name of student'
+                        {...form.getInputProps('name')}
+                    />
 
-                                >
-                                    save
-                                </button>
-                            </Form>
-                        </div>
-                    );
-                }}
-            </Formik>
+                    <TextInput
+                        label='Code'
+                        {...form.getInputProps('code')}
+                    />
+
+                    <Button
+                        type='submit'
+                    >
+                        save
+                    </Button>
+                    </SimpleGrid>
+                </form>
+            </div>
+
         </>
     )
 }

@@ -9,7 +9,9 @@ const getRanking = () => {
 
 export const useGetRanking = () => {
     return useQuery('MSFetchRanking', getRanking, {
-        refetchOnWindowFocus:false , 
+        // refetchOnWindowFocus:false , 
+        refetchInterval: 30 * 1000,
+
     }
     )
 }

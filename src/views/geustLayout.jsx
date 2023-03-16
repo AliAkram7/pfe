@@ -15,11 +15,6 @@ function GeustLayout() {
         if(role === 'teacher'){
             return <Navigate to='/teacher'  />
         }
-
-
-        
-
-
     }
 
     return (<>

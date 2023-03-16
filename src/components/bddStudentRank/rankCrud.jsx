@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     createStyles,
     Table,
@@ -98,6 +98,114 @@ function sortData(
         payload.search
     );
 }
+
+function RenderUpdateRow(props) {
+
+    const [ms1, setMs1] = useState(props?.row?.ms1)
+
+    const [ms2, setMs2] = useState(props?.row?.ms2)
+
+    const [mgc, setMgc] = useState(props?.row?.mgc)
+
+    const [obs, setObs] = useState(props.row.observation)
+
+    const { mutate: updateRank } = useUpdateRank()
+    const queryClient = useQueryClient();
+    const onUpdate = () => {
+        let payload = { code: Number(props.row.code) }
+
+        props.row.Edit = "false"
+
+        if (ms1 !== props.row.ms1) {
+            payload = { ...payload, ms1: Number(ms1) }
+        }
+        if (ms2 !== props.row.ms2) {
+            payload = { ...payload, ms2: Number(ms2) }
+        }
+        if (mgc !== props.row.mgc) {
+            payload = { ...payload, mgc: Number(mgc) }
+        }
+        if (obs !== props.row.observation) {
+            payload = { ...payload, obs: Number(obs) }
+        }
+        if (payload.ms1 || payload.ms2 || payload.mgc || payload.obs) {
+
+            updateRank(payload)
+        }
+
+        console.log(payload)
+
+        queryClient.invalidateQueries('MSFetchRanking')
+
+    }
+
+    return (<>
+
+        <td><NumberInput
+
+            defaultValue={Number(obs)}
+            value={Number(obs)}
+
+        />
+        </td>
+        <td>< NumberInput
+            type='number'
+            defaultValue={Number(ms1)}
+            precision={2}
+            min={0}
+            step={0.01}
+            max={20}
+            stepHoldDelay={500}
+            stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+            value={ms1}
+            onChange={(value) => {
+                setMs1(value)
+            }
+            }
+        />
+
+        </td>
+        <td><NumberInput
+
+            defaultValue={Number(ms2)}
+            precision={2}
+            min={0}
+            step={0.01}
+            max={20}
+            stepHoldDelay={500}
+            stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+            onChange={(value) => {
+                setMs2(value)
+            } } 
+
+        />
+
+        </td>
+        <td>
+            <SimpleGrid cols={2}>
+                <NumberInput
+
+                    defaultValue={Number(mgc)}
+                    precision={2}
+                    min={0}
+                    step={0.01}
+                    max={20}
+                    stepHoldDelay={500}
+                    stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+                    onChange={(value) => {
+                        setMgc(value)
+                    } } 
+
+                />
+
+                <Button value='save' variant='filled' color='teal' onClick={onUpdate}   >save</Button></SimpleGrid>
+        </td>
+
+
+    </>)
+}
+
+
 export function RankCrud() {
 
 
@@ -110,40 +218,29 @@ export function RankCrud() {
     const [sortedData, setSortedData] = useState();
     const [contextSet, setContextSet] = useState(false)
 
-
     let data = [{}]; //* list of theme 
+
+
+    const mapData = () => {
+      return   data = data = getRanking?.data?.student_rank.map(obj => ({
+            code: obj.code,
+            student_name: obj.student_name,
+            ms1: String(obj.ms1),
+            ms2: String(obj.ms2),
+            mgc: String(obj.mgc),
+            observation: String(obj.observation),
+            Edit: 'false' ,
+        }));
+    };
+
+    const memoizedData = useMemo(() => {
+        return mapData();
+    }, [getRanking?.data]);
+
     useEffect(() => {
+        setSortedData(memoizedData);
+    }, [memoizedData]);
 
-        data = data = getRanking?.data?.student_rank.map(obj => ({
-            code: obj.code,
-            student_name: obj.student_name,
-            ms1: String(obj.ms1),
-            ms2: String(obj.ms2),
-            mgc: String(obj.mgc),
-            observation: String(obj.observation),
-            Edit: 'false'
-        }));
-
-        setSortedData(data)
-
-    }, [getRanking?.data?.student_rank])
-
-
-    if (getRanking && !contextSet) { //*  data complete fetching when 
-
-        data = data = getRanking?.data?.student_rank.map(obj => ({
-            code: obj.code,
-
-            student_name: obj.student_name,
-            ms1: String(obj.ms1),
-            ms2: String(obj.ms2),
-            mgc: String(obj.mgc),
-            observation: String(obj.observation),
-            Edit: 'false'
-        }));
-        setSortedData(data)
-        setContextSet(true)
-    }
 
 
     const [sortBy, setSortBy] = useState(null);
@@ -155,9 +252,9 @@ export function RankCrud() {
         setReverseSortDirection(reversed);
         setSortBy(field);
         data = data = getRanking?.data?.student_rank.map(obj => ({
-            code: obj.code,
+            code: String(obj.code),
 
-            student_name: obj.student_name,
+            student_name: String(obj.student_name),
             ms1: String(obj.ms1),
             ms2: String(obj.ms2),
             mgc: String(obj.mgc),
@@ -171,8 +268,8 @@ export function RankCrud() {
         const { value } = event.currentTarget;
         setSearch(value);
         data = data = getRanking?.data?.student_rank.map(obj => ({
-            code: obj.code,
-            student_name: obj.student_name,
+            code: String(obj.code),
+            student_name: String(obj.student_name),
             ms1: String(obj.ms1),
             ms2: String(obj.ms2),
             mgc: String(obj.mgc),
@@ -183,123 +280,13 @@ export function RankCrud() {
     };
 
 
-    function RenderUpdateRow(props) {
-
-        const [ms1, setMs1] = useState(props?.row?.ms1)
-
-        const [ms2, setMs2] = useState(props?.row?.ms2)
-
-        const [mgc, setMgc] = useState(props?.row?.mgc)
-
-        const [obs, setObs] = useState(props.row.observation)
-
-        const default_value = { ms1: props.row.ms1, ms2: props.row.ms2, mgc: props.row.mgc, obs: props.row.observation }
-
-
-        const { mutate: updateRank } = useUpdateRank()
-        const queryClient = useQueryClient();
-        const onUpdate = () => {
-            let payload = { code: Number(props.row.code) }
-
-            props.row.Edit = 'false'
-
-            if (ms1 !== props.row.ms1) {
-                payload = { ...payload, ms1: Number(ms1) }
-            }
-            if (ms2 !== props.row.ms2) {
-                payload = { ...payload, ms2: Number(ms2) }
-            }
-            if (mgc !== props.row.mgc) {
-                payload = { ...payload, mgc: Number(mgc) }
-            }
-            if (obs !== props.row.observation) {
-                payload = { ...payload, obs: Number(obs) }
-            }
-            if (payload.ms1 || payload.ms2 || payload.mgc || payload.obs) {
-
-                updateRank(payload)
-            }
-
-            console.log(payload)
-
-            queryClient.invalidateQueries('MSFetchRanking')
-
-        }
-
-        return (<>
-
-            <td><NumberInput
-
-                defaultValue={Number(obs)}
-                value={Number(obs)}
-
-            />
-            </td>
-            <td>< NumberInput
-                type='number'
-                defaultValue={Number(ms1)}
-                precision={2}
-                min={0}
-                step={0.01}
-                max={20}
-                stepHoldDelay={500}
-                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
-                value={ms1}
-                onChange={(value) => {
-                    setMs1(value)
-                }
-                }
-            />
-
-            </td>
-            <td><NumberInput
-
-                defaultValue={Number(ms2)}
-                precision={2}
-                min={0}
-                step={0.01}
-                max={20}
-                stepHoldDelay={500}
-                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
-                onChange={(value) => {
-                    setMs2(value)
-                } } 
-
-            />
-
-            </td>
-            <td>
-                <SimpleGrid cols={2}>
-                    <NumberInput
-
-                        defaultValue={Number(mgc)}
-                        precision={2}
-                        min={0}
-                        step={0.01}
-                        max={20}
-                        stepHoldDelay={500}
-                        stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
-                        onChange={(value) => {
-                            setMgc(value)
-                        } } 
-
-                    />
-
-                    <Button value='save' variant='filled' color='teal' onClick={onUpdate}   >save</Button></SimpleGrid>
-            </td>
-
-
-        </>)
-    }
 
     const rows = sortedData?.map((row) => {
         const k = Math.random();
-        const setEdit = () => {
-            row.Edit = 'true'
-        }
+   
         return (<>
             <tr key={k}>
-                <td  ><RankOption row={row} setEdit={setEdit} /></td>
+                <td  ><RankOption row={row} setEdit={row.setEdit} /></td>
                 <td>{row.student_name}</td>
 
                 {row.Edit === 'false' ?
@@ -340,21 +327,26 @@ export function RankCrud() {
                             reversed={reverseSortDirection}
                             onSort={() => setSorting('student_name')}
                             children='name'
-                        /><Th sorted={sortBy === 'observation'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('observation')}
+                        /><Th 
+                        // sorted={sortBy === 'observation'}
+                        //         reversed={reverseSortDirection}
+                        //         onSort={() => setSorting('observation')}
                                 children='Observation'
-                            /><Th sorted={sortBy === 'ms1'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('ms1')}
+                            /><Th
+                            //  sorted={sortBy === 'ms1'}
+                                // reversed={reverseSortDirection}
+
+                                // onSort={() => setSorting('ms1')}
                                 children='MS1'
-                            /><Th sorted={sortBy === 'ms2'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('ms2')}
+                            /><Th 
+                            // sorted={sortBy === 'ms2'}
+                            //     reversed={reverseSortDirection}
+                            //     onSort={() => setSorting('ms2')}
                                 children='MS2'
-                            /><Th sorted={sortBy === 'mgc'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('mgc')}
+                            /><Th 
+                            // sorted={sortBy === 'mgc'}
+                            //     reversed={reverseSortDirection}
+                            //     onSort={() => setSorting('mgc')}
                                 children='MGC'
                             /></tr>
                     </thead>

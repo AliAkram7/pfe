@@ -8,17 +8,17 @@
 }
 
 
-.header-main {
+/* .header-main {
     position: fixed;
     right: 0;
     bottom: 0;
-    width: 75%;
+    width: 96.8% ; 
     height: 100%;
     overflow: scroll;
     /* padding: 10px; */
-    transition: all 0.2s;
-}
-
+    /* transition: all 0.2s; */
+/* }
+ */ 
 
 
 
@@ -37,6 +37,7 @@ header {
     width: 100%;
 
 }
+
 
 .profile-navbar {
     position: relative;

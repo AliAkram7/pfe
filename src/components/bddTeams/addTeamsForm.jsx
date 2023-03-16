@@ -1,4 +1,4 @@
-import { Button, createStyles, LoadingOverlay, NumberInput, Select, SimpleGrid, TextInput } from '@mantine/core';
+import { Button, createStyles, Group, LoadingOverlay, NumberInput, Select, SimpleGrid, TextInput } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react'
@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import "yup-phone-lite";
 import { useTeacherContext } from '../../contexts/teacherContext';
 import FormikControl from '../FormControl/FormikControl';
-import { useAddRankStudent, useGetStudentsWithoutRank } from './connection/connection';
+
 
 const useStyles = createStyles((theme) => ({
     outside: {
@@ -24,16 +24,16 @@ const useStyles = createStyles((theme) => ({
 
 }));
 
-function AddRankForm(props) {
+function AddTeamsForm(props) {
     const { classes, cx } = useStyles();
 
-    const { mutate: addRank , isLoading :addIsLoading } = useAddRankStudent()
+    // const { mutate: addRank , isLoading :addIsLoading } = useAddRankStudent()
 
-    const { data: getStudentWithoutRank, isLoading } = useGetStudentsWithoutRank()
+    // const { data: getStudentWithoutRank, isLoading } = useGetStudentsWithoutRank()
 
     const [selectedData, setSelectedData] = useState([])
 
-    console.log(getStudentWithoutRank?.data?.student_without_rank)
+    // console.log(getStudentWithoutRank?.data?.student_without_rank)
 
     useEffect(() => {
 
@@ -102,32 +102,18 @@ function AddRankForm(props) {
         <>
 
             <LoadingOverlay
-                visible={addIsLoading}
+                // visible={addIsLoading}
                 overlayBlur={1}
                 loaderProps={{ size: 'md', color: 'gold' }}
                 overlayOpacity={0.3}
                 overlayColor="whitesmoke"
             />
             <form onSubmit={form.onSubmit(handleSubmit)} >
-                <SimpleGrid cols={1} >
-                    {getStudentWithoutRank?.data?.student_without_rank.length > 0 ?
+                <SimpleGrid    >
+                    <SimpleGrid cols={2} >
                         <Select
-                            data={getStudentWithoutRank?.data?.student_without_rank}
-                            allowDeselect={true}
-                            label='note for'
-                            {...form.getInputProps('code')}
-                            searchable
-                        /> : <Select
-                                    placeholder='no student found !'
-                                data={[]}
-                                // allowDeselect={true}
-                                label='note for'
-                                searchable
-                            />
-                        }
-                    <SimpleGrid cols={3} >
-                        <NumberInput
-                            label="ms1"
+                            data={[]}
+                            label="member 1"
                             defaultValue={0.00}
                             precision={2}
                             min={0}
@@ -135,19 +121,10 @@ function AddRankForm(props) {
                             max={20}
                             stepHoldDelay={500}
                             stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
-                            {...form.getInputProps('ms1')}
-                        />   <NumberInput
-                            label="ms2"
-                            defaultValue={0.00}
-                            precision={2}
-                            min={0}
-                            step={0.01}
-                            max={20}
-                            stepHoldDelay={500}
-                            stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
-                            {...form.getInputProps('ms2')}
-                        /><NumberInput
-                            label="mgc"
+                            {...form.getInputProps('mgc')}
+                        /><Select
+                            data={[]}
+                            label="member 2"
                             defaultValue={0.00}
                             precision={2}
                             min={0}
@@ -157,11 +134,14 @@ function AddRankForm(props) {
                             stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
                             {...form.getInputProps('mgc')}
                         />
-
+                        <Select data={[{ label: 'accept/s1', value: 1 }, { label: 'dette', value: 2 }]} label='teacher supervisor'
+                            {...form.getInputProps('obs')}
+                        ></Select>
+                        <Select data={[{ label: 'accept/s1', value: 1 }, { label: 'dette', value: 2 }]} label='theme'
+                            {...form.getInputProps('obs')}
+                        ></Select>
                     </SimpleGrid>
-                    <Select data={[{ label: 'accept/s1', value: 1 }, { label: 'dette', value: 2 }]} label='observation'
-                        {...form.getInputProps('obs')}
-                    ></Select>
+
                     <Button type='onsubmit' >save</Button>
                 </SimpleGrid>
             </form>
@@ -169,4 +149,4 @@ function AddRankForm(props) {
     )
 }
 
-export default AddRankForm
+export default AddTeamsForm

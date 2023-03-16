@@ -10,11 +10,19 @@
     position: fixed;
     right: 0;
     bottom: 0;
-    width: 85%;
+    width: 96.8% ; 
     height: 100%;
-    /* overflow: scroll; */
-    /* transition: all 0.2s; */
+    overflow: scroll; 
+     transition: all 0.2s;
 }
+
+ @media only screen and (max-width:456px) and (min-width:200px) {
+    .header-main {  
+    width: 93% ; 
+    }
+}
+
+
 
 
 
@@ -86,7 +94,7 @@ header {
 
 .ProfileUniv-name {
     font-weight: 600;
-    font-size: .9em;
+    font-size: .8em;
     color: #FFFFFF;
 }
 

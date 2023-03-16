@@ -5,6 +5,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useStateContext } from '../../contexts/ContextProvider'
+import { useStudentContext } from '../../contexts/studentContext'
 import UserAvatar from '../avatar/avatar'
 // import { usefetchStudentData } from '../profilePage/connection/receiveData/fetchData'
 import { useGetStudentTeamInformation } from './connection/receiveData/fetchData'
@@ -15,7 +16,7 @@ import CreateNewRoomForm from './createNewRoomForm'
 
 function TeamInfo() {
 
-
+    const {affMethod} =useStudentContext()
 
     const { data: getStudentTeamInformation } = useGetStudentTeamInformation()
 
@@ -76,7 +77,8 @@ function TeamInfo() {
                         }
                         className="team-section-nav"
                     >
-                        <List.Item><Link to='select_theme'  >themes list</Link></List.Item>
+                      { affMethod != 2 ? <List.Item><Link to='select_theme'  >themes list</Link></List.Item>
+                       :  <List.Item><Link to='select_theme'  >Framer list</Link></List.Item>}
                         <List.Item><Link to='' >rooms</Link></List.Item>
 
                         <List

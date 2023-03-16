@@ -11,6 +11,8 @@ const fetchSpecialtyInformation = () => {
 
 export const useFetchSpecialtyInformation = () => {
     return useQuery('fetchSpecialtyInformation', fetchSpecialtyInformation, {
+        refetchInterval: 30 * 1000,
+
     }
     )
 }
@@ -21,7 +23,7 @@ const fetchListTheme = () => {
 }
 export const userFetchListTheme = () => {
     return useQuery('fetchListOfTheme', fetchListTheme, {
-        // refetchInterval: 30 * 1000,
+        refetchInterval: 30 * 1000,
         // refetchOnWindowFocus: false,
         // cacheTime: 1000 
     })

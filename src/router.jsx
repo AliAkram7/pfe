@@ -36,6 +36,8 @@ import { Children } from "react";
 import { ThemeCrud } from "./components/BddThemes/ThemesCrud";
 import RankManagement from "./components/bddStudentRank/rankManagement";
 import { RankCrud } from "./components/bddStudentRank/rankCrud";
+import TeamsManagement from "./components/bddTeams/teamsManagement";
+import FramerManagement from "./components/bddFramers/framerManagement";
 
 
 
@@ -159,6 +161,14 @@ const router = createBrowserRouter([
                             index:true , 
                             element: <RankCrud />
                         }]
+                    }, 
+                    {
+                        path: 'teams_management',
+                        element: <TeamsManagement/>, 
+                    }, 
+                    {
+                        path: 'framer_management',
+                        element: <FramerManagement/>, 
                     }, 
                     {
                         path: 'teams-section',

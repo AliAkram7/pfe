@@ -22,13 +22,18 @@ const teacherContext = createContext({
     setTeamSelected: () => { },
     isDepartmentManager: null,
     setIsDepartmenManager: () => { },
-    isSpecialtyManager :  null ,  
-    setIsSpecialtyManager:()=>{}, 
+    isSpecialtyManager: null,
+    setIsSpecialtyManager: () => { },
 
     selectedSpeciality: null,
     setSelectedSpeciality: () => { },
     selectedSpeciality_id: null,
-    setSelectedSpeciality_id: () => { }
+    setSelectedSpeciality_id: () => { },
+
+    affectationMethod: null,
+    setAffectationMethod: () => { }
+
+
 
 })
 
@@ -39,17 +44,17 @@ export const TeacherContextProvider = ({ children }) => {
     const [roomDiscription, setRoomDiscription] = useState(null)
     const [roomName, setRoomName] = useState(null)
     const [roomId, setRoomId] = useState(null)
-    const [isDepartmentManager, setIsDepartmentManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).department_manager :  0  )
+    const [isDepartmentManager, setIsDepartmentManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).department_manager : 0)
     const [teamSelected, setTeamSelected] = useState(null);
     const [selectedSpeciality, setSelectedSpeciality] = useState()
     const [selectedSpeciality_id, setSelectedSpeciality_id] = useState()
-    const  [isSpecialtyManager, setIsSpecialtyManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).specialty_manager :  0)
-
+    const [isSpecialtyManager, setIsSpecialtyManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).specialty_manager : 0)
+    const [affectationMethod, setAffectationMethod] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).pfe_method : 0)
     // !! decode the special information from the token and check the token if is hase role teacher !! 
 
     const setTeacherToken = (token) => {
         if (token) {
-            const decodedToken = jwt_decode(token)  
+            const decodedToken = jwt_decode(token)
 
             if (decodedToken.role === 'teacher') {
                 _setTeacherToken(token)
@@ -60,10 +65,10 @@ export const TeacherContextProvider = ({ children }) => {
                 Cookies.remove('token');
                 return <Navigate to='/' />
             }
-            if (decodedToken.department_manager == 1 ) {
+            if (decodedToken.department_manager == 1) {
                 setIsDepartmentManager(true);
             }
-            if(decodedToken.specialty_manager){
+            if (decodedToken.specialty_manager) {
                 setIsSpecialtyManager(true)
             }
 
@@ -72,9 +77,10 @@ export const TeacherContextProvider = ({ children }) => {
     }
     return (<teacherContext.Provider value={
         {
-            teacher, setTeacher, teacherToken, setTeacherToken, setRoomDiscription, setRoomName, setRoomId, roomDiscription, roomName, roomId,setIsInTeam , isInTeam , 
-            teamSelected, setTeamSelected, isDepartmentManager, setIsDepartmentManager, setSelectedSpeciality, selectedSpeciality, selectedSpeciality_id, setSelectedSpeciality_id, 
-            isSpecialtyManager, setIsSpecialtyManager
+            teacher, setTeacher, teacherToken, setTeacherToken, setRoomDiscription, setRoomName, setRoomId, roomDiscription, roomName, roomId, setIsInTeam, isInTeam,
+            teamSelected, setTeamSelected, isDepartmentManager, setIsDepartmentManager, setSelectedSpeciality, selectedSpeciality, selectedSpeciality_id, setSelectedSpeciality_id,
+            isSpecialtyManager, setIsSpecialtyManager, 
+            affectationMethod, setAffectationMethod , 
         }
     }> {children} </teacherContext.Provider>)
 }

@@ -1,19 +1,20 @@
 import { Menu, Button, Text } from '@mantine/core';
 import { IconDotsVertical, IconEdit, IconX } from '@tabler/icons';
 import { useQueryClient } from 'react-query';
+import { useDeleteTeacherFarmer } from './connection/connection';
 
-import { useDeleteStudentRank } from './connection/connection';
+// import { useDeleteStudentRank } from './connection/connection';
 
-function RankOption(props) {
+function FramerOption(props) {
 
 
   const queryClient = useQueryClient();
 
-  const {mutate : deleteRank } = useDeleteStudentRank()
+  const {mutate : deleteTeacherFarmer } = useDeleteTeacherFarmer()
 
   const onDelete = () => {
     const payload = { code: props.row.code }
-      deleteRank(payload) ; 
+    deleteTeacherFarmer(payload) ; 
   }
 
 
@@ -29,4 +30,4 @@ function RankOption(props) {
     </Menu>
   );
 }
-export default RankOption; 
+export default FramerOption; 

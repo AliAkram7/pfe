@@ -12,7 +12,9 @@ function TeamsSection() {
 
     return (
         isInTeam ? 
-        <>
+        <>            <div className='main-page-name'>
+        <h1></h1>
+    </div>
             <div className='container-blog-section'>
 
                 <Outlet  />

@@ -1,23 +1,18 @@
-import { Button, Drawer, Grid, Group, LoadingOverlay, Modal, SimpleGrid, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
+import { Button, Drawer, LoadingOverlay, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconArrowLeft, IconBrandTelegram, IconClipboard, IconPlus, IconShare } from '@tabler/icons'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useStateContext } from '../../contexts/ContextProvider'
-import { useTeacherContext } from '../../contexts/teacherContext'   
-import AddStudentForm from '../bddStudents/addStudentForm'
-import UploadFile from '../bddStudents/uploadfile'
+import { useTeacherContext } from '../../contexts/teacherContext'
 import { useFetchSpecialtyInformation } from '../BddThemes/connetion/fetchData'
 
 import './../bddStudents/StudentsManagement.css'
-import AddRankForm from './addRankForm'
-// import {  } from './connetion/fetchData'
-import { RankCrud } from './rankCrud'
-import UploadRanks from './uploadRanks'
+import AddTeamsForm from './addTeamsForm'
+import { TeamsCrud } from './teamsCrud'
 
-
-function RankManagement() {
+function TeamsManagement() {
 
 
     // ! fetch specialty information for Specialty manager 
@@ -40,7 +35,6 @@ function RankManagement() {
 
 
 
-
     if (fetchSpecialtyInformation && !contextSet) {
         setSpecialtyInformation(fetchSpecialtyInformation?.data?.specialty_info)
         setContextSet(true)
@@ -48,7 +42,6 @@ function RankManagement() {
 
 
     const theme = useMantineTheme();
-
     const [opened, {
         close,
         open
@@ -56,16 +49,28 @@ function RankManagement() {
     ] = useDisclosure(false);
 
 
+    const [DrawerOpened, {
+        close: drawerClose,
+        open: drawerOpen
+    }
+    ] = useDisclosure(false);
 
 
     // const { mutate: publishListOfTheme , isLoading : publishLoading,  } = usePublishListOfTheme();
 
+
+    // const handlePublish = () => {
+
+    //     publishListOfTheme()
+
+    // }
 
 
 
     return (
         isSpecialtyManager == true ?
             <>
+
 
 <Transition mounted={opened} transition="fade" duration={500} timingFunction="ease">
       {(styles) =>   <Drawer
@@ -82,16 +87,15 @@ function RankManagement() {
 
                 >
                     <div className='add-students' >
-                        <div className='xlsx-method' >
+                        {/* <div className='xlsx-method' >
                             <UploadRanks closeModel={close} />
-                        </div>
+                        </div> */}
                         <div className='byStudents'>
-                            <AddRankForm closeModel={close} />
+                            <AddTeamsForm closeModel={close} />
                         </div>
                     </div>
                     </Drawer>  }
     </Transition>
-                           
 
 
                 <div className='main-page-name'>
@@ -103,22 +107,16 @@ function RankManagement() {
                     <div className='Student-managment-menu'  >
 
                         {specialtyInformation ?
-                            <div className='specialtyName' ><h3 style={{textTransform : 'capitalize'}} ><Text fz="lg" color='teal' >{specialtyInformation.fullname}</Text> list of ranking </h3> </div>
+                            <div className='specialtyName' > <h3>  <Text fz="lg" color='teal' >{specialtyInformation.fullname}</Text> list of teams </h3> </div>
                             : <h3>loading...</h3>
                         }
-                        <Group spacing={20} >
-                        <RankCrud   />
-                        <Tooltip label="add student">
-                            <Button color='teal' onClick={open}   >
+                        < TeamsCrud />
+
+                        <Tooltip label="create team">
+                            <Button color='teal'   onClick={open}  >
                                 <IconPlus size={20} />
                             </Button>
                         </Tooltip>
-                        <Tooltip label="publish the list of rankings for students">
-                            <Button color='teal'    >
-                                <IconShare size={20} />
-                            </Button>
-                        </Tooltip>
-                        </Group>
                     </div>
 
                 </div>
@@ -126,4 +124,4 @@ function RankManagement() {
     )
 }
 
-export default RankManagement ; 
+export default TeamsManagement  ;

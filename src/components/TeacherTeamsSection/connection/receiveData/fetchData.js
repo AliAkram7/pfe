@@ -5,7 +5,7 @@ export const useGetTeamsInformation =(onSuccess, onError)=>{
     return useQuery('getTeamsInformation',getTeamsInformation,{
         onSuccess, 
         onError,
-        // refetchInterval: 1000, 
+        refetchInterval: 1000 * 30 , 
         retry : false , 
         
     },
@@ -17,7 +17,9 @@ export const useGetAllRoomsByTeam =(paylod)=>{
     return useQuery( ['getAllRoomsByTeam' , paylod]  ,getAllRoomsByTeam,{
         // onSuccess, 
         // onError,
-        // refetchInterval: 4000, 
+        refetchInterval: 1000 *30, 
+        retry : false , 
+
     },
     )
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./profileNavbar.css";
-import { Modal, ScrollArea, Transition } from "@mantine/core";
+import { Drawer, Modal, ScrollArea, SimpleGrid, Transition } from "@mantine/core";
 import logo from "../../../imges/1669627809076.png";
 import ProfileMenu from "../../profileMenu/profileMenu";
 import Logout from "../../logout/logout";
@@ -200,13 +200,15 @@ function ProfileNavbar() {
 
         <div className="sidbar--header-main" >
             <SideBarStudent opened={openedSide} toggle={toggle} isInTeam={isInTeam} />
-            <ChangeInfo opened={firstLoginOpened}
-                close={firstLoginClose} />
             {/* <ScrollArea offsetScrollbars={false}   > */}
-            <div className='header-main' style={
-                openedSide ? {
-                    width: "96.8%"
-                } : { width: "80.8%" }}  >
+            <div className='header-main' 
+            // style={
+            //     openedSide ? {
+            //         width: "96.8%"
+            //     } : { width: "80.8%" }} 
+                 >
+                    <ChangeInfo opened={firstLoginOpened}
+                close={firstLoginClose} />
                 <HeaderStudent />
                 <section className='main'>
                     <Outlet />

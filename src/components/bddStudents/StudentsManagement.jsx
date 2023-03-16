@@ -1,4 +1,4 @@
-import { Button, Drawer, List, LoadingOverlay, Modal, ThemeIcon, Tooltip, useMantineTheme } from '@mantine/core'
+import { Button, Drawer, List, LoadingOverlay, Modal, ThemeIcon, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconArrowLeft, IconPaperclip, IconPlus } from '@tabler/icons'
 import React, { useEffect, useState } from 'react'
@@ -62,7 +62,7 @@ function StudentsManagement() {
         close: helpClose,
         open: helpOpen
     }
-    ] = useDisclosure(true);
+    ] = useDisclosure(false);
 
 
     const [DrawerOpened, {
@@ -74,16 +74,17 @@ function StudentsManagement() {
     return (
         isDepartmentManager == 1 ?
             <>
-                <Modal
+ <Transition mounted={opened} transition="fade" duration={500} timingFunction="ease">
+      {(styles) =>   <Drawer
+                            style={styles}
                     position={'bottom'}
                     withCloseButton={true}
-                    closeOnClickOutside={false}
                     opened={opened}
                     onClose={close}
-                    title="add students"
+                    title={<Button variant='light' onClick={helpOpen}   >help</Button>}
                     closeOnEscape={false}
-                    size="calc(100vw - 80px)"
-
+                    size="lg"
+                    zIndex={9999}
                 >
                     <div className='add-students' >
                         <div className='xlsx-method' >
@@ -93,21 +94,21 @@ function StudentsManagement() {
                             <AddStudentForm closeModel={close} />
                         </div>
                     </div>
-
-
-                    <Modal title='quick help' opened={helpOpened} onClose={helpClose} size="calc(80vw - 30rem)" overlayBlur={3}
-                        overlayOpacity={0.55}  >
-                        <div className='upload-help'   >
-                            <h3>make sure that the file .xlsx  is in the form bellow </h3>
-                            <div className='upload-help-img' >
-                                <img src={UploadHelp} alt="help image" />
-                            </div>
+                </Drawer> }
+                </Transition>
+                <Modal title='quick help' opened={helpOpened} onClose={helpClose} size="calc(80vw - 30rem)" overlayBlur={3}
+                    overlayOpacity={0.55}
+                    zIndex={10000}
+                >
+                    <div className='upload-help'   >
+                        <h3>make sure that the file .xlsx  is in the form bellow </h3>
+                        <div className='upload-help-img' >
+                            <img src={UploadHelp} alt="help image" />
                         </div>
-                        <Button color='teal' onClick={helpClose}    >
-                            i got it
-                        </Button>
-                    </Modal>
-
+                    </div>
+                    <Button color='teal' onClick={helpClose}    >
+                        i got it
+                    </Button>
                 </Modal>
 
                 <div className='main-page-name'>
@@ -120,7 +121,6 @@ function StudentsManagement() {
                     </h1>
                 </div>
                 <div className='Student-managment'>
-
                     <Drawer
                         opened={DrawerOpened}
                         onClose={drawerClose}
@@ -156,7 +156,7 @@ function StudentsManagement() {
 
                         <Outlet />
                         <Tooltip label="add students">
-                            <Button color='teal' onClick={() => { open(); helpOpen() }}   >
+                            <Button color='teal' onClick={open}   >
                                 <IconPlus size={20} />
                             </Button>
                         </Tooltip>

@@ -185,10 +185,12 @@ function TeaherProfileNavbar() {
             <SideBarTeacher opened={openedSide} toggle={toggle} />
             {/* <ChangeInfo opened={firstLoginOpened}
                 close={firstLoginClose} /> */}
-            <div className='header-main' style={
-                openedSide ? {
-                    width: "96.8%"
-                } : { width: "80.8%" }}  >
+            <div className='header-main'
+            //  style={
+            //     openedSide ? {
+            //         width: "96.8%"
+            //     } : { width: "80.8%" }}
+                  >
                 <HeaderTeacher />
                 <section className='main'>
                     <Outlet />

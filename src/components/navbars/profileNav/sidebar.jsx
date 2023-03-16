@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createStyles, Navbar, UnstyledButton, Tooltip, Title, ThemeIcon, Burger } from '@mantine/core';
+import { createStyles, Navbar, UnstyledButton, Tooltip, Title, ThemeIcon, Burger, Drawer } from '@mantine/core';
 import {
     IconHome2,
     IconGauge,
@@ -95,8 +95,7 @@ const useStyles = createStyles((theme) => ({
         color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
         // padding: ` ${theme.spacing.lg}`,
         padding: ' 0 15px',
-
-        fontSize: theme.fontSizes.sm,
+        fontSize: theme.fontSizes.md,
         marginRight: theme.spacing.md,
         fontWeight: 500,
         height: '44px',
@@ -131,10 +130,10 @@ export function SideBarStudent(props) {
     const [active, setActive] = useState('Home');
     const [activeLink, setActiveLink] = useState('/student');
     const { isInTeam } = useStudentContext()
-
+    const [opened , {open , close}] = useDisclosure()
     // const [opened, {toggle}] = useDisclosure(false);
     const mainLinksMockdata = [
-        { item: <Burger  opened={!props.opened} onClick={props.toggle} size={20}   />, label: '' },
+        { item: <Burger   opened={opened}  />, label: '' },
     ];
 
 
@@ -167,6 +166,7 @@ export function SideBarStudent(props) {
             <UnstyledButton
                 // onClick={() => setActive(link.label)}
                 className={cx(classes.mainLink, { [classes.mainLinkActive]: link.label === active })}
+                 onClick={ opened ?  close : open}    size={20}
             >
                 {/* <link.icon size="1.4rem" stroke={1.5} /> */}
                 {link.item}
@@ -195,7 +195,7 @@ export function SideBarStudent(props) {
 
     return (
         
-        <Navbar height={"100vh"} width={!props.opened ? { sm: 260 } : { sm: 0 }} className={classes.Parentnavbar}     >
+        <Navbar height={"100vh"}   style ={ {width : "0%" } }  className={classes.Parentnavbar}     >
             <Navbar.Section grow className={classes.wrapper}  >
                 <div className={classes.aside}>
                     <div className={classes.logo}>
@@ -203,12 +203,16 @@ export function SideBarStudent(props) {
                     </div>
                     {mainLinks}
                 </div>
-                <div className={classes.mainLinks}  style={ props.opened ?  {display:'none'}  : null }  >
-                    <Title order={4} className={classes.title}>
+                <Drawer opened={opened}   onClose={close} withCloseButton={true}  
+                        zIndex={99999}
+                >
+                <div className={classes.mainLinks}    >
+                    <Title order={4} className={classes.title}  >
                         {active}
                     </Title>
                     {links}
                 </div>
+                </Drawer>
             </Navbar.Section>
         </Navbar>
     );

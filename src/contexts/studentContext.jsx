@@ -19,20 +19,22 @@ const studentContext = createContext({
     setRoomName: () => { },
     setRoomId: () => { },
     firstLogin: null,
-    setFirstLogin: () => { }
+    setFirstLogin: () => { },
+    affMethod: null,
+    setAffMethod: () => { }
 })
 
 export const StudentContextProvider = ({ children }) => {
     const [student, setStudent] = useState({})
     const [studentToken, _setStudentToken] = useState(Cookies.get('token'))
-    const [isInTeam, setIsInTeam] = useState( false)
+    const [isInTeam, setIsInTeam] = useState(false)
     const [roomDiscription, setRoomDiscription] = useState(null)
     const [roomName, setRoomName] = useState(null)
     const [roomId, setRoomId] = useState(null)
     const [firstLogin, setFirstLogin] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).first_login : null)
+    const [affMethod, setAffMethod] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).aff_method : null)
 
-
-//!!  decode the special information from the token and check the token if is has role student  !! 
+    //!!  decode the special information from the token and check the token if is has role student  !! 
 
 
     const setStudentToken = (token) => {
@@ -50,7 +52,8 @@ export const StudentContextProvider = ({ children }) => {
     }
     return (<studentContext.Provider value={
         {
-            student, setStudent, studentToken, setStudentToken, isInTeam, setIsInTeam, setRoomDiscription, setRoomName, setIsInTeam, setRoomId, roomDiscription, roomName, roomId, firstLogin, setFirstLogin
+            student, setStudent, studentToken, setStudentToken, isInTeam, setIsInTeam, setRoomDiscription, setRoomName, setIsInTeam, setRoomId, roomDiscription, roomName, roomId, firstLogin, setFirstLogin, 
+            affMethod, setAffMethod
         }
     }> {children} </studentContext.Provider>)
 }

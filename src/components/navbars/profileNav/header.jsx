@@ -131,7 +131,7 @@ export function HeaderStudent(props) {
             </Modal>
 
             <Header height={70} className={classes.header} color='teal'  >
-                {/* <Container  > */}
+                <Container fluid={true} >
                     <div className={classes.inner}>
                         <div className='profile-navbar-content'>
                             <div className='profile-navbar-img'>
@@ -158,7 +158,7 @@ export function HeaderStudent(props) {
                             color="#fff"
                         />
                     </div>
-                {/* </Container> */}
+                </Container>
             </Header>
 
             {/* <Outlet /> */}
