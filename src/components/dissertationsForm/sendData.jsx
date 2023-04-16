@@ -3,22 +3,24 @@ import { showNotification } from '@mantine/notifications';
 import { IconCheck, IconCircleDashed } from '@tabler/icons';
 import React from 'react'
 import { useSendChoice } from './connection/sendData/sendData';
-
+import { nanoid } from 'nanoid';
 function sendData(props) {
 
      const {mutate:sendChoice, isLoading , isSuccess } = useSendChoice()
 
 
     const onSubmit = () => {
+
         let sendedData = props.data.map(({id}) => id);
+
+
+
         // sendedData [1, 2, 3, 4]
 
         let payload   =  { theme_list  : sendedData } ; 
 
         payload =   payload
 
-
-        
         sendChoice(payload)
 
 
@@ -51,7 +53,7 @@ function sendData(props) {
 
                 <div className="final-list">
                     <List size={20} > {
-
+                    
                         props?.data?.map((item, idx) => {
                             return <List.Item
                             
@@ -60,16 +62,16 @@ function sendData(props) {
                                   <IconCheck size="1rem" />
                                 </ThemeIcon>
                               }
-                            key={
-                                item.id
-                            }>
+                            
+                                key={nanoid()}
+                            >
                                 <span> {
                                     idx + 1
                                 } </span>
                                 - {
                                 // item.id
                             } {
-                                item.title
+                                item.title ? item.title : item.label
                             } </List.Item>
 
                     })

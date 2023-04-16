@@ -10,7 +10,6 @@ export const useStudentsendMessage = () => {
     return useMutation(StudentsendMessage, {
 
         onError: (response) => {
-            console.log(response.message);
             showNotification({
                 title: 'error',
                 message: 'some things goes wrong try again later',

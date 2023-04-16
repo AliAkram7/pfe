@@ -8,23 +8,19 @@ import {
     Text,
     TextInput,
     Badge,
-    Input,
-    Button,
-    Spoiler,
+
     Modal,
     SimpleGrid,
-    MantineProvider,
     LoadingOverlay,
     HoverCard,
-    Transition,
+    Button,
+
 } from '@mantine/core';
 import { keys } from '@mantine/utils';
 import { IconSearch } from '@tabler/icons';
 
-import { useTeacherContext } from '../../contexts/teacherContext';
+import { nanoid } from 'nanoid';
 
-
-import { useQueryClient } from 'react-query';
 import { userFetchListTheme } from './connetion/fetchData';
 import ThemeOption from './themeOptions';
 import { useDisclosure } from '@mantine/hooks';
@@ -61,9 +57,9 @@ function Th(props) {
     const { classes } = useStyles();
     return (
         <th className={classes.th}>
-            <UnstyledButton onClick={props.onSort} className={classes.control}>
+            <UnstyledButton   className={classes.control}>
                 <Group position="left">
-                    <Text weight={300} size="sm">
+                    <Text  key={nanoid()}  weight={300} size="sm">
                         {props.children}
                     </Text>
                 </Group>
@@ -72,35 +68,6 @@ function Th(props) {
     );
 }
 
-function filterData(data, search) {
-    const query = search.toLowerCase().trim();
-    return data.filter((item) =>
-        keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
-    );
-}
-
-function sortData(
-    data,
-    payload
-) {
-    const { sortBy } = payload;
-
-
-    if (!sortBy) {
-
-        return filterData(data, payload.search);
-
-    }
-
-    return filterData([...data].sort((a, b) => {
-        if (payload.reversed) {
-            return b[sortBy].localeCompare(a[sortBy]);
-        }
-        return a[sortBy].localeCompare(b[sortBy]);
-    }),
-        payload.search
-    );
-}
 export function ThemeCrud(props) {
 
 
@@ -116,9 +83,10 @@ export function ThemeCrud(props) {
 
 
     let data = [{}]; //* list of theme
-
+    let fullData  = [{}] ; 
     const mapData = () => {
         return fetchListTheme?.data.map((obj) => ({
+            key: nanoid(),
             id: obj.id,
             title: String(obj.title),
             description: String(obj.description),
@@ -126,8 +94,7 @@ export function ThemeCrud(props) {
             key_word: obj.key_word,
             work_plan: obj.work_plan,
             research_domain: String(obj.research_domain),
-            status:
-                obj.specialty_manager_validation == 0 ? "0" : "1",
+            status: String(obj.specialty_manager_validation),
             teacher: String(obj.name),
             send_at: new Date(obj.created_at).toLocaleDateString(
                 "en-US",
@@ -148,162 +115,47 @@ export function ThemeCrud(props) {
     }, [memoizedData]);
 
 
-    // useEffect(() => {
-
-    //     data = data = fetchListTheme?.data.map(obj => ({
-    //         id: obj.id,
-    //         title: String(obj.title),
-    //         description: String(obj.description),
-    //         objectives_of_the_project: String(obj.objectives_of_the_project),
-    //         key_word: obj.key_word,
-    //         work_plan: obj.work_plan,
-    //         research_domain: String(obj.research_domain),
-    //         status: obj.specialty_manager_validation == 0 ? '0' : '1',
-    //         teacher: String(obj.name),
-    //         send_at: new Date(obj.created_at).toLocaleDateString("en-US", {
-    //             month: "long",
-    //             day: "numeric",
-    //             hour: "numeric",
-    //         })
-    //     }));
-
-    //     setSortedData(data)
-    //     // setContextSet(false)
-    // }, [fetchListTheme?.data])
-
-
-    // if (fetchListTheme && !contextSet) { //*  data complete fetching when 
-
-    //     data = fetchListTheme?.data.map(obj => ({
-    //         id: obj.id,
-    //         title: String(obj.title),
-    //         description: String(obj.description),
-    //         objectives_of_the_project: String(obj.objectives_of_the_project),
-    //         key_word: obj.key_word,
-    //         work_plan: obj.work_plan,
-    //         research_domain: String(obj.research_domain),
-    //         status: obj.specialty_manager_validation == 0 ? '0' : '1',
-    //         teacher: String(obj.name),
-    //         send_at: new Date(obj.created_at).toLocaleDateString("en-US", {
-    //             month: "long",
-    //             day: "numeric",
-    //             hour: "numeric",
-    //         })
-    //     }));
-    //     setSortedData(data)
-    //     setContextSet(true)
-    // }
-
-
     const [sortBy, setSortBy] = useState(null);
     const [reverseSortDirection, setReverseSortDirection] = useState(false);
     const classes = useStyles()
 
-    const setSorting = (field) => {
-        const reversed = field === sortBy ? !reverseSortDirection : false;
-        setReverseSortDirection(reversed);
-        setSortBy(field);
-        data = fetchListTheme?.data.map(obj => ({
-            title: String(obj.title),
-            description: String(obj.description),
-            objectives_of_the_project: String(obj.objectives_of_the_project),
-            key_word: obj.key_word,
-            work_plan: obj.work_plan,
-            research_domain: String(obj.research_domain),
-            status: obj.specialty_manager_validation == 0 ? '0' : '1',
-            teacher: String(obj.name),
-            send_at: new Date(obj.created_at).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                hour: "numeric",
-            })
-        }));
-        setSortedData(sortData(data, { sortBy: field, reversed, search }));
-    };
 
-    const handleSearchChange = (event) => {
-        const { value } = event.currentTarget;
-        setSearch(value);
-        data = fetchListTheme?.data.map(obj => ({
-            title: String(obj.title),
-            description: String(obj.description),
-            objectives_of_the_project: String(obj.objectives_of_the_project),
-            key_word: obj.key_word,
-            work_plan: obj.work_plan,
-            research_domain: String(obj.research_domain),
-            status: obj.specialty_manager_validation == 0 ? '0' : '1',
-            teacher: String(obj.name),
-            send_at: new Date(obj.created_at).toLocaleDateString("en-US", {
-                year: 'numeric',
-                month: "long",
-                day: "numeric",
-                hour: "numeric",
-            })
-        }));
-        setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
-    };
-
-
-    const [description_content, { open: _showMore, close: hide }] = useDisclosure()
-
-    const [theme_description, setTheme_description] = useState({})
-
-
-    const showMore = (row) => {
-
-        setTheme_description({
-            title: row.title,
-            description: row.description,
-            objectives_of_the_project: row.objectives_of_the_project,
-            key_word: row.key_word,
-            work_plan: row.work_plan,
-            research_domain: row.research_domain,
-            teacher: row.teacher,
-            send_at: row.send_at,
-        })
-        _showMore()
-    }
 
 
 
     const rows = sortedData?.map((row) => {
-        const k = Math.random();
+
         return (<>
 
-            <tr key={k}>
-                <td><ThemeOption row={row} /></td>
-                <td>
-                    <HoverCard width={280} shadow="md">
-                        <HoverCard.Target>
-                            <Text>{row.title.length > 40 ? row.title.slice(0, 40) + "..." : row.title}</Text>
-                        </HoverCard.Target>
-                        <HoverCard.Dropdown>
-                            {row.title}
-                        </HoverCard.Dropdown>
-                    </HoverCard>
-
-
-
-                </td>
+            <tr key={row.key}>
+                <td><ThemeOption key={row.key} row={row} /></td>
                 <td>
 
-                    <HoverCard width={280} shadow="md">
+                    <HoverCard key={row.key} width={280} shadow="md">
                         <HoverCard.Target>
-                            <Spoiler maxHeight={40} showLabel="Show more" hideLabel="Hide" onClick={() => (showMore(row))}   ><Text>{row.description.length > 40 ? row.description.slice(0, 40) + " ..." : row.title}</Text></Spoiler>
+                            <Text key={row.key}  >{row.title.length > 40 ? row.title.slice(0, 40) + "..." : row.title}</Text>
                         </HoverCard.Target>
                         <HoverCard.Dropdown>
                             {row.title}
                         </HoverCard.Dropdown>
                     </HoverCard>
                 </td>
-                {/* <td>
-                    <Spoiler maxHeight={24} showLabel="Show more" hideLabel="Hide"    >{row.objectives_of_the_project}</Spoiler></td>
+                <td    >
 
-                <td>
-                    <Spoiler maxHeight={20} minHeight={20} showLabel="Show more" hideLabel="Hide"    >{row.research_domain}</Spoiler></td> */}
-                <td><Text  >{row.teacher}</Text></td>
-                <td><Text  >{row.send_at}</Text></td>
-                <td>{row.status === '1' ? <Badge color='teal'  >Accepted</Badge> : null}</td>
+                    <HoverCard key={row.key}  width={280} shadow="md"   >
+                        <HoverCard.Target>
+                            <Text key={row.key}  >{row.description.length > 40 ? row.description.slice(0, 40) + " ..." : row.title}</Text>
+                            {/* <Button  onClick={() => { showMore(row) }}  >showMore</Button> */}
+                        </HoverCard.Target>
+                        <HoverCard.Dropdown>
+                            {row.title}
+                        </HoverCard.Dropdown>
+                    </HoverCard>
+                </td>
+
+                <td><Text key={row.key} >{row.teacher}</Text></td>
+                <td><Text key={row.key} >{row.send_at}</Text></td>
+                <td> {row.status === '1' ? <Badge color='teal'  >Accepted</Badge> : null}</td>
             </tr>
         </>
         )
@@ -312,72 +164,74 @@ export function ThemeCrud(props) {
     return (
         <>
 
-            <Transition mounted={description_content} transition="fade" duration={500} timingFunction="ease">
-                {(styles) => <Modal
-                    style={styles}
 
 
-                    opened={description_content} onClose={hide} size='xl'    >
-                    <SimpleGrid  >
-                        <ThemeDescriptionContent row={theme_description} />
-                    </SimpleGrid>
-                </Modal>}
-            </Transition>
 
+            {/* <ScrollArea scrollbarSize={1} > */}
+            {/* <TextInput
+                // key={nanoid()}
+                placeholder="Search by any field"
+                mb="lg"
+                icon={<IconSearch size={14} stroke={1.5} />}
+                value={search}
+                variant='filled'
+                onChange={handleSearchChange}
+            /> */}
+            <Table
+                horizontalSpacing="xl"
+                verticalSpacing="xl"
+                sx={{ tableLayout: 'fixed', minWidth: 1000, maxWidth: 1600, minHeight: 260 }}
+            ><thead>
+                    <LoadingOverlay visible={props.publishLoading} />
+                    <tr><Th /><Th
+                        //  sorted={sortBy === 'title'}
+                        //     reversed={reverseSortDirection}
+                        //     onSort={() => setSorting('title')}
+                        key={nanoid()}
+                        children='Title'
+                    /><Th
+                            // sorted={sortBy === ''}
+                            // reversed={reverseSortDirection}
+                            // onSort={() => setSorting('')}
+                            key={nanoid()}
 
-            <ScrollArea scrollbarSize={1} >
-                <TextInput
-                    placeholder="Search by any field"
-                    mb="lg"
-                    icon={<IconSearch size={14} stroke={1.5} />}
-                    value={search}
-                    variant='filled'
-                    onChange={handleSearchChange}
-                />
-                <Table
-                    horizontalSpacing="xl"
-                    verticalSpacing="xl"
-                    sx={{ tableLayout: 'fixed', minWidth: 1000, maxWidth: 1600, minHeight: 260 }}
-                ><thead>
-                        <LoadingOverlay visible={props.publishLoading} />
-                        <tr><Th /><Th sorted={sortBy === 'title'}
-                            reversed={reverseSortDirection}
-                            onSort={() => setSorting('title')}
-                            children='Title'
+                            children='description'
+                        /><Th 
+                        // sorted={sortBy === 'teacher'}
+                        //     reversed={reverseSortDirection}
+                        //     onSort={() => setSorting('teacher')}
+                            children='teacher'
+                        key={nanoid()}
+
                         /><Th
-                                // sorted={sortBy === ''}
-                                reversed={reverseSortDirection}
-                                // onSort={() => setSorting('')}
-                                children='description'
-                            /><Th sorted={sortBy === 'teacher'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('teacher')}
-                                children='teacher'
-                            /><Th sorted={sortBy === 'send_at'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('send_at')}
-                                children='send at'
-                            /><Th sorted={sortBy === 'status'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('status')}
-                                children='status'
-                            /></tr>
-                    </thead>
-                    <tbody>
-                        {rows?.length > 0 ? (
-                            rows
-                        ) : (
-                            <tr>
-                                <td >
-                                    <Text weight={500} align="center"  >
-                                        Nothing found
-                                    </Text>
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </Table>
-            </ScrollArea>
+                        //  sorted={sortBy === 'send_at'}
+                        //     reversed={reverseSortDirection}
+                        //     onSort={() => setSorting('send_at')}
+                            children='send at'
+                        key={nanoid()}
+
+                        /><Th
+                        //  sorted={sortBy === 'status'}
+                        //     reversed={reverseSortDirection}
+                        //     onSort={() => setSorting('status')}
+                            children='status'
+                        key={nanoid()}
+
+                        /></tr></thead><tbody>
+                    {rows?.length > 0 ? (
+                        rows
+                    ) : (
+                        <tr>
+                            <td >
+                                <Text weight={500} align="center"  >
+                                    Nothing found
+                                </Text>
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
+            {/* </ScrollArea> */}
         </>)
 
 }

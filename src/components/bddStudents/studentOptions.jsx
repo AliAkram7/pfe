@@ -1,7 +1,7 @@
 import { Menu, Button, Text } from '@mantine/core';
-import { Icon123, Icon3dCubeSphere, IconAlertTriangle, IconDotsVertical, IconEdit, IconLockOff, IconLockOpen, IconMessageCircle, IconPanoramaHorizontal, IconPanoramaVertical, IconSettings, IconX } from '@tabler/icons';
+import { Icon123, Icon3dCubeSphere, IconAlertTriangle, IconArrowRotaryFirstLeft, IconArrowUpCircle, IconDotsVertical, IconEdit, IconLockOff, IconLockOpen, IconMessageCircle, IconPanoramaHorizontal, IconPanoramaVertical, IconRecycle, IconRefresh, IconSettings, IconX } from '@tabler/icons';
 import { useQueryClient } from 'react-query';
-import { useDeleteStudent, useLockStudentAccount, useUnLockStudentAccount } from './connection/sendData/sendData';
+import { useDeleteStudent, useLockStudentAccount, useResetStudent, useUnLockStudentAccount } from './connection/sendData/sendData';
 // import { IconSettings, IconSearch, IconPhoto, IconMessageCircle, IconTrash, IconArrowsLeftRight } from '@tabler/icons-react';
 
 function StudentOption(props) {
@@ -13,6 +13,15 @@ function StudentOption(props) {
             code : props.row.code
         }
         deleteStudent(payload)    
+    }
+
+
+    const {mutate : resetStudent } = useResetStudent() ; 
+    const onReset=()=>{
+        const payload ={
+            code : props.row.code
+        }
+        resetStudent(payload)    
     }
 
     const {mutate : lockStudentAccount } = useLockStudentAccount() ; 
@@ -44,12 +53,13 @@ function StudentOption(props) {
         <Button variant='white' ><IconDotsVertical color='teal'/></Button>
       </Menu.Target>
       <Menu.Dropdown   >
-        <Menu.Label>options</Menu.Label>
+        <Menu.Label>options  for student {props.row.name} </Menu.Label>
         <Menu.Item icon={<IconEdit size={14} />}   onClick={()=>{props.setEdit()  ; queryClient.invalidateQueries('fetchStudentsData')}}   >edit information </Menu.Item>
     { props.row.account_status !== 'locked' ? 
      <Menu.Item   color='red'  icon={<IconLockOff color='red' size={14}   />} onClick={onLock}  >lock  account</Menu.Item> : 
         <Menu.Item   color='teal'  icon={<IconLockOpen color='teal' size={14} /> } onClick={onUnLock}    > unlock  account</Menu.Item>
         }
+        <Menu.Item   color='red'  icon={<IconRefresh color='red' size={14}   /> } onClick={onReset}    >reset account</Menu.Item>
         <Menu.Item   color='red'  icon={<IconX color='red' size={14}   /> } onClick={onDelete}    >delete account</Menu.Item>
 
       </Menu.Dropdown>

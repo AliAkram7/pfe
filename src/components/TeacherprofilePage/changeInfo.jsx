@@ -2,89 +2,125 @@
 import * as Yup from 'yup'
 import React, { useEffect, useState } from 'react'
 import { Form, Formik } from 'formik';
-import { LoadingOverlay, Modal } from '@mantine/core';
+import { Box, Button, Drawer, LoadingOverlay, Modal, NativeSelect, PasswordInput, TextInput } from '@mantine/core';
 import FormikControl from '../FormControl/FormikControl';
 
 import { useStateContext } from '../../contexts/ContextProvider';
 import { useSendStudentUpdatedData } from './connection/sendData/sendData';
 import { useTeacherContext } from '../../contexts/teacherContext';
+import { hasLength, isEmail, isNotEmpty, useForm } from '@mantine/form';
+import axiosClient from '../../axois-client';
+import jwt_decode from 'jwt-decode';
+import { IconAt, IconDeviceMobile, IconKey } from '@tabler/icons';
+
+export function combineValidators(...validators) {
+  return (value) => {
+    for (let i = 0; i < validators.length; i += 1) {
+      const error = validators[i](value);
+      if (error) {
+        return error;
+      }
+    }
+    return null;
+  };
+}
+
+
+export function isPasswordValid(errorMessage) {
+  return (value) => {
+    const hasNumber = /\d/;
+    const hasUpperCase = /[A-Z]/;
+    if ((!hasNumber.test(value) || !hasUpperCase.test(value)) && value.length > 0) {
+      return errorMessage;
+    }
+    return null;
+  };
+}
+export function isPhoneNumber(errorMessage) {
+  return (value) => {
+    const algerianNumberRegex = /^(\+213|0)[5-7,9]\d{8}$/;
+    if (!algerianNumberRegex.test(value)) {
+      return errorMessage;
+    }
+    return null;
+  };
+}
 
 function ChangeInfo(props) {
-  const { teacher } = useTeacherContext();
   const [Overlay, setOverlay] = useState(false)
-  const initialValues = {
-    personal_email: teacher?.personal_email,
-    institutional_email: teacher?.institutional_email,
-    tel: teacher?.tel,
-    prPassword: "",
-    newPassword: "",
-    confirm: "",
-  };
-  const validationSchema = Yup.object({
-    personal_email: Yup.string().email("invalid email format !"),
-    institutional_email: Yup.string().email("invalid email format !"),
 
-    // TODO make the password validation require number and small case
-    prPassword: Yup.string()
-      .required("Please Enter your password")
-      .min(
-        8,
-        "password must contain 8 or more characters with at least one of each: lowercase , number "
-      )
-      .max(16, "password more long than its alowd [8-16] "),
-    newPassword: Yup.string()
-      .matches(
-
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
-        "Must Contain at least  one Uppercase, One Lowercase and one Number "
-      )
-      .min(
-        8,
-        "password must contain 8 or more characters with at least one of each: lowercase , number "
-      )
-      .max(16, "password more long than its alowd [8-16] "),
-    confirm: Yup.string()
-      .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
-    ,
-  });
+  const { teacher, firstLogin, setFirstLogin, setTeacherToken } = useTeacherContext();
+  const { token, role, setToken, setNdToken } = useStateContext();
 
 
-  // !! chage this 
+
+
+
+
+  const changInfoForm = useForm({
+    initialValues: {
+      personal_email: teacher?.personal_email,
+      tel: teacher?.tel,
+      newPassword: "",
+      prPassword: '',
+      confirm: "",
+
+    },
+    validate: {
+      personal_email: combineValidators(
+        isNotEmpty("field required"),
+         isEmail('invalid email format')
+      ),
+      tel: combineValidators(
+        isNotEmpty('field required'),
+        isPhoneNumber('invalid number format')
+
+      ),
+      prPassword: combineValidators(
+        ...(!firstLogin ? [isNotEmpty("field required"), isPasswordValid("Password must contain at least 1 uppercase letter and 1 number")] : [])
+      ),
+      newPassword: combineValidators(
+        isPasswordValid("Password must contain at least 1 uppercase letter and 1 number"),
+        ...(firstLogin ? [isNotEmpty("field required"),] : []),
+      ),
+      confirm: (value, values) =>
+        value !== values.newPassword ? 'Passwords did not match' : null,
+    }
+  })
+
+
+
+
   const { mutate: updateInfo, isLoading, isSuccess } = useSendStudentUpdatedData()
 
-
-  const onSubmit = (value) => {
-    // console.log(value);
+  const onSubmit = (values) => {
+    // console.log(values);
     let sendData = {}
-    if (value.personal_email !== teacher?.personal_email) {
-      sendData = {
-        ...sendData, 
-        personal_email: value.personal_email
-      }
-    }
-    if (value.institutional_email !== teacher?.institutional_email) {
-      sendData = {
-        ...sendData, 
-        institutional_email: value.institutional_email
-      }
-    }
-    if (value.tel !== teacher?.tel) {
+    if (values.personal_email !== teacher?.personal_email) {
       sendData = {
         ...sendData,
-        tel: value.tel
+        personal_email: values.personal_email
       }
     }
-    if ((value.newPassword !== "" && value.confirm !== "") && value.newPassword !== value.prPassword) {
+
+
+    if (values.tel !== teacher?.tel) {
       sendData = {
         ...sendData,
-        newPassword: value.newPassword,
-        confirm: value.confirm,
+        tel: values.tel
       }
     }
-    if (value.prPassword !== "") {
+    if ((values.newPassword !== "" && values.confirm !== "") && values.newPassword !== values.prPassword) {
       sendData = {
         ...sendData,
-        prPassword: value.prPassword,
+        newPassword: values.newPassword,
+        confirm: values.confirm,
+      }
+    }
+    if (values.prPassword !== "") {
+      sendData = {
+        ...sendData,
+        prPassword: values.prPassword,
       };
     }
 
@@ -93,17 +129,47 @@ function ChangeInfo(props) {
     if (sendData.prPassword && (sendData.institutional_email || sendData.personal_email || sendData.newPassword || sendData.tel)) {
       updateInfo(sendData);
     }
-  };
-  useEffect(() => {
-    if (isSuccess) {
-      props.close();
+    else if (firstLogin && (sendData.personal_email && sendData.newPassword && sendData.tel)) {
+      sendData = {
+        ...sendData,
+        prPassword: 'garbage value',
+      };
+      updateInfo(sendData);
     }
+
+    props.close()
+
+  };
+
+
+  useEffect(() => {
+
+    if (isSuccess && firstLogin) {
+
+      axiosClient.post("/teacher/refreshToken")
+        .then(({ data }) => {
+          if (data.token) {
+            setToken(null)
+            setToken(data.token);
+            const decodedToken = jwt_decode(data.token);
+            setFirstLogin(decodedToken.first_login)
+          }
+        })
+        .catch(error => {
+          console.error("Error refreshing token:", error);
+        });
+    }
+
   }, [isSuccess]);
+
+
+
   return (
     <Modal
+      position='bottom'
       withCloseButton={true}
       closeOnClickOutside={false}
-      opened={props.opened}
+      opened={props.opened || firstLogin}
       onClose={props.close}
       size={600}
       title="change information"
@@ -118,68 +184,56 @@ function ChangeInfo(props) {
       />
       <h4>- strong password required. Enter 8-16 characters, Do not include common words or names, Combine uppercase letters, lowercase letters and numbers <br /> <br />
       </h4>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-      >
-        {(Formik) => {
-          return (
-            <div className='box'>
-              <Form>
-                <FormikControl
-                  control='input'
-                  type='text'
-                  label='personal email'
-                  name='personal_email'
-                />
-                <FormikControl
-                  control='input'
-                  type='text'
-                  label='institutional email'
-                  name='institutional_email'
-                />
-                <FormikControl
-                  control='input'
-                  type='text'
-                  label='phone number'
-                  name='tel'
-                />
-                <FormikControl
-                  control='input'
-                  type='password'
-                  label='previos password'
-                  name='prPassword'
-                />
 
-                <FormikControl
-                  control='input'
-                  type='password'
-                  label='set new password'
-                  name='newPassword'
-                />
-                <FormikControl
-                  control='input'
-                  type='password'
-                  label='confirm '
-                  name='confirm'
-                />
-                <button
-                  type='submit'
-                  className='SubmitBtn'
-                // disabled={!Formik.isValid}
 
-                // onClick={() => {onSubmit}
-                // }
+      {/* <div > */}
+        <form onSubmit={changInfoForm.onSubmit(onSubmit)} >
+          <TextInput
 
-                >
-                  confirm change
-                </button>
-              </Form>
-            </div>
-          );
-        }}
-      </Formik>
+            label='personal email'
+            {...changInfoForm.getInputProps('personal_email')}
+            icon={<IconAt size={16} />}
+          />
+          <TextInput
+
+            label='phone number'
+            {...changInfoForm.getInputProps('tel')}
+            icon={<IconDeviceMobile size={16} />}
+          />
+
+          {!firstLogin && <TextInput
+            type={'password'}
+            label='password'
+            {...changInfoForm.getInputProps('prPassword')}
+            icon={<IconKey size={16} />}
+          />}
+
+          <TextInput
+            type={'password'}
+            label='new password'
+            {...changInfoForm.getInputProps('newPassword')}
+            icon={<IconKey size={16} />}
+
+          />
+
+
+          <TextInput
+            type={'password'}
+            label='confirm'
+            {...changInfoForm.getInputProps('confirm')}
+            icon={<IconKey size={16} />}
+
+          />
+
+          <Button
+            my={20}
+            type='submit'
+          >
+            confirm change
+          </Button>
+        </form>
+      {/* </div> */}
+
     </Modal>
   )
 }

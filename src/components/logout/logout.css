@@ -20,10 +20,11 @@
 }
 
 .group-Logout button:nth-child(2):hover a , .group-Logout button:nth-child(2) {
-    cursor: pointer;
-    background-color:white ;
-    color:  #DC3545 ;
-    border-color: #DC3545 ;
+    /* cursor: pointer;
+    /* background-color:white ; */
+    /* color:  white ;
+    border-color: #DC3545 ; */
+ 
 }
 
 .group-Logout button  a {

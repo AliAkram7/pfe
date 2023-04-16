@@ -8,49 +8,100 @@ const fetchListTeams = () => {
     return axiosClient.get('/teacher/specialty_manager/fetchTeams');
 }
 export const userFetchListTeams = () => {
-    return useQuery('fetchListOfTheme', fetchListTeams, {
-        refetchInterval: 30 * 1000,
-        // refetchOnWindowFocus: false,
+    return useQuery('fetchListTeams', fetchListTeams, {
+        // refetchInterval: 30 * 1000,
+        refetchOnWindowFocus: false,
         // cacheTime: 1000 
     })
 }
 
-// /teacher/specialty_manager/SpecialtyManagerValidity 
+const fetchSingleStudents = () => {
+    return axiosClient.get('/teacher/specialty_manager/fetchSingleStudents');
+}
 
-// const validateTheme = (payload) => {
-//     return axiosClient.post('/teacher/specialty_manager/SpecialtyManagerValidity', payload);
-// }
+export const useFetchSingleStudents = () => {
+    return useQuery("fetchSingleStudents", fetchSingleStudents, {});
+}
 
-// export const useValidateTheme = () => {
-//     const queryClient = useQueryClient()
-
-//     return useMutation(validateTheme, {
-//         onSuccess :()=>{
-
-//             queryClient.invalidateQueries('fetchListOfTheme');
-//         }
-//     }
-//     )
-// }
+// /teacher/specialty_manager/addSingleStudentInTeam
 
 
-// const publishListOfTheme=()=>{
-//     return axiosClient.post('/teacher/specialty_manager/publishTheListOfThemes') ; 
-// }
+const addSingleStudentInTeam = (payload) => {
+    return axiosClient.post('/teacher/specialty_manager/addSingleStudentInTeam', payload);
+}
 
 
-// export const  usePublishListOfTheme =()=>{
+export const useAddSingleStudentInTeam = () => {
+    const queryClient = useQueryClient()
+    return useMutation(addSingleStudentInTeam, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('fetchSingleStudents');
+            queryClient.invalidateQueries('fetchListTeams');
+        }
+    });
+}
 
-// return useMutation(publishListOfTheme ,  {
-//     onSuccess : ()=>{
-//         showNotification({
-//             title:'theme published successfully',
-//             message: '',
-//             color:'green',
-            
-//           }) ; 
 
-//     } , 
-// })
 
-// }
+
+const createPeriod = (payload) => {
+    return axiosClient.post('/teacher/specialty_manager/createPeriod', payload);
+}
+
+
+export const useCreatePeriod = () => {
+    const queryClient = useQueryClient()
+    return useMutation(createPeriod, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('fetchSingleStudents');
+            queryClient.invalidateQueries('fetchListTeams');
+        }
+    });
+}
+
+
+const getAppointmentsDates = ({ queryKey }) => {
+    const payload = queryKey[1];
+    return axiosClient.post('/teacher/specialty_manager/getAppointmentsDates', payload);
+}
+export const useGetAppointmentsDates = (payload) => {
+    return useQuery(['getAppointmentsDates', payload], getAppointmentsDates, {
+        refetchOnWindowFocus: false,
+        retry: false,
+    })
+}
+
+
+const getAppointmentInfo = ({ queryKey }) => {
+    const payload = queryKey[1];
+    return axiosClient.post('/teacher/specialty_manager/fetchAppointmentData', payload);
+}
+
+
+export const useGetAppointmentInfo = (payload) => {
+    const queryClient = useQueryClient()
+    return useQuery(['getAppointmentInfo', payload], getAppointmentInfo, {});
+}
+
+
+
+const fetchTeachers = () => {
+    return axiosClient.get('/teacher/specialty_manager/fetchTeachers');
+}
+
+
+export const useFetchTeachers = () => {
+    const queryClient = useQueryClient()
+    return useQuery('fetchTeachersJury', fetchTeachers, {
+        // refetchOnWindowFocus : false, 
+    });
+}
+
+
+const sendLicenseJuryMember = (payload) => {
+    return axiosClient.post('/teacher/specialty_manager/sendListOfLicenseJury', payload);
+}
+
+export const useSendLicenseJuryMember = () => {
+    return useMutation(sendLicenseJuryMember, {});
+}

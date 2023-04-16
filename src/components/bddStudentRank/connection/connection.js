@@ -43,7 +43,7 @@ const uploadStudentsRanks = (payload) => {
 
 export const useUploadStudentsRanks = () => {
     return useMutation(uploadStudentsRanks, {
-
+        
     })
 }
 

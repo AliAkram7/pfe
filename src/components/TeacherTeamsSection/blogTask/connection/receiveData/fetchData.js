@@ -2,9 +2,9 @@ import { getAllRoomMessages } from "./axoisUrl";
 import {useQuery} from "react-query";
 
 
-export const useGetAllRoomMessages =(paylod)=>{
-    return useQuery(  ['getAllRoomMessages', paylod],getAllRoomMessages,{
-        refetchInterval: 30*1000 ,
+export const useGetAllRoomMessages =(payload)=>{
+    return useQuery(  ['getAllRoomMessages', payload],getAllRoomMessages,{
+        // refetchInterval: 30*1000 ,
     } )
 }
 

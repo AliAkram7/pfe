@@ -30,14 +30,14 @@ export function Faq() {
   return (
     <Container size='sm' className={classes.wrapper}>
       <Title align='center' className={classes.title}>
-        Frequently Asked Questions
+        help
       </Title>
 
       <Accordion variant='separated'>
         <Accordion.Item className={classes.item} value='reset-password'>
           <Accordion.Control>How can I reset my password?</Accordion.Control>
           <Accordion.Panel>
-            yes ! , you can go for <Link to='/mon_profile'  >my profile</Link> &gt;   change information  and rest
+            yes ! , you can go for <Link to='/student/profile'  >my profile</Link> &gt;   change information  and rest
             your password, make sure that your password contain 8 character at
             at least a one number and one uppercase
           </Accordion.Panel>

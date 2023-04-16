@@ -97,9 +97,7 @@ const handlePublishing=()=>{
                            
 
 
-                <div className='main-page-name'>
-                    <h1></h1>
-                </div>
+
 
                 <div className='Student-managment'>
 

@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <MantineProvider  theme={{ primaryColor: 'teal' }} >
       <ContextProvider>
-        <NotificationsProvider position="top-center" >
+        <NotificationsProvider position="top-center"  limit={1}   zIndex={99999}  >
 
           <QueryClientProvider client={queryClient}   >
 

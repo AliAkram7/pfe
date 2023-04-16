@@ -53,9 +53,7 @@ function ProfilePage() {
         <>
             <ChangeInfo opened={opened}
                 close={close} />
-            {/* <div className='main-page-name'>
-                <h1>my profile</h1>
-            </div> */}
+   
             <div className="pageWrapper">
                 <div className='person-card'>
                     <div className='circle-name'>

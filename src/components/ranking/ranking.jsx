@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import { createStyles, Group, ScrollArea, Table, Text, TextInput, UnstyledButton } from "@mantine/core";
+import { IconSearch } from "@tabler/icons";
+import { nanoid } from "nanoid";
+import React, { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useFetchRanking } from "./connection/receiveData/fetchData";
@@ -6,150 +9,231 @@ import { useFetchRanking } from "./connection/receiveData/fetchData";
 
 import Filter from "./filter";
 import "./ranking.css";
-function Ranking() {
-
-    const { data: ranking } = useFetchRanking()
-
-    const student_rank = ranking?.data.student_rank.map((student, rank) => { return { ...student, rank: rank + 1 } })
 
 
-    const displayData = student_rank?.map((student) => {
 
+const useStyles = createStyles((theme) => ({
+    th: {
+        padding: '0 !important',
+    },
 
-        return (
-            <tr key={
-                student.student_name
-            }>
-                <td>
-                    {
-                        student.code
-                    }
-                </td>
-                <td>{
-                    student.student_name
-                }</td>
-                <td>{
-                    student.rank
-                }</td>
-                <td>{
-                    student.observation
-                }</td>
-                <td>{
-                    student.ms1
-                }</td>
-                <td>{
-                    student.ms2
-                }</td>
-                <td>{
-                    student.mgc
-                }</td>
-            </tr>
-        );
-    });
+    control: {
+        width: '100%',
+        padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
 
+        '&:hover': {
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+        },
+    },
 
-    const [searchVal, setSearchVal] = useState('')
-    const [searchField, setSearchField] = useState('')
-
-    const searchByCol = (searchVal, searchfield) => {
-
-        setSearchVal(searchVal)
-        setSearchField(searchfield)
-
-
+    icon: {
+        width: 21,
+        height: 21,
+        borderRadius: 21,
+    },
+    searchField: {
+        outline: 'green'
     }
 
+}));
 
+
+
+function Th(props) {
+    const { classes } = useStyles();
     return (
-        <>
-            {/* <div className='main-page-name'>
-                <h1>ranking</h1>
-            </div> */}
-
-            <div className='table-section'>
-                <h1>Classment des Etudiants de la Spécialité {ranking?.data.speciality_name} {ranking?.data.year_scholar}
-                </h1>
-
-                <div className='search-form'></div>
-                <table className='table-ranking'>
-                    <thead>
-
-                        <tr>
-                            <th></th>
-                            <th>
-                                <input type='text' className="ranking-search-bar"
-                                    // value={search}
-                                    name="name"
-                                    placeholder="Student Name"
-                                    onChange={
-                                        (e) => {
-                                            searchByCol(e.target.value, 'name')
-                                        }
-                                    } />
-                            </th>
-                            <th>
-                                <input type='text' className="ranking-search-bar" name="rank" placeholder="rank"
-                                    onChange={
-                                        (e) => {
-                                            searchByCol(e.target.value, 'rank')
-                                        }
-                                    } />
-                            </th>
-                            <th>
-                                <select className="select-obs" name="obs"
-                                    onChange={
-                                        (e) => {
-                                            searchByCol(e.target.value, 'observation')
-                                        }
-                                    }>
-                                    <option value="">all observation</option>
-                                    <option value={1}>Admis/S1</option>
-                                    <option value="2">Admis/S2</option>
-                                    <option value="3">Admis/Dettes/S2</option>
-                                </select>
-
-                            </th>
-                            <th>
-                                <input type='text' className="ranking-search-bar" placeholder="ms1"
-                                    onChange={
-                                        (e) => {
-                                            searchByCol(e.target.value, 'ms1')
-                                        }
-                                    } />
-                            </th>
-                            <th>
-                                <input type='text' className="ranking-search-bar" placeholder="ms2"
-                                    onChange={
-                                        (e) => {
-                                            searchByCol(e.target.value, 'ms2')
-                                        }
-                                    } />
-                            </th>
-                            <th>
-                                <input type='text' className="ranking-search-bar" placeholder="MGC"
-                                    onChange={
-                                        (e) => {
-                                            searchByCol(e.target.value, 'mgc')
-                                        }
-                                    } />
-                            </th>
-                        </tr>
-                        <Filter data={student_rank}
-                            searchVal={searchVal}
-                            searchField={searchField} />
-                        <tr>
-                            <th>code</th>
-                            <th>student</th>
-                            <th>rank</th>
-                            <th>observation</th>
-                            <th>ms1</th>
-                            <th>ms2</th>
-                            <th>mgc</th>
-                        </tr>
-                    </thead>
-                    <tbody>{displayData}</tbody></table></div></>
-
+        <th  key={nanoid()}  className={classes.th}>
+            <UnstyledButton onClick={props.onSort} className={classes.control}>
+                <Group position="left">
+                    <Text  key={nanoid()}  weight={300} size="sm">
+                        {props.children}
+                    </Text>
+                </Group>
+            </UnstyledButton>
+        </th>
     );
 }
 
-export default Ranking;
+function filterData(data, search) {
+    const query = search.toLowerCase().trim();
+    return data.filter((item) =>
+        keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
+    );
+}
+
+function sortData(
+    data,
+    payload
+) {
+    const { sortBy } = payload;
+
+
+    if (!sortBy) {
+
+        return filterData(data, payload.search);
+
+    }
+
+    return filterData([...data].sort((a, b) => {
+        if (payload.reversed) {
+            return b[sortBy].localeCompare(a[sortBy]);
+        }
+        return a[sortBy].localeCompare(b[sortBy]);
+    }),
+        payload.search
+    );
+}
+
+export default function Ranking() {
+
+    const { data: ranking } = useFetchRanking()
+
+    const student_rank = ranking?.data?.student_rank.map((student, rank) => { return { ...student, rank: rank + 1 } })
+
+
+
+
+
+
+    const [search, setSearch] = useState('');
+    const [sortedData, setSortedData] = useState();
+    const [contextSet, setContextSet] = useState(false)
+
+    console.log(student_rank)
+    let data = [{}]; //* list of theme 
+
+
+    const mapData = () => {
+        return data = ranking?.data?.student_rank.map(obj => ({
+
+            student_name: String(obj.student_name),
+            ms1: String(obj.ms1),
+            ms2: String(obj.ms2),
+            mgc: String(obj.mgc),
+            observation: String(obj.observation),
+
+        }));
+    };
+
+    const memoizedData = useMemo(() => {
+        return mapData();
+    }, [ranking?.data?.student_rank]);
+
+    useEffect(() => {
+        setSortedData(memoizedData);
+    }, [memoizedData]);
+
+
+
+    const [sortBy, setSortBy] = useState(null);
+    const [reverseSortDirection, setReverseSortDirection] = useState(false);
+    const classes = useStyles()
+
+    const setSorting = (field) => {
+        const reversed = field === sortBy ? !reverseSortDirection : false;
+        setReverseSortDirection(reversed);
+        setSortBy(field);
+        data = data = ranking?.data?.student_rank?.map(obj => ({
+
+            student_name: String(obj.student_name),
+
+
+        }));
+        setSortedData(sortData(data, { sortBy: field, reversed, search }));
+    };
+
+    const handleSearchChange = (event) => {
+        const { value } = event.currentTarget;
+        setSearch(value);
+        data = data = ranking?.data?.student_rank?.map(obj => ({
+
+            student_name: String(obj.student_name),
+
+
+        }));
+        setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
+    };
+
+
+
+    const rows = sortedData?.map((row) => {
+
+        return (<>
+            <tr key={nanoid()}>
+                <td key={nanoid()} >{row.student_name}</td>
+                <td key={nanoid()} >{row.observation}</td>
+                <td key={nanoid()} >{row.ms1}</td>
+                <td key={nanoid()} >{row.ms2}</td>
+                <td key={nanoid()} >{row.mgc}</td>
+
+
+
+
+
+            </tr>
+        </>
+        )
+    }
+    );
+    return (
+        <>
+
+{rows?.length > 0 ?   (
+<>
+            <div className='Student-managment'>
+
+                <div className='Student-managment-menu'  >
+
+
+                    <div className='specialtyName' ><h3 style={{ textTransform: 'capitalize' }} ><Text fz="lg" color='teal' >{ranking?.data.speciality_name} {ranking?.data.year_scholar}</Text> list of ranking </h3> </div>
+
+                    <Group spacing={20} >
+
+                        <ScrollArea scrollbarSize={1}  key={nanoid()} >
+
+                            <Table
+                                horizontalSpacing="md"
+                                verticalSpacing="md"
+                                sx={{ tableLayout: 'fixed', minWidth: 1000, maxWidth: 1400, minHeight: 260 }}
+                            ><thead>
+                                    <tr key={nanoid()} ><Th
+                                        sorted={sortBy === 'student_name'}
+                                        //     reversed={reverseSortDirection}
+                                        onSort={() => setSorting('student_name')}
+                                        children='name'
+                                        key={nanoid()}
+                                    /><Th
+
+                                            children='Observation'
+                                            key={nanoid()}
+                                        /><Th
+
+                                            children='MS1'
+                                            key={nanoid()}
+                                        /><Th
+                                            children='MS2'
+                                            key={nanoid()}
+                                        /><Th
+                                            children='MGC'
+                                            key={nanoid()}
+                                        /></tr>
+                                </thead>
+                                <tbody key={nanoid} >
+                                        {rows?.length > 0 ?  rows  :
+                                        <tr  key={nanoid()} >
+                                            <td key={nanoid()} >
+                                                <Text weight={500} align="center"  key={nanoid()}>
+                                                    Nothing found
+                                                </Text>
+                                            </td>
+                                        </tr>
+                                        }
+                                </tbody>
+                            </Table>
+                        </ScrollArea>
+                    </Group>
+                </div></div>
+                </>) :  "loading..." } 
+        </>)
+
+}

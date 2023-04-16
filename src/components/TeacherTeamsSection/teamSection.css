@@ -8,7 +8,7 @@
 }
 
 .blog-section{
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,8 +20,8 @@
 }
 
 .team-info{
-    position: sticky;
-    width: 50%;
+    /* position: sticky; */
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center ;
@@ -32,14 +32,14 @@
     flex-direction:column ;
     align-items: center;
     gap: 8px;
-    width: 80%;
+    width: 90%;
 }
 .separator{
     border: 1px solid #EEEEF5  ;
 }
 .team-more-info{
     margin: 20px;
-    width: 80%;
+    width: 90%;
 }
 
 .team-section-nav {

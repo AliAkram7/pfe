@@ -1,9 +1,10 @@
-import { TextInput, Textarea, SimpleGrid, Group, Title, Button, Select, Flex, Menu, MultiSelect } from '@mantine/core';
+import { TextInput, Textarea, SimpleGrid, Group, Title, Button, Select, Flex, Menu, MultiSelect, Tabs, Transition } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { IconBrandTelegram, IconDotsVertical, IconKey, IconPlus, IconX } from '@tabler/icons';
 import { useRef, useState } from 'react';
 import { useSendSuggestion } from './connection/sendSuggestion';
 import { Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 
 function KeyWord(props) {
@@ -117,13 +118,13 @@ export function SuggestionTheme() {
     const [selectedDep, setSelectedDep] = useState(department[1].dep)
     const [specialtyAv, setSpecialtyAv] = useState(department[1].specialtyAvailable)
 
-
+    const [opened, { open, close }] = useDisclosure(false)
 
 
 
 
     const chooseDep = department.map((dep) => {
-        return (<Menu.Item onClick={() => { setSelectedDep(dep.dep); setSpecialtyAv(dep.specialtyAvailable) }}    >{dep.dep}</Menu.Item>)
+        return (<Tabs.Tab value={dep.dep} onClick={() => { setSelectedDep(dep.dep); setSpecialtyAv(dep.specialtyAvailable) }}    >{dep.dep}</Tabs.Tab>)
     })
 
 
@@ -190,7 +191,7 @@ export function SuggestionTheme() {
             }
         })
 
-        console.log(payload)
+
         sendSuggestion(payload);
 
 
@@ -206,34 +207,20 @@ export function SuggestionTheme() {
 
     return (
         <>
-            <div className='main-page-name'>
-                    <h1></h1>
-                </div>
+
             <SimpleGrid w='85%'  >
                 <Flex justify='flex-start' align='center' >
 
-
-
-
-                    <Menu shadow="md" width={200}>
-                        <Menu.Target>
-                            <Button variant='white'>
-                                <IconDotsVertical />
-                            </Button>
-                        </Menu.Target>
-
-                        <Menu.Dropdown>
-                            <Menu.Label>change department</Menu.Label>
-
-                            {chooseDep}
-
-                        </Menu.Dropdown>
-                    </Menu>
+                    <Tabs variant='default' orientation='horizontal' defaultValue={'department of computer science'}     >
+                        {chooseDep}
+                    </Tabs>
 
                     <Title m={30} order={3} >
                         MUSTAPHA STAMBOULI UNIVERSITY <br />
                         FACULTY OF EXACT SCIENCES <br />
+
                         {selectedDep.toUpperCase()}
+
                     </Title>
                 </Flex>
                 <Title m={15} order={4}  >

@@ -1,5 +1,6 @@
 import { Menu ,  Avatar } from "@mantine/core";
 import { IconSettings, IconLogout, IconUser } from "@tabler/icons";
+import { nanoid } from "nanoid";
 import { Link } from "react-router-dom";
 import { useStudentContext } from "../../contexts/studentContext";
 import './profileMenu.css'
@@ -10,7 +11,7 @@ function ProfileMenu(props) {
     
 
   return (
-    <Menu shadow='sm' width={240}  position="left-start"   classNames='menu-profile' size={45}  withArrow arrowPosition="center"  >
+    <Menu shadow='sm' width={240}  position="left-start"   classNames='menu-profile' size={45}  withArrow arrowPosition="center"   >
         <Menu.Target   >
           <Avatar/>
         </Menu.Target>

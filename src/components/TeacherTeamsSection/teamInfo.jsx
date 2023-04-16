@@ -1,7 +1,7 @@
-import { List, LoadingOverlay, Modal, ThemeIcon } from '@mantine/core'
+import { Badge, Flex, List, LoadingOverlay, Modal, Tabs, Text, ThemeIcon } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconPaperclip, IconPlus } from '@tabler/icons'
-import React, { memo } from 'react'
+import { IconPaperclip, IconPhoto, IconPlus, IconUsers } from '@tabler/icons'
+import React, { memo, useState } from 'react'
 import { useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useStateContext } from '../../contexts/ContextProvider'
@@ -9,6 +9,7 @@ import { useTeacherContext } from '../../contexts/teacherContext'
 import UserAvatar from '../avatar/avatar'
 // import { usefetchStudentData } from '../profilePage/connection/receiveData/fetchData'
 import { useGetTeamsInformation } from './connection/receiveData/fetchData'
+import CreateAppointment from './createAppointment'
 import CreateNewRoomForm from './createNewRoomForm'
 
 
@@ -19,51 +20,65 @@ function TeamInfo() {
 
 
     const { teacher, setTeamSelected, teamSelected, setIsInTeam } = useTeacherContext();
-
-  
-    
-    const { data: getTeamsInformation , error} = useGetTeamsInformation()
+    const { data: getTeamsInformation, error } = useGetTeamsInformation()
+    const [createAppointmentFormOpened, { open: openCreateApp, close: closeCreateApp }] = useDisclosure()
 
 
-    
+
+
+
     let list_of_Team = null
 
-    if (getTeamsInformation?.data?.teams_list?.length > 0 ) {
-        list_of_Team = getTeamsInformation?.data.teams_list?.map((team) => {
+    if (getTeamsInformation?.data?.teams_list?.length > 0) {
+        list_of_Team = getTeamsInformation?.data.teams_list?.map((team, idx) => {
             return (
                 <>
-                    <List.Item><Link key={team.team_id} onClick={() => { setTeamSelected(team.team_id) }}  >
-                        {team[0]?.map((member) => {
-                            return member?.name + ", "
-                        })}
-                    </Link></List.Item>
+
+
+
+                    {team[0].length > 0 &&
+                        <>
+                            <Tabs.Tab value={`team${idx}`} icon={<IconUsers size="1.3rem" />} onClick={() => { setTeamSelected(team.team_id) }} >
+                                <Flex gap={4}   >
+                                    {team[0]?.map((member) => {
+                                        return <><Text> {member?.name + " "} </Text></>
+                                    })}
+                                    <Badge onClick={openCreateApp}  > <Flex align={'center'} gap={2}  ><IconPlus size={10} /> <Text> create a appointment</Text></Flex></Badge>
+                                </Flex>
+                            </Tabs.Tab>
+
+                        </>
+                    }
+
+
+
                 </>
             )
-        })   
+        })
     }
 
 
-     
 
 
-  
+
+
 
 
     let team_members = null
 
-    if (teamSelected  && !error  ) {
+    if (teamSelected && !error) {
         getTeamsInformation?.data.teams_list.map((team) => {
             if (team.team_id === teamSelected) {
                 team_members = team[0].map((student) => {
-                    return (<UserAvatar key={student?.code} username={student?.name}
+                    return (student?.name && <UserAvatar key={student?.code} username={student?.name}
                         userinfo={student?.email} tel={student?.tel} />)
                 })
             }
         })
-    } else if(!error && getTeamsInformation?.data?.teams_list[0][0].length > 0  ) {
+    } else if (!error && getTeamsInformation?.data?.teams_list[0][0].length > 0) {
 
         team_members = getTeamsInformation?.data.teams_list[0][0]?.map((student) => {
-            return (<UserAvatar key={student?.code} username={student?.name}
+            return (student?.name && <UserAvatar key={student?.code} username={student?.name}
                 userinfo={student?.email} tel={student?.tel} />)
 
         })
@@ -79,11 +94,18 @@ function TeamInfo() {
     }
     ] = useDisclosure(false);
 
-   
+
 
     return (
 
         <>
+            <Modal
+                opened={createAppointmentFormOpened}
+                onClose={closeCreateApp}
+                size={'xl'}
+            >
+                <CreateAppointment />
+            </Modal>
             <Modal
                 withCloseButton={true}
                 closeOnClickOutside={false}
@@ -125,7 +147,7 @@ function TeamInfo() {
                     >
                         {/* <List.Item><Link to='select_theme'  >themes list</Link></List.Item> */}
 
-                        <List
+                        {/* <List
                             spacing="xs"
                             size="xl"
                             center
@@ -135,12 +157,17 @@ function TeamInfo() {
                                 </ThemeIcon>
                             }
                             className="team-section-nav"
-                        >
-                            {list_of_Team}
-                            <List.Item><Link to='/teacher/teams-section/' >rooms</Link></List.Item>
-                            {/* <List.Item><Link onClick={open}  >create room</Link></List.Item> */}
-                            
-                        </List>
+                        > */}
+
+                        <Tabs defaultValue='team0' variant='outline' orientation='vertical' >
+                            <Tabs.List>
+                                {list_of_Team}
+                            </Tabs.List>
+                        </Tabs>
+                        {/* <List.Item><Link to='/teacher/teams-section/' >rooms</Link></List.Item>
+                            <List.Item><Link onClick={open}  >create room</Link></List.Item>
+                             */}
+                        {/* </List> */}
                     </List>
 
                 </div>

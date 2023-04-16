@@ -8,7 +8,7 @@ import { useStateContext } from '../../contexts/ContextProvider'
 import { useTeacherContext } from '../../contexts/teacherContext'
 
 import './../bddStudents/StudentsManagement.css'
-import { useFetchSpecialtyInformation, usePublishListOfTheme } from './connetion/fetchData'
+import { useAffectThemeToStudents, useFetchSpecialtyInformation, usePublishListOfTheme } from './connetion/fetchData'
 import { ThemeCrud } from './ThemesCrud'
 
 function ThemeManagement() {
@@ -20,7 +20,7 @@ function ThemeManagement() {
 
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
-    const { teacher, isSpecialtyManager } = useTeacherContext()
+    const { teacher, isSpecialtyManager, affectationMethod } = useTeacherContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
 
@@ -57,24 +57,22 @@ function ThemeManagement() {
 
 
     const { mutate: publishListOfTheme , isLoading : publishLoading,  } = usePublishListOfTheme();
-
+    
 
     const handlePublish = () => {
-
         publishListOfTheme()
-
     }
+
+ 
 
 
 
     return (
-        isSpecialtyManager == true ?
+        isSpecialtyManager == true  && affectationMethod !=2   ?
             <>
 
 
-                <div className='main-page-name'>
-                    <h1></h1>
-                </div>
+              
 
                 <div className='Student-managment'>
 
@@ -91,6 +89,7 @@ function ThemeManagement() {
                                 <IconShare size={20} />
                             </Button>
                         </Tooltip>
+               
                     </div>
 
                 </div>

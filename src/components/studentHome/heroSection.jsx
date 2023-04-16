@@ -3,7 +3,8 @@ import {
     Container,
     Title,
     Text,
-    Button
+    Button,
+    Flex
 } from '@mantine/core';
 import HomeDescription from './HomeDescription';
 import heroImg from '../../imges/dep1.jpg'
@@ -18,13 +19,22 @@ const useStyles = createStyles((theme) => ({
         paddingTop: theme.spacing.xl * 3,
         paddingBottom: theme.spacing.xl * 3,
         width: '100%',
-        height: '91vh'
+        height: '80vh',
+        [theme.fn.smallerThan('md')]: {
+            height: '60vh',
+        },
+        [theme.fn.smallerThan('sm')]: {
+            height: '50vh',
+        },
+        [theme.fn.smallerThan('xs')]: {
+        paddingTop: theme.spacing.xl * 1,
+            height: '60vh',
+        },
     },
 
     inner: {
         display: 'flex',
         justifyContent: 'space-between',
-
         [theme.fn.smallerThan('md')]: {
             flexDirection: 'column'
         }
@@ -37,19 +47,36 @@ const useStyles = createStyles((theme) => ({
     },
 
     content: {
+
         paddingTop: theme.spacing.xl * 2,
         paddingBottom: theme.spacing.xl * 2,
         marginRight: theme.spacing.xl * 3,
         [theme.fn.smallerThan('md')]: {
-            marginRight: 0
+            // marginRight: 0
+            marginLeft: theme.spacing.xl * 1,
+            paddingTop: theme.spacing.xs,
+            // marginTop: theme.spacing.xs ,
+            // marginBottom: theme.spacing.xl *2,
+        marginRight: theme.spacing.xl * 1,
+
         },
+
+        // [theme.fn.smallerThan('md')]: {
+        //     // height: '60vh',
+        // },
+        // [theme.fn.smallerThan('sm')]: {
+        //     // height: '50vh',
+        // },
+
     },
 
     title: {
         color: theme.white,
+
         fontFamily: `Greycliff CF, ${theme.fontFamily
             }`,
-        fontWeight: 900,
+
+        fontWeight: 300,
         lineHeight: 1.05,
         maxWidth: 500,
         fontSize: 48,
@@ -58,7 +85,13 @@ const useStyles = createStyles((theme) => ({
             maxWidth: '100%',
             fontSize: 34,
             lineHeight: 1.15
-        }
+        },
+        [theme.fn.smallerThan('sm')]: {
+            fontSize: 30
+        },
+        [theme.fn.smallerThan('xs')]: {
+            fontSize: 20
+        },
     },
 
     description: {
@@ -68,7 +101,17 @@ const useStyles = createStyles((theme) => ({
 
         [theme.fn.smallerThan('md')]: {
             maxWidth: '100%'
+        },
+
+        [theme.fn.smallerThan('sm')]: {
+            fontSize: '10px' , 
+            maxWidth: 600,
+
+        },
+        [theme.fn.smallerThan('xs')]: {
+            fontSize: '10px' , 
         }
+
     },
 
     control: {
@@ -91,49 +134,50 @@ export function HeroSection() {
 
     return (
 
-       
-            <>
-                <div className={
-                    classes.root
-                }>
-                    <Container size="lg">
+
+        <>
+            <div className={
+                classes.root
+            }>
+                <Container size="lg">
+                    <div className={
+                        classes.inner
+                    }>
                         <div className={
-                            classes.inner
+                            classes.content
                         }>
-                            <div className={
-                                classes.content
+                            <Title className={
+                                classes.title
                             }>
-                                <Title className={
-                                    classes.title
-                                }>
-                                    Empower Your Future in the
-                                    {" "}
-                                    <Text component="span" inherit variant="gradient"
-                                        gradient={
-                                            {
-                                                from: 'goldenrod',
-                                                to: 'gold'
-                                            }
-                                        }>
-                                        Final Study Project
-                                    </Text>{" "}
+                                Empower Your Future in the
+                                {" "}
+                                <Text component="span" inherit variant="gradient"
+                                    gradient={
+                                        {
+                                            from: 'goldenrod',
+                                            to: 'gold'
+                                        }
+                                    }>
+                                    Final Study Project
+                                </Text>{" "}
+                            </Title>
+                            <Text className={
+                                classes.description
+                            }
+                            >
+                                The final study project is a crucial part of your academic journey and has the potential to shape your future. Our theme chooser platform is designed to help you find a theme that aligns with your goals and interests. With a comprehensive collection of themes and the ability to connect with other students, you can ensure that your project reflects your best work and showcases your skills. Take control of your future now.
+                            </Text>
 
-
-
-                                </Title>
-                                <Text className={
-                                    classes.description
-                                }
-                                    mt={30}>
-                                    The final study project is a crucial part of your academic journey and has the potential to shape your future. Our theme chooser platform is designed to help you find a theme that aligns with your goals and interests. With a comprehensive collection of themes and the ability to connect with other students, you can ensure that your project reflects your best work and showcases your skills. Take control of your future now.
-                                </Text>
-
-                            </div>
                         </div>
-                    </Container>
-                </div>
+                    </div>
+                </Container>
+            </div>
+            <Flex direction={'column'} gap='sm' >
                 <HomeDescription />
-            </>
+                {/* <HomeFooter /> */}
+            </Flex>
+
+        </>
 
     );
 }

@@ -14,6 +14,10 @@ export const deleteStudent=(payload)=>{
     return axiosClient.post('/teacher/department_manager/deleteAccount',payload) ;  
 }
 
+export const resetStudent=(payload)=>{
+    return axiosClient.post('/teacher/department_manager/resetStudentAccount',payload) ;  
+}
+
 
 
 export const updateStudent=(payload)=>{

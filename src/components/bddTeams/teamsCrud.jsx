@@ -6,17 +6,12 @@ import {
     UnstyledButton,
     Group,
     Text,
-    TextInput,
     Badge,
-    Input,
-    Button,
     Spoiler,
-    Modal,
-    SimpleGrid,
-    MantineProvider,
     LoadingOverlay,
     HoverCard,
     Highlight,
+    Modal,
 } from '@mantine/core';
 import { keys } from '@mantine/utils';
 import { IconSearch } from '@tabler/icons';
@@ -28,6 +23,9 @@ import { useQueryClient } from 'react-query';
 // import { userFetchListTheme } from './connetion/fetchData';
 import { useDisclosure } from '@mantine/hooks';
 import { userFetchListTeams } from './connection/connection';
+import TeamOption from './teamsOptions';
+import FollowUpStatistic from './followUpStatistic';
+import { nanoid } from 'nanoid';
 
 const useStyles = createStyles((theme) => ({
     th: {
@@ -118,7 +116,7 @@ export function TeamsCrud(props) {
 
     const mapData = () => {
         return fetchListTeams?.data.map((obj) => ({
-
+            team_id : obj.team_id ,
             supervisor_info: {
                 name: obj.supervisor_info?.name,
                 institutional_email: obj.supervisor_info?.institutional_email,
@@ -136,13 +134,18 @@ export function TeamsCrud(props) {
 
             list_theme: obj.list_theme,
 
-            theme_workOn: obj.theme_workOn
+            theme_workOn: obj.theme_workOn,
+
+            periods: obj.periods,
 
         }));
     };
     const memoizedData = useMemo(() => {
         return mapData();
     }, [fetchListTeams?.data]);
+
+
+
 
 
 
@@ -158,71 +161,13 @@ export function TeamsCrud(props) {
     const [reverseSortDirection, setReverseSortDirection] = useState(false);
     const classes = useStyles()
 
-    // const setSorting = (field) => {
-    //     const reversed = field === sortBy ? !reverseSortDirection : false;
-    //     setReverseSortDirection(reversed);
-    //     setSortBy(field);
-    //     data = fetchListTeams?.data.map(obj => ({
-    //         supervisor_info: {
-    //             name: obj.supervisor_info?.name,
-    //             institutional_email: obj.supervisor_info?.institutional_email,
-    //             grad_abName: obj.supervisor_info?.abbreviated_name,
-    //             grad_fName: obj.supervisor_info?.fullname,
-    //         },
-    //         member_1: {
-    //             name: obj.member_1.name,
-    //             code: obj.member_1.code,
-    //         },
-    //         member_2: {
-    //             name: obj.member_2?.name,
-    //             code: obj.member_2?.code,
-    //         },
-
-    //         list_theme: obj.list_theme,
-
-    //         theme_workOn: obj.theme_workOn
-
-    //     }));
-    //     setSortedData(sortData(data, { sortBy: field, reversed, search }));
-    // };
-
-    // const handleSearchChange = (event) => {
-    //     const { value } = event.currentTarget;
-    //     setSearch(value);
-    //     data = fetchListTeams?.data.map(obj => ({
-    //         supervisor_info: {
-    //             name: obj.supervisor_info?.name,
-    //             institutional_email: obj.supervisor_info?.institutional_email,
-    //             grad_abName: obj.supervisor_info?.abbreviated_name,
-    //             grad_fName: obj.supervisor_info?.fullname,
-    //         },
-    //         member_1: {
-    //             name: obj.member_1.name,
-    //             code: obj.member_1.code,
-    //         },
-    //         member_2: {
-    //             name: obj.member_2?.name,
-    //             code: obj.member_2?.code,
-    //         },
-
-    //         list_theme: obj.list_theme,
-
-    //         theme_workOn: obj.theme_workOn
-
-    //     }));
-
-    //     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
-    // };
-
-
-
     const rows = sortedData?.map((row) => {
         const k = Math.random();
         return (<>
 
             <tr key={k}>
-                {/* <td><ThemeOption row={row} /></td> */}
-         
+                <td><TeamOption row={row} /></td>
+
                 <td>
                     <HoverCard width={300} shadow="md">
                         <HoverCard.Target>
@@ -316,6 +261,8 @@ export function TeamsCrud(props) {
     );
     return (
         <>
+          
+
 
             {/* <Modal opened={description_content} onClose={hide} size='xl'    >
                 <SimpleGrid  >
@@ -337,9 +284,10 @@ export function TeamsCrud(props) {
                     sx={{ tableLayout: 'fixed', minWidth: 1000, maxWidth: 1600, minHeight: 260 }}
                 ><thead>
                         <LoadingOverlay visible={props.publishLoading} />
-                        <tr><Th
-                            children='members'
-                        /><Th
+                        <tr><Th />
+                            <Th
+                                children='members'
+                            /><Th
                                 children='teacher supervisor'
                             /><Th
                                 children='list of choice'

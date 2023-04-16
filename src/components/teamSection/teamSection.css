@@ -1,4 +1,4 @@
-.container-blog-section{
+/* .container-blog-section{
 
     min-height: 700px;
     width: 100%;
@@ -21,7 +21,7 @@
 
 .team-info{
     position: sticky;
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center ;
@@ -32,14 +32,14 @@
     flex-direction:column ;
     align-items: center;
     gap: 8px;
-    width: 80%;
+    width: 100%;
 }
 .separator{
     border: 1px solid #EEEEF5  ;
 }
 .team-more-info{
-    margin: 20px;
-    width: 80%;
+    /* margin: 20px; */
+    /* width: 100%;
 }
 
 .team-section-nav {
@@ -54,4 +54,4 @@
        color: black;
     text-decoration: underline;
 
-}
+} */ 

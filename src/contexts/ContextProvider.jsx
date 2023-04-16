@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import Cookies from "js-cookie"
 import jwt_decode from 'jwt-decode';
+import { Navigate } from "react-router";
 
 
 // import jwt_decode from 'jwt-decode';
@@ -29,7 +30,7 @@ export const ContextProvider = ({ children }) => {
 
     const [user, setUser] = useState({})
     const [token, _setToken] = useState(Cookies.get('token'))
-    const [role, setRole] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')) : null)
+    const [role, setRole] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).role : null)
     const [roomDiscription, setRoomDiscription] = useState()
     const [roomName, setRoomName] = useState()
     const [roomId, setRoomId] = useState()
@@ -40,9 +41,11 @@ export const ContextProvider = ({ children }) => {
             _setToken(token)
             Cookies.set('token', token, { expires: 7 })
             const decodedToken = jwt_decode(token);
-            console.log(decodedToken.department_manager)
+
             setRole(decodedToken.role);
-            console.log(decodedToken)
+            if(decodedToken.role!='student' && decodedToken.role!='teacher' && decodedToken.role!='admin' ){
+                <Navigate  to='/' />
+            }
         } else {
             Cookies.remove('token')
         }

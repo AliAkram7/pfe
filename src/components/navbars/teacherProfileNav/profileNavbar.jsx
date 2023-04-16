@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./profileNavbar.css";
 
-import { Modal } from "@mantine/core";
+import { createStyles, Drawer, Modal, ScrollArea, Tabs } from "@mantine/core";
 
 import logo from "../../../imges/1669627809076.png";
 import ProfileMenu from "../../profileMenu/profileMenu";
 import Logout from "../../logout/logout";
-import { Await, Outlet, useLocation, useParams } from "react-router";
+import { Await, Outlet, useLocation, useNavigate, useParams } from "react-router";
 // import ProfileFooter from "../../../../build/footers/profileFooter/profileFooter";
 import { Link } from "react-router-dom";
 import ProfileFooter from "../../footers/profileFooters/profileFooter";
@@ -23,12 +23,41 @@ import { useDisclosure } from "@mantine/hooks";
 import { SideBarTeacher } from "./sidebar";
 import { HeaderTeacher } from "./header";
 import { useGetTeamsInformation } from "../../TeacherTeamsSection/connection/receiveData/fetchData";
+import { IconBulb, IconChartArrowsVertical, IconChartHistogram, IconHome, IconListCheck, IconListDetails, IconPuzzle2, IconReport, IconSchool } from "@tabler/icons";
+import TeamInfo from "../../TeacherTeamsSection/teamInfo";
+import ChangeInfo from "../../TeacherprofilePage/changeInfo";
+
+const useStyles = createStyles((theme) => ({
+    MainPage: {
+        // width : '96%', 
+        height: '100%',
+        width: '100%'
+        // position: 'fixed', 
+        // right: '0', 
+        // bottom: '0', 
+        // overflow: 'scroll', 
+        // /* padding: 10px; */
+        // /* transition: all 0.2s; */
+        //     [theme.fn.largerThan('xs')]: {
+        //         width: '97%',  
+        //     },
+        //     [theme.fn.smallerThan('xs')]: {
+        //         width : '100%' , 
+        //     },
+    },
+
+
+}))
 
 function TeaherProfileNavbar() {
+    const { classes } = useStyles();
+
     const [openSide, setOpenSide] = useState(false);
     const [opened, setOpened] = useState(false);
-
+    const [openedTeamInformation, {open : TMopen , close : TMclose }] = useDisclosure()
+    const navigate = useNavigate()
     const chn = useLocation()
+    
     useEffect(() => {
         setTimeout(() => {
             startNavigationProgress();
@@ -42,7 +71,9 @@ function TeaherProfileNavbar() {
     //!! Teacher Function  ------------------------------------------------------------------------------------------------------------------------------------------------------------
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
-    const { teacher, setTeacher, setTeacherToken, isDepartmentManager, setIsInTeam } = useTeacherContext()
+    const { teacher, setTeacher, setTeacherToken, isDepartmentManager, setIsInTeam, isInTeam, isSpecialtyManager, affectationMethod, } = useTeacherContext()
+
+    const [firstLoginOpened, { close: firstLoginClose, open: firstLoginOpen, }] = useDisclosure(false);
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
     useEffect(() => {
         setTeacherToken(token);
@@ -63,20 +94,20 @@ function TeaherProfileNavbar() {
 
 
 
-    const { data: getTeamsInformation , error} = useGetTeamsInformation()
+    const { data: getTeamsInformation, error } = useGetTeamsInformation()
 
 
     useEffect(() => {
-        
-    if (getTeamsInformation?.data.teams_list.length > 0 ) { 
-        setIsInTeam(true)
-    }
+
+        if (getTeamsInformation?.data.teams_list.length > 0) {
+            setIsInTeam(true)
+        }
     }, [getTeamsInformation?.data.teams_list])
-    
 
 
 
-    const x =  (
+
+    const x = (
         <>
             <NavigationProgress color='gold' />
             <Modal opened={opened}
@@ -177,23 +208,56 @@ function TeaherProfileNavbar() {
         </>
     );
 
+
     const [openedSide, { toggle }] = useDisclosure(false);
+    const activeLink = useLocation();
+
 
     return (<>
-      <NavigationProgress color='gold' />
+        <NavigationProgress color='gold' />
         <div className="sidbar--header-main" >
-            <SideBarTeacher opened={openedSide} toggle={toggle} />
+            {/* <SideBarTeacher opened={openedSide} toggle={toggle} /> */}
             {/* <ChangeInfo opened={firstLoginOpened}
                 close={firstLoginClose} /> */}
-            <div className='header-main'
-            //  style={
-            //     openedSide ? {
-            //         width: "96.8%"
-            //     } : { width: "80.8%" }}
-                  >
+            <div className={`${classes.MainPage}`}>
+
+<ChangeInfo opened={firstLoginOpened}
+    close={firstLoginClose} />
+   
+
                 <HeaderTeacher />
                 <section className='main'>
+
+                    <div className='main-page-name'>
+                        <Tabs variant="default" orientation="horizontal" defaultValue="home">
+                            <Tabs.List>
+                                <Tabs.Tab value="home" onClick={() => { navigate('/teacher') }} icon={<IconHome color='teal' size="1.2rem" />}>
+                                </Tabs.Tab>
+                                <Tabs.Tab value="suggestion_theme" onClick={() => { navigate('suggestion_theme') }} icon={<IconBulb color='teal' size="1.2rem" />}>Suggest topics</Tabs.Tab>
+                                {isDepartmentManager == 1 ? <Tabs.Tab value="students_management" onClick={() => { navigate('students_management') }} icon={<IconListCheck color='teal' size="1.2rem" />}>Students</Tabs.Tab> : null}
+                                {isSpecialtyManager && affectationMethod != 2 ? <Tabs.Tab value="themes_management" onClick={() => { navigate('themes_management') }} icon={<IconSchool size="1.2rem" color='teal' />}>Themes</Tabs.Tab> : null}
+                                {isSpecialtyManager == 1 ? <Tabs.Tab value="rank_management" onClick={() => { navigate('rank_management') }} icon={<IconChartArrowsVertical color='teal' size="1.2rem" />}>Ranking</Tabs.Tab> : null}
+                                {isSpecialtyManager == 1 ? <Tabs.Tab value="teams_management" onClick={() => { navigate('teams_management') }} icon={<IconListDetails color='teal' size="1.2rem" />}>Teams</Tabs.Tab> : null}
+                                {/* {isSpecialtyManager == 1 ? <Tabs.Tab value="team_follow_up" onClick={() => { navigate('team_follow_up') }} icon={<IconListDetails color='teal' size="1.2rem" />}>teams follow-up</Tabs.Tab> : null}  */}
+                                {isSpecialtyManager == 1 && affectationMethod == 2 ? <Tabs.Tab value="framer_management" onClick={() => { navigate('framer_management') }} icon={<IconListDetails color='teal' size="1.2rem" />}>framers</Tabs.Tab> : null}
+                                    <Tabs.Tab value="framing_sheet_License" onClick={() => { navigate('framing_sheet_License') }}icon={<IconReport       size="1.2rem" color='teal' />}>License framing sheet</Tabs.Tab> 
+                                {isInTeam ? <Tabs.Tab value="teams-section" onClick={() => { navigate('teams-section') }} icon={<IconPuzzle2 size="1.2rem" color='teal' />}>teams section</Tabs.Tab> : null}
+                                {activeLink.pathname.match('section') ? <>
+                {/* framing_sheet_License */}
+                                    {/* <Tabs.Tab value="messages" onClick={() => { navigate('/teacher/team-section/room') }} icon={<IconChartHistogram color='teal' size="1.2rem" />}>state of progress</Tabs.Tab> */}
+                                    <Tabs.Tab value="settings" onClick={TMopen} icon={<IconPuzzle2 size="1.2rem" color='teal' />}>team information</Tabs.Tab>
+                                    </>
+                                     : null}
+                            </Tabs.List>
+                        </Tabs>
+                    </div>
+                    <Drawer opened={openedTeamInformation} position='right' onClose={TMclose} size={'xl'}    >
+                        <ScrollArea>
+                            <TeamInfo />
+                        </ScrollArea>
+                    </Drawer>
                     <Outlet />
+
                 </section>
                 <ProfileFooter />
             </div>

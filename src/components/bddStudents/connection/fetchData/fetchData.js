@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { fetchDepartmentInfo, fetchStudentsData } from "./axiosUrl";
+import { adminfetchDepartmentsInfo,  fetchDepartmentInfo, fetchStudentsData } from "./axiosUrl";
 
 
 export const useFetchDepartmentInfo=(onSuccess)=>{
@@ -19,4 +19,10 @@ export const useFetchStudentsData=(payload)=>{
     }
     
     )
+}
+
+export const useAdminfetchDepartmentsInfo=(onSuccess)=>{
+    return useQuery('adminfetchDepartmentsInfo', adminfetchDepartmentsInfo,
+     {  onSuccess:()=>{} , 
+    }  )
 }

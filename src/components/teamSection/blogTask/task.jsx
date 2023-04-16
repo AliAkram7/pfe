@@ -1,5 +1,6 @@
 import { Accordion, createStyles, List, ThemeIcon } from '@mantine/core'
-import { IconPaperclip } from '@tabler/icons';
+import { IconHash, IconPaperclip } from '@tabler/icons';
+import { nanoid } from 'nanoid';
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useStateContext } from '../../../contexts/ContextProvider';
@@ -57,19 +58,20 @@ function Task(props) {
 
     }
 
-      value={props.title}>
+      value={nanoid()}
+      >
       <Accordion.Control className={classes.title} ><List
         spacing="xs"
         size="xl"
         center
         icon={
           <ThemeIcon color="teal" size={30} >
-            <IconPaperclip size={20} />
+            <IconHash size={20} />
           </ThemeIcon>
         }
         className="team-section-nav"
       >
-        <List.Item><Link to="room" onClick={gotoRoom}  >{props.title}</Link></List.Item>
+        <List.Item><Link to="/student/team-section/room" onClick={gotoRoom}  >{props.title}</Link></List.Item>
 
       </List></Accordion.Control>
       <Accordion.Panel>

@@ -28,13 +28,13 @@ const useStyles = createStyles((theme) => ({
     },
 
     links: {
-        [theme.fn.smallerThan('sm')]: {
+        [theme.fn.smallerThan('xs')]: {
             display: 'none',
         },
     },
 
     burger: {
-        [theme.fn.largerThan('sm')]: {
+        [theme.fn.largerThan('xs')]: {
             display: 'none',
         },
     },
@@ -132,7 +132,7 @@ export function HeaderTeacher(props) {
             </Modal>
 
             <Header height={70} className={classes.header} color='teal'  >
-                {/* <Container  > */}
+                <Container  fluid >
                     <div className={classes.inner}>
                         <div className='profile-navbar-content'>
                             <div className='profile-navbar-img'>
@@ -147,9 +147,15 @@ export function HeaderTeacher(props) {
                             <hr  className='ProfileUniv-name-diviser' />
                         </div>
                         <Group spacing={5} className={classes.links}>
-                            {/* {items} */}
-                            <TeacherProfileMenu setOpened={setOpenedLogout} />
 
+                            <TeacherProfileMenu setOpened={setOpenedLogout} />
+                            <Burger
+                            opened={props.opened}
+                            onClick={props.open}
+                            className={classes.burger}
+                            size="sm"
+                            color="#fff"
+                        />
                         </Group>
                         <Burger
                             opened={opened}
@@ -159,7 +165,7 @@ export function HeaderTeacher(props) {
                             color="#fff"
                         />
                     </div>
-                {/* </Container> */}
+                </Container>
             </Header>
 
             {/* <Outlet /> */}

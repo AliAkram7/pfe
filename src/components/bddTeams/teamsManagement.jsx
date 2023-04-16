@@ -1,15 +1,19 @@
-import { Button, Drawer, LoadingOverlay, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
+import { Button, Drawer, Flex, Group, LoadingOverlay, Modal, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconArrowLeft, IconBrandTelegram, IconClipboard, IconPlus, IconShare } from '@tabler/icons'
+import { nanoid } from 'nanoid'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useStateContext } from '../../contexts/ContextProvider'
 import { useTeacherContext } from '../../contexts/teacherContext'
-import { useFetchSpecialtyInformation } from '../BddThemes/connetion/fetchData'
+import { useAffectFramerToStudents, useAffectThemeToStudents, useFetchSpecialtyInformation } from '../BddThemes/connetion/fetchData'
 
 import './../bddStudents/StudentsManagement.css'
+import AddFollowUpForm from './addPeriodForm'
 import AddTeamsForm from './addTeamsForm'
+import JuryMembersForm from './juryMembersLayout'
+import JuryMembersMasterForm from './juryMembersLayoutMaster'
 import { TeamsCrud } from './teamsCrud'
 
 function TeamsManagement() {
@@ -21,7 +25,7 @@ function TeamsManagement() {
 
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
-    const { teacher, isSpecialtyManager } = useTeacherContext()
+    const { teacher, isSpecialtyManager, affectationMethod } = useTeacherContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
 
@@ -33,6 +37,8 @@ function TeamsManagement() {
 
     const { data: fetchSpecialtyInformation } = useFetchSpecialtyInformation();
 
+
+    const [currentGroupOpened, { open: openCurrentGroup, close: closeCurrentGroup }] = useDisclosure()
 
 
     if (fetchSpecialtyInformation && !contextSet) {
@@ -49,12 +55,28 @@ function TeamsManagement() {
     ] = useDisclosure(false);
 
 
-    const [DrawerOpened, {
-        close: drawerClose,
-        open: drawerOpen
+    const [followUpFormOpened, {
+        close: followUpFormClose,
+        open: followUpFormOpen
     }
     ] = useDisclosure(false);
 
+    const [juryMemberFormOpened, {
+        close: juryMemberFormClose,
+        open: juryMemberFormOpen
+    }
+    ] = useDisclosure(false);
+
+    const [juryMemberMasterFormOpened, {
+        close: juryMemberMasterFormClose,
+        open: juryMemberMasterFormOpen
+    }
+    ] = useDisclosure(false);
+
+
+
+    const { mutate: affectThemeToStudents } = useAffectThemeToStudents();
+    const { mutate: affectAffectToStudents } = useAffectFramerToStudents();
 
     // const { mutate: publishListOfTheme , isLoading : publishLoading,  } = usePublishListOfTheme();
 
@@ -65,16 +87,25 @@ function TeamsManagement() {
 
     // }
 
+    const handleAffectThemeToStudents = () => {
+
+        if (affectationMethod == 1) {
+            affectThemeToStudents()
+        } else {
+            affectAffectToStudents()
+        }
+
+
+    }
+
 
 
     return (
         isSpecialtyManager == true ?
             <>
 
-
-<Transition mounted={opened} transition="fade" duration={500} timingFunction="ease">
-      {(styles) =>   <Drawer
-                            style={styles}
+                <Drawer
+                    key={nanoid()}
                     position={'bottom'}
                     withCloseButton={true}
                     closeOnClickOutside={true}
@@ -82,7 +113,7 @@ function TeamsManagement() {
                     onClose={close}
                     title={<Button variant='light' >help</Button>}
                     closeOnEscape={false}
-                    size="lg"
+                    size="md"
                     zIndex={9999}
 
                 >
@@ -94,13 +125,55 @@ function TeamsManagement() {
                             <AddTeamsForm closeModel={close} />
                         </div>
                     </div>
-                    </Drawer>  }
-    </Transition>
+                </Drawer>
 
 
-                <div className='main-page-name'>
-                    <h1></h1>
-                </div>
+                <Drawer
+                    key={nanoid()}
+                    position={'bottom'}
+                    withCloseButton={true}
+                    closeOnClickOutside={true}
+                    opened={followUpFormOpened}
+                    onClose={followUpFormClose}
+                    title={<Button variant='light' >help</Button>}
+                    closeOnEscape={false}
+                    size="lg"
+                    zIndex={9999}
+
+                >
+                    <div className='add-students' >
+
+                        <div className='byStudents'>
+                            <AddFollowUpForm closeModel={close} />
+                        </div>
+                    </div>
+                </Drawer>
+
+                <Modal
+                    key={nanoid()}
+                    position={'bottom'}
+                    withCloseButton={true}
+                    closeOnClickOutside={true}
+                    opened={juryMemberFormOpened}
+                    onClose={juryMemberFormClose}
+                    title={<Button variant='light' onClick={openCurrentGroup} >current groups</Button>}
+                    closeOnEscape={false}
+                    fullScreen
+                    zIndex={9}
+
+                >
+                    {affectationMethod == 2 ?
+                        <JuryMembersForm currentGroupOpened={currentGroupOpened} closeCurrentGroup={closeCurrentGroup} />
+                        :
+                        <JuryMembersMasterForm currentGroupOpened={currentGroupOpened} closeCurrentGroup={closeCurrentGroup} />
+
+
+                    }
+
+
+                </Modal>
+
+
 
                 <div className='Student-managment'>
 
@@ -110,13 +183,43 @@ function TeamsManagement() {
                             <div className='specialtyName' > <h3>  <Text fz="lg" color='teal' >{specialtyInformation.fullname}</Text> list of teams </h3> </div>
                             : <h3>loading...</h3>
                         }
+                        <Group spacing={'20px'} mb={30} >
+                            <Tooltip label="create team">
+                                <Button color='teal' onClick={open}  >
+                                    <Flex gap={10}>
+                                        <Text>create team</Text>
+                                        <IconPlus size={20} />
+                                    </Flex>
+                                </Button>
+                            </Tooltip>
+                            <Tooltip label="affect themes to students">
+                                <Button color='teal' onClick={handleAffectThemeToStudents}   >
+                                    <Flex gap={10} >
+                                        <Text>affect themes</Text>
+                                        <IconShare size={20} />
+                                    </Flex>
+                                </Button>
+                            </Tooltip>
+                            <Tooltip label="create a follow up sheet">
+                                <Button color='teal' onClick={followUpFormOpen}  >
+                                    <Flex align={'center'} justify='space-between' gap={10} >
+                                        <Text> follow up sheet </Text><IconPlus size={20} />
+                                    </Flex>
+                                </Button>
+                            </Tooltip>
+                            {
+                                <Tooltip label="jury members">
+                                    <Button color='teal' onClick={juryMemberFormOpen}  >
+                                        <Flex align={'center'} justify='space-between' gap={10} >
+                                            <Text> jury  members </Text><IconPlus size={20} />
+                                        </Flex>
+                                    </Button>
+                                </Tooltip>
+                            }
+
+                        </Group>
                         < TeamsCrud />
 
-                        <Tooltip label="create team">
-                            <Button color='teal'   onClick={open}  >
-                                <IconPlus size={20} />
-                            </Button>
-                        </Tooltip>
                     </div>
 
                 </div>
@@ -124,4 +227,4 @@ function TeamsManagement() {
     )
 }
 
-export default TeamsManagement  ;
+export default TeamsManagement;

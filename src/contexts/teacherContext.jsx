@@ -31,8 +31,10 @@ const teacherContext = createContext({
     setSelectedSpeciality_id: () => { },
 
     affectationMethod: null,
-    setAffectationMethod: () => { }
+    setAffectationMethod: () => { },
 
+    firstLogin: null,
+    setFirstLogin: () => { },
 
 
 })
@@ -50,6 +52,7 @@ export const TeacherContextProvider = ({ children }) => {
     const [selectedSpeciality_id, setSelectedSpeciality_id] = useState()
     const [isSpecialtyManager, setIsSpecialtyManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).specialty_manager : 0)
     const [affectationMethod, setAffectationMethod] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).pfe_method : 0)
+    const [firstLogin, setFirstLogin] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).first_login : null)
     // !! decode the special information from the token and check the token if is hase role teacher !! 
 
     const setTeacherToken = (token) => {
@@ -81,6 +84,7 @@ export const TeacherContextProvider = ({ children }) => {
             teamSelected, setTeamSelected, isDepartmentManager, setIsDepartmentManager, setSelectedSpeciality, selectedSpeciality, selectedSpeciality_id, setSelectedSpeciality_id,
             isSpecialtyManager, setIsSpecialtyManager, 
             affectationMethod, setAffectationMethod , 
+            firstLogin, setFirstLogin , 
         }
     }> {children} </teacherContext.Provider>)
 }

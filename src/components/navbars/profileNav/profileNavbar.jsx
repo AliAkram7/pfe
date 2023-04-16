@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./profileNavbar.css";
-import { Drawer, Modal, ScrollArea, SimpleGrid, Transition } from "@mantine/core";
+import { createStyles, Drawer, Modal, ScrollArea, SimpleGrid, Tabs, Transition } from "@mantine/core";
 import logo from "../../../imges/1669627809076.png";
 import ProfileMenu from "../../profileMenu/profileMenu";
 import Logout from "../../logout/logout";
-import { Await, Outlet, useLocation, useParams } from "react-router";
+import { Await, Outlet, useLocation, useNavigate, useParams } from "react-router";
 // import ProfileFooter from "../../../../build/footers/profileFooter/profileFooter";
 import { Link } from "react-router-dom";
 import ProfileFooter from "../../footers/profileFooters/profileFooter";
@@ -18,9 +18,27 @@ import ChangeInfo from "../../profilePage/changeInfo";
 import { useDisclosure } from "@mantine/hooks";
 import { HeaderStudent } from "./header";
 import { SideBarStudent } from "./sidebar";
+import { IconChartHistogram, IconHome, IconListCheck, IconPuzzle2 } from "@tabler/icons";
+import TeamInfo from "../../teamSection/teamInfo";
+import { nanoid } from "nanoid";
 
+
+const useStyles = createStyles((theme) => ({
+    MainPage: {
+        // width : '96%', 
+        height: '100%',
+        position: 'fixed',
+        right: '0',
+        bottom: '0',
+        overflow: 'scroll',
+
+        width: '100%'
+    }
+
+}))
 
 function ProfileNavbar() {
+    const { classes } = useStyles();
     const [openSide, setOpenSide] = useState(false);
     const [opened, setOpened] = useState(false);
 
@@ -36,11 +54,12 @@ function ProfileNavbar() {
         }, 200);
     }, [chn.pathname]);
 
+    const navigate = useNavigate();
 
 
     //** ------------------------------------------------------------------------ student context ------------------------------------------------------------------------  */
     const { user, token, setRole, ndToken, setNdToken } = useStateContext()
-    const { student, setStudent, setStudentToken, setIsInTeam, isInTeam, studentToken, setFirstLogin, firstLogin } = useStudentContext()
+    const { student, setStudent, setStudentToken, setIsInTeam, isInTeam, studentToken, setFirstLogin, firstLogin, affMethod } = useStudentContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
 
@@ -61,7 +80,7 @@ function ProfileNavbar() {
         setRole(data?.data.role)
         if (getStudentTeamInformation?.data.team_members.length == 2) {
             setIsInTeam(true)
-        }else{
+        } else {
             setIsInTeam(false)
         }
     }
@@ -77,7 +96,7 @@ function ProfileNavbar() {
     useEffect(() => {
         if (getStudentTeamInformation?.data.team_members.length == 2) {
             setIsInTeam(true)
-        }else{
+        } else {
             setIsInTeam(false)
         }
     }, [getStudentTeamInformation?.data.team_members.length])
@@ -87,6 +106,7 @@ function ProfileNavbar() {
 
     const x = (
         <>
+
             <ChangeInfo opened={firstLoginOpened}
                 close={firstLoginClose} />
             <NavigationProgress color='gold' />
@@ -179,9 +199,7 @@ function ProfileNavbar() {
                                 <Link to='list_of_dissertations'>dissertations</Link>
                             </li> */}
 
-                            {isInTeam == false ? <li>
-                                <Link to='join-Team'>join team</Link>
-                            </li> : null}
+
                             {isInTeam == true ? <li>
                                 <Link to='team-section'>team section</Link>
                             </li> : null}
@@ -193,24 +211,58 @@ function ProfileNavbar() {
     );
 
 
-    const [openedSide, { toggle }] = useDisclosure(false);
+    const [openedSide, { open, close }] = useDisclosure(false)
+
+
+    const activeLink = useLocation();
+
+
 
     return (<>
         <NavigationProgress color='gold' />
 
-        <div className="sidbar--header-main" >
-            <SideBarStudent opened={openedSide} toggle={toggle} isInTeam={isInTeam} />
+        <div className="sidbar--header-main"  >
+            <Drawer opened={openedSide} position='right' onClose={close} size='xl'    >
+                <ScrollArea>
+                    <TeamInfo />
+                </ScrollArea>
+            </Drawer>
+            {/* <SideBarStudent opened={openedSide} open={open} close={close} isInTeam={isInTeam} /> */}
             {/* <ScrollArea offsetScrollbars={false}   > */}
-            <div className='header-main' 
-            // style={
-            //     openedSide ? {
-            //         width: "96.8%"
-            //     } : { width: "80.8%" }} 
-                 >
-                    <ChangeInfo opened={firstLoginOpened}
-                close={firstLoginClose} />
-                <HeaderStudent />
+            <div className={`${classes.MainPage}`}
+            >
+
+                <ChangeInfo opened={firstLoginOpened}
+                    close={firstLoginClose} />
+
+                <HeaderStudent opened={openedSide} open={open} close={close} />
                 <section className='main'>
+
+                    <div className='main-page-name'>
+                        <Tabs variant="default" orientation="horizontal" defaultValue="home"   >
+                            <Tabs.List>
+                                <Tabs.Tab value="home" onClick={() => { navigate('/student') }} icon={<IconHome color='teal' size="1.2rem" />} key={nanoid()} >
+                                </Tabs.Tab>
+                                <Tabs.Tab value="ranking" onClick={() => { navigate('ranking') }} icon={<IconChartHistogram color='teal' size="1.2rem" />} key={nanoid()} >rank</Tabs.Tab>
+
+
+                                {
+                                    isInTeam ?
+                                        <Tabs.Tab value="team-section" onClick={() => { navigate('team-section')  }} icon={<IconPuzzle2 size="1.2rem" color='teal' />} key={nanoid()} >team section</Tabs.Tab>
+                                        : <Tabs.Tab value="join-Team" onClick={() => { navigate('join-Team') }} icon={<IconPuzzle2 size="1.2rem" color='teal' />} key={nanoid()} >join team</Tabs.Tab>
+                                }
+
+                                {activeLink.pathname.match('team') ? <>
+                                    {/* <Tabs.Tab value="choiceList"  onClick={() => { navigate('') }} icon={<IconListCheck color='teal'  size="1.2rem" />}>
+                                    {affMethod != 2 ? 'themes list' : 'Framer list'}
+                                </Tabs.Tab> */}
+                                    <Tabs.Tab value="messages" onClick={() => { navigate('/student/team-section/blog') }} icon={<IconChartHistogram key={nanoid()} color='teal' size="1.2rem" />} key={nanoid()} >state of progress</Tabs.Tab>
+                                    <Tabs.Tab value="settings" onClick={open} icon={<IconPuzzle2 size="1.2rem" color='teal' />} key={nanoid()} >team information</Tabs.Tab> 
+                                    </> : null}
+                            </Tabs.List>
+                        </Tabs>
+
+                    </div>
                     <Outlet />
                 </section>
                 <ProfileFooter />

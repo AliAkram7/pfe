@@ -35,11 +35,11 @@ function BlogDiscussion() {
     return (
         <>
             <div className='discussion-block'>
-                <List>
+                {/* <List>
                     <List.Item><Link to='/teacher/teams-section' >   <ThemeIcon color="teal" size={30} >
                         <IconArrowLeft size={30} />
                     </ThemeIcon></Link></List.Item>
-                </List>
+                </List> */}
                 <h1 className='discussion-title'>
                     {roomName}
                 </h1>

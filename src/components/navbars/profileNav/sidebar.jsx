@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createStyles, Navbar, UnstyledButton, Tooltip, Title, ThemeIcon, Burger, Drawer } from '@mantine/core';
+import { createStyles, Navbar, UnstyledButton, Tooltip, Title, ThemeIcon, Burger, Drawer, Flex, Group, SimpleGrid, ScrollArea, Modal } from '@mantine/core';
 import {
     IconHome2,
     IconGauge,
@@ -11,10 +11,12 @@ import {
     IconPuzzle2,
     IconSquareArrowUp,
     IconUserPlus,
+    IconLogout,
 } from '@tabler/icons';
 import { Link } from 'react-router-dom';
 import { useStudentContext } from '../../../contexts/studentContext';
 import { useDisclosure } from '@mantine/hooks';
+import Logout from '../../logout/logout';
 // import { MantineLogo } from '@mantine/ds';
 
 const useStyles = createStyles((theme) => ({
@@ -22,11 +24,16 @@ const useStyles = createStyles((theme) => ({
     },
     wrapper: {
         display: 'flex',
+        [theme.fn.smallerThan('xs')]: {
+        },
+
+        display: 'none',
+
     },
 
     aside: {
         flex: `0 0 10px`,
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+        // backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -35,14 +42,18 @@ const useStyles = createStyles((theme) => ({
     },
 
     mainLinks: {
-        flex: 1,
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+        // flex: 1,
+        
+        // backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[],
+        // height: "1200px",
+        // overflow: 'scroll'
+
     },
 
     mainLink: {
         width: '44px',
         height: '60px',
-        borderRadius: theme.radius.md,
+        borderRadius: theme.radius.xs,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -50,6 +61,8 @@ const useStyles = createStyles((theme) => ({
         '&:hover': {
             backgroundColor: !theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[0],
         },
+
+
     },
 
     mainLinkActive: {
@@ -57,6 +70,8 @@ const useStyles = createStyles((theme) => ({
             backgroundColor: theme.fn.variant({ variant: 'light', color: "yellow" }).background,
             color: theme.fn.variant({ variant: 'light', color: 'yellow' }).color,
         },
+
+
     },
 
     title: {
@@ -65,8 +80,8 @@ const useStyles = createStyles((theme) => ({
         marginBottom: theme.spacing.xl,
         backgroundColor: !theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
         padding: theme.spacing.lg,
-        paddingTop: '25px',
-        height: '70px',
+        paddingTop: '0px',
+        height: '40px',
         borderBottom: `1px solid ${!theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[3]
             }`,
     },
@@ -88,7 +103,7 @@ const useStyles = createStyles((theme) => ({
         boxSizing: 'border-box',
         display: 'flex',
         alignItems: 'center',
-        gap:'20px',
+        gap: '20px',
         textDecoration: 'none',
         borderTopRightRadius: theme.radius.md,
         borderBottomRightRadius: theme.radius.md,
@@ -101,8 +116,9 @@ const useStyles = createStyles((theme) => ({
         height: '44px',
         lineHeight: '44px',
 
+
         '&:hover': {
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.violet[1],
             color: theme.colorScheme === 'dark' ? theme.white : theme.black,
         },
     },
@@ -116,6 +132,12 @@ const useStyles = createStyles((theme) => ({
             color: theme.white,
         },
     },
+    hide: {
+        [theme.fn.largerThan('xs')]: {
+            display: 'none',
+        },
+    }
+
 }));
 
 
@@ -128,74 +150,68 @@ const useStyles = createStyles((theme) => ({
 export function SideBarStudent(props) {
     const { classes, cx } = useStyles();
     const [active, setActive] = useState('Home');
-    const [activeLink, setActiveLink] = useState('/student');
+    const [activeLink, setActiveLink] = useState('student');
     const { isInTeam } = useStudentContext()
-    const [opened , {open , close}] = useDisclosure()
+
+    const [ LogoutOpened  ,  {open : openLogout , close :  closeLogout  }] = useDisclosure()
+
     // const [opened, {toggle}] = useDisclosure(false);
     const mainLinksMockdata = [
-        { item: <Burger   opened={opened}  />, label: '' },
+        { item: <Burger opened={props.opened} />, label: '' },
+    ];
+
+    const linksMockdata = [
+        { label: 'home', icon: IconHome2 },
+        { label: 'ranking', icon: IconSquareArrowUp },
+        !isInTeam ? { label: 'join team', icon: IconUserPlus } : { label: 'team-section', icon: IconPuzzle2 },
     ];
 
 
-    // const linksMockdata = [
-    //     'home',
-    //     'ranking',
-    //     !isInTeam ? 'join-Team' : 'team-section',
-    // ];
 
 
 
-         const  linksMockdata   = [
-            {label : 'home'  ,  icon: IconHome2 },
-            {label : 'ranking' ,icon  : IconSquareArrowUp   },
-            ! isInTeam ? { label :  'join team' , icon :  IconUserPlus}  :  { label :   'team-section'  ,icon :IconPuzzle2 } ,
-        ];
-        
 
-        
-
-
-
-    
 
 
 
 
     const mainLinks = mainLinksMockdata.map((link) => (
-   
-            <UnstyledButton
-                // onClick={() => setActive(link.label)}
-                className={cx(classes.mainLink, { [classes.mainLinkActive]: link.label === active })}
-                 onClick={ opened ?  close : open}    size={20}
-            >
-                {/* <link.icon size="1.4rem" stroke={1.5} /> */}
-                {link.item}
-            </UnstyledButton>
+
+        <UnstyledButton
+            // onClick={() => setActive(link.label)}
+            className={cx(classes.mainLink, { [classes.mainLinkActive]: link.label === active })}
+            onClick={props.opened ? props.close : props.open} size={20}
+        >
+            {link.item}
+        </UnstyledButton>
 
     ));
 
-    const links = linksMockdata.map((link) => (
+    const links = linksMockdata.map((link, idx) => (
+
         <Link
             className={cx(classes.link, { [classes.linkActive]: activeLink === link.label })}
-            to={link.label === 'home' ? '/student' : link.label === 'join team' ?  'join-Team' : link.label }
+            to={link.label === 'home' ? '/student' : link.label === 'join team' ? 'join-Team' : link.label}
             onClick={(event) => {
                 // event.preventDefault();
+
                 setActiveLink(link.label);
                 setActive(link.label)
             }}
             key={link.label}
 
         >
-            <ThemeIcon variant='filled' color='teal'  size={24} >
-                <link.icon   />
+            <ThemeIcon variant='filled' color='teal' size={24} >
+                <link.icon />
             </ThemeIcon>
             {link.label}
         </Link>
+
     ));
 
     return (
         
-        <Navbar height={"100vh"}   style ={ {width : "0%" } }  className={classes.Parentnavbar}     >
+        <Navbar height={"100vh"} style={{ width: "0%" }} className={classes.Parentnavbar}     >
             <Navbar.Section grow className={classes.wrapper}  >
                 <div className={classes.aside}>
                     <div className={classes.logo}>
@@ -203,15 +219,72 @@ export function SideBarStudent(props) {
                     </div>
                     {mainLinks}
                 </div>
-                <Drawer opened={opened}   onClose={close} withCloseButton={true}  
-                        zIndex={99999}
+                <Modal opened={LogoutOpened}
+                onClose={
+                    closeLogout
+                }
                 >
-                <div className={classes.mainLinks}    >
-                    <Title order={4} className={classes.title}  >
-                        {active}
-                    </Title>
-                    {links}
-                </div>
+                <Logout setOpened={openLogout} />
+            </Modal>      
+                <Drawer opened={props.opened} onClose={props.close} withCloseButton={true}
+                    zIndex={99999}
+                    // style={{overflow  : 'scroll'}}
+                >
+                    <ScrollArea>
+                    <div className={classes.mainLinks}
+
+
+                    >
+                        <Title order={4} className={classes.title} 
+
+                        >
+                            {active}
+                        </Title>
+                        <ScrollArea  
+
+                        >
+                            <SimpleGrid 
+                                // h={'100vh'}
+
+                                
+                                >
+                                <SimpleGrid
+                                >
+                                    <Link
+                                        className={cx(classes.link, { [classes.linkActive]: activeLink === 'profile' })}
+                                        to='profile'
+                                        onClick={(event) => {
+                                            setActiveLink('profile');
+                                            setActive('profile')
+                                        }}
+                                        key={'profile'}
+                                    >
+                                        <ThemeIcon variant='filled' color='teal' size={24} >
+                                            <IconUser />
+                                        </ThemeIcon>
+                                        profile
+                                    </Link>
+
+                                    {links}
+              
+                                
+                                    
+                                </SimpleGrid>
+
+                                <Link
+                                    className={cx(classes.link)}
+                                    onClick={openLogout}
+                                >
+                                    <ThemeIcon variant='filled' color='red' size={24} >
+                                        <IconLogout />
+                                    </ThemeIcon>
+                                    logout
+                                </Link>
+
+                            </SimpleGrid>
+                        </ScrollArea>
+                    </div>
+                    </ScrollArea>
                 </Drawer>
             </Navbar.Section>
         </Navbar>

@@ -33,7 +33,7 @@ function Logout(props) {
       <Button  color='teal' variant="outline"  size="lg" >
         <Link onClick={() => props.setOpened(false)} to='/'>keep me here </Link>
       </Button>
-      <Button onClick={handleLogout}   size="lg">
+      <Button  color='red'  variant='outline'  onClick={handleLogout}   size="lg">
         <Link to='/'>log me out </Link>
       </Button>
     </div>

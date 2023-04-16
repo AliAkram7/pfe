@@ -46,7 +46,7 @@ function PageNotUploadedYet() {
             align='center'
             className={classes.description}
           >
-            this page will open at 21/4/2024
+            this page will open later
           </Text>
           <Group position='center'>
             <Link to='/'> go back </Link>

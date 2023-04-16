@@ -56,8 +56,11 @@ function HomeNav() {
             </h1>
           </div>
           <div className='gest-action'>
-            <button className='btn login-btn' onClick={() => setOpened(true)}>
-              <Link>login</Link>
+            <button 
+            // className='btn login-btn' 
+            // onClick={() => setOpened(true)}
+            >
+              <Link to='login' >login</Link>
             </button>
           </div>
         </div>

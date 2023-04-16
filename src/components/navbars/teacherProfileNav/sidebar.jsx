@@ -3,20 +3,14 @@ import { createStyles, Navbar, UnstyledButton, Tooltip, Title, ThemeIcon, Burger
 import {
     IconHome2,
     IconGauge,
-    IconDeviceDesktopAnalytics,
-    IconFingerprint,
-    IconCalendarStats,
-    IconUser,
-    IconSettings,
+
     IconPuzzle2,
-    IconSquareArrowUp,
-    IconUserPlus,
-    IconManualGearbox,
+
     IconListCheck,
-    IconBrandTelegram,
+
     IconBulb,
     IconSchool,
-    IconMilitaryRank,
+
     IconChartArrowsVertical,
     IconListDetails,
 } from '@tabler/icons';
@@ -141,30 +135,30 @@ export function SideBarTeacher(props) {
     const [active, setActive] = useState('Home');
     const [activeLink, setActiveLink] = useState('/student');
 
-        
+
 
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
-    const { teacher, isDepartmentManager, isInTeam , isSpecialtyManager, affectationMethod} = useTeacherContext()
+    const { teacher, isDepartmentManager, isInTeam, isSpecialtyManager, affectationMethod } = useTeacherContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
-    const [opened , {open , close}] = useDisclosure()
+    const [opened, { open, close }] = useDisclosure()
     // const [opened, {toggle}] = useDisclosure(false);
     const mainLinksMockdata = [
-        { item: <Burger   opened={opened}  />, label: '' },
+        { item: <Burger opened={opened} />, label: '' },
     ];
 
-    
+
     let linksMockdata = [
         { label: 'home', icon: IconHome2 },
-        {label : 'suggestion_theme', icon : IconBulb  }, 
+        { label: 'suggestion_theme', icon: IconBulb },
         isDepartmentManager == 1 ? { label: 'students_management', icon: IconListCheck } : { label: '', icon: IconGauge },
-        isInTeam ==true ? { label: 'teams-section', icon: IconPuzzle2 } : { label: '', icon: IconGauge },
-        isSpecialtyManager == 1 ? { label: 'themes_management', icon: IconSchool } : { label: '', icon: IconGauge },
+        isInTeam == true ? { label: 'teams-section', icon: IconPuzzle2 } : { label: '', icon: IconGauge },
+        isSpecialtyManager == 1 && affectationMethod != 2 ? { label: 'themes_management', icon: IconSchool } : { label: '', icon: IconGauge },
         isSpecialtyManager == 1 ? { label: 'rank_management', icon: IconChartArrowsVertical } : { label: '', icon: IconGauge },
         isSpecialtyManager == 1 ? { label: 'teams_management', icon: IconListDetails } : { label: '', icon: IconGauge },
         // TODO create framer_management section 
-        isSpecialtyManager == 1 && affectationMethod ==2  ? { label: 'framer_management', icon: IconListDetails } : { label: '', icon: IconGauge },
-        
+        isSpecialtyManager == 1 && affectationMethod == 2 ? { label: 'framer_management', icon: IconListDetails } : { label: '', icon: IconGauge },
+
     ]
 
     // debugger
@@ -179,7 +173,7 @@ export function SideBarTeacher(props) {
             {/* <link.icon size="1.4rem" stroke={1.5} /> */}
             {link.item}
         </UnstyledButton>
-        
+
     ));
 
     const links = linksMockdata.map((link) => (
@@ -212,15 +206,16 @@ export function SideBarTeacher(props) {
                     </div>
                     {mainLinks}
                 </div>
-                <Drawer opened={opened}   onClose={close} withCloseButton={true}  
-                        zIndex={99999}
+                <Drawer opened={opened} onClose={close} withCloseButton={true}
+                    zIndex={99999}
+
                 >
-                <div className={classes.mainLinks}  >
-                    <Title order={4} className={classes.title}>
-                        {active}
-                    </Title>
-                    {links}
-                </div>
+                    <div className={classes.mainLinks}  >
+                        <Title order={4} className={classes.title}>
+                            {active}
+                        </Title>
+                        {links}
+                    </div>
                 </Drawer>
             </Navbar.Section>
         </Navbar>

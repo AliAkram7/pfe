@@ -21,7 +21,14 @@ const studentContext = createContext({
     firstLogin: null,
     setFirstLogin: () => { },
     affMethod: null,
-    setAffMethod: () => { }
+    setAffMethod: () => { },
+    choiceStatus: null,
+    // * true reference that time to choose still  "open"
+    //  * false reference that students affect a supervisor or theme ,  or  there are no choice list  "close"
+    setChoiceStatus: () => { },
+    hasSupervisor: null,
+    setHasSupervisor: () => { },
+
 })
 
 export const StudentContextProvider = ({ children }) => {
@@ -33,7 +40,8 @@ export const StudentContextProvider = ({ children }) => {
     const [roomId, setRoomId] = useState(null)
     const [firstLogin, setFirstLogin] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).first_login : null)
     const [affMethod, setAffMethod] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).aff_method : null)
-
+    const [choiceStatus, setChoiceStatus] = useState(true);
+    const [hasSupervisor, setHasSupervisor] = useState(false);
     //!!  decode the special information from the token and check the token if is has role student  !! 
 
 
@@ -52,8 +60,17 @@ export const StudentContextProvider = ({ children }) => {
     }
     return (<studentContext.Provider value={
         {
-            student, setStudent, studentToken, setStudentToken, isInTeam, setIsInTeam, setRoomDiscription, setRoomName, setIsInTeam, setRoomId, roomDiscription, roomName, roomId, firstLogin, setFirstLogin, 
-            affMethod, setAffMethod
+            student, setStudent, studentToken,
+            setStudentToken,
+            isInTeam, setIsInTeam,
+            setRoomDiscription, setRoomName,
+            setIsInTeam, setRoomId,
+            roomDiscription, roomName,
+            roomId, firstLogin, setFirstLogin,
+            affMethod, setAffMethod,
+            choiceStatus, setChoiceStatus, 
+            hasSupervisor, setHasSupervisor
+
         }
     }> {children} </studentContext.Provider>)
 }

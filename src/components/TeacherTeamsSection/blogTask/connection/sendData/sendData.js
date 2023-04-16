@@ -11,7 +11,6 @@ export const useTeachersendMessage = () => {
 
 
         onError: (response) => {
-            // console.log(response.message);
             showNotification({
                 title: 'error',
                 message: 'some things goes wrong try again later',

@@ -18,6 +18,8 @@ import { useTeacherContext } from '../../contexts/teacherContext';
 import StudentOption from './studentOptions';
 import { useUpdateStudent } from './connection/sendData/sendData';
 import { useQueryClient } from 'react-query';
+import { useAdminContext } from '../../contexts/adminContext';
+import { nanoid } from 'nanoid';
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -97,7 +99,7 @@ export function StudentsCrud() {
 
 
   // *  -------------------------- fetch Students data     ----------------------------------------- *
-  const { selectedSpeciality } = useTeacherContext()
+  const { selectedSpeciality } = useAdminContext()
   const { data: fetchStudentsData } = useFetchStudentsData(selectedSpeciality?.id)
   // *  ---------------------------------------------------------------------------------------------------- *
 
@@ -130,6 +132,7 @@ export function StudentsCrud() {
 
 
     data = fetchStudentsData?.data.list_accounts.map(obj => ({
+
       code: String(obj.code),
       name: String(obj.name),
       default_password: String(obj.default_password),
@@ -240,7 +243,7 @@ export function StudentsCrud() {
 
 
   const rows = sortedData?.map((row) => {
-    const k = Math.random();
+    const k = nanoid();
 
     const setEdit = () => {
       row.Edit = 'true'

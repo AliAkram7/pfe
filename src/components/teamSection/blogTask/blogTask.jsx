@@ -1,5 +1,6 @@
-import { Container, Title, Accordion, createStyles, List, ThemeIcon } from "@mantine/core";
+import { Container, Title, Accordion, createStyles, List, ThemeIcon, Group } from "@mantine/core";
 import { IconPaperclip } from "@tabler/icons";
+import { nanoid } from "nanoid";
 import { createContext } from "react";
 import { Link } from "react-router-dom";
 import { useGetAllRooms } from "../connection/receiveData/fetchData";
@@ -36,15 +37,14 @@ export function BlogTask() {
     const { data: getAllRooms } = useGetAllRooms();
 
     const teamRooms = getAllRooms?.data.map((room) => {
-        const k = Math.random()
-        return (<Task 
-            key={k}
+        return (<Task
+            key={nanoid()}
             title={room.room_name}
-            description={room.discription} 
+            description={room.discription}
             creater={room.name}
             timeAgo={room.created_at}
             id={room.id_room}
-            />)
+        />)
 
     })
 
@@ -53,18 +53,18 @@ export function BlogTask() {
 
     return (<>
         <div className='blog-section'>
+                <h1>state of progress</h1>
 
-            <h1>team rooms</h1>
+                <Container fluid
+                    className={
+                        classes.wrapper
+                    }>
+                    <Accordion variant='separated'>
+                        {teamRooms}
+                    </Accordion>
 
-            <Container size='lg'
-                className={
-                    classes.wrapper
-                }>
-                <Accordion variant='separated'>
-                {teamRooms}
-                </Accordion>
-
-            </Container>
+                </Container>
+         
         </div>
     </>
     );

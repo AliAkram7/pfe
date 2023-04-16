@@ -1,6 +1,7 @@
 import { createStyles, Header, Menu, Group, Center, Burger, Container, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconChevronDown } from '@tabler/icons';
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { Outlet } from 'react-router';
 // import { MantineLogo } from '@mantine/ds';
@@ -27,13 +28,13 @@ const useStyles = createStyles((theme) => ({
     },
 
     links: {
-        [theme.fn.smallerThan('sm')]: {
+        [theme.fn.smallerThan('xs')]: {
             display: 'none',
         },
     },
 
     burger: {
-        [theme.fn.largerThan('sm')]: {
+        [theme.fn.largerThan('xs')]: {
             display: 'none',
         },
     },
@@ -73,7 +74,7 @@ const links = [
 
 
 export function HeaderStudent(props) {
-    const [opened, { toggle }] = useDisclosure(false);
+    // const [opened, { toggle }] = useDisclosure(false);
     const [openedLogout, setOpenedLogout] = useState(false);
 
     // const [openedMenu, props.setOpenedMenu] = useState(false);
@@ -126,7 +127,7 @@ export function HeaderStudent(props) {
                 onClose={
                     () => setOpenedLogout(false)
                 }
-                title='are you sure !'>
+                >
                 <Logout setOpened={setOpenedLogout} />
             </Modal>
 
@@ -143,16 +144,15 @@ export function HeaderStudent(props) {
                                 <br />
                                 <h5>mustapha stambouli</h5>
                             </div>
-                            <hr  className='ProfileUniv-name-diviser' />
+                            <hr  className={`ProfileUniv-name-diviser ${classes.links}`} />
                         </div>
                         <Group spacing={5} className={classes.links}>
                             {/* {items} */}
-                            <ProfileMenu setOpened={setOpenedLogout} />
-
+                            <ProfileMenu setOpened={setOpenedLogout}   key={nanoid()} />
                         </Group>
                         <Burger
-                            opened={opened}
-                            onClick={toggle}
+                            opened={props.opened}
+                            onClick={props.open}
                             className={classes.burger}
                             size="sm"
                             color="#fff"

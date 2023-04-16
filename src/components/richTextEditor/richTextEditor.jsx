@@ -3,55 +3,51 @@ import React from 'react'
 import FormikControl from '../FormControl/FormikControl';
 import * as Yup from 'yup'
 import { IconBrandTelegram, IconPlane } from '@tabler/icons';
+import { Button, SimpleGrid, Textarea, TextInput } from '@mantine/core';
+import { isNotEmpty, useForm } from '@mantine/form';
 function RichTextEditor(props) {
 
 
-  const initialValues = {
-    textContent: "",
-  };
-  const validationSchema = Yup.object({
+const form  = useForm({
+  initialValues :  {
+    textContent : ''
+  }, 
+  validate : {
+    textContent : isNotEmpty('empty message') , 
+  }
+})
 
-  });
-
-  const onSubmit = (value) => {
+  const onSubmit = (values) => {
     const payload = {
-      textContent: value.textContent,
+      textContent: values.textContent,
       room_id:props.room_id
     };
 
-    // console.log(payload)
     props.action(payload)
   }
 
   return (
     <div>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-      >
-        {(Formik) => {
-          return (
+
             <div className='box'>
-              <Form>
-                <FormikControl
-                  control='textarea'
-                  type='text'
+              <form  onSubmit={form.onSubmit(onSubmit)}  >
+                <SimpleGrid  cols={1}  spacing='md' > 
+                <Textarea
+
                   label='send message'
-                  name='textContent'
+                  minRows={3}
+                  {...form.getInputProps('textContent')}
                 />
-                <button
+                <Button
                   type='submit'
-                  className='SubmitBtn'
-                  disabled={!Formik.isValid}
-                >
-                  send <IconBrandTelegram />
-                </button>
-              </Form>
+                  // className='SubmitBtn'
+                  style={{width:'10%'}}
+                > send <IconBrandTelegram />
+                </Button>
+              </SimpleGrid>
+              </form>
             </div>
-          );
-        }}
-      </Formik>
+
     </div>
   )
 }

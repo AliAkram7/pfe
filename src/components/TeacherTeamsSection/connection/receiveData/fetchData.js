@@ -5,20 +5,18 @@ export const useGetTeamsInformation =(onSuccess, onError)=>{
     return useQuery('getTeamsInformation',getTeamsInformation,{
         onSuccess, 
         onError,
-        refetchInterval: 1000 * 30 , 
-        retry : false , 
+        
         
     },
     )
 }
 
 //*   paylod here  reference to team id    *
-export const useGetAllRoomsByTeam =(paylod)=>{
-    return useQuery( ['getAllRoomsByTeam' , paylod]  ,getAllRoomsByTeam,{
+export const useGetAllRoomsByTeam =(payload)=>{
+    return useQuery( ['getAllRoomsByTeam' , payload]  ,getAllRoomsByTeam,{
         // onSuccess, 
         // onError,
-        refetchInterval: 1000 *30, 
-        retry : false , 
+        // refetchInterval: 1000 *10, 
 
     },
     )

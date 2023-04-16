@@ -5,6 +5,7 @@ import { Form, Formik } from 'formik';
 import React from 'react'
 import * as Yup from 'yup'
 import "yup-phone-lite";
+import { useAdminContext } from '../../contexts/adminContext';
 import { useTeacherContext } from '../../contexts/teacherContext';
 import FormikControl from '../FormControl/FormikControl';
 import { useAddStudent } from './connection/sendData/sendData';
@@ -32,7 +33,7 @@ function AddStudentForm(props) {
 
 
     const { mutate: addStudent } = useAddStudent()
-    const { selectedSpeciality } = useTeacherContext()
+    const { selectedSpeciality } = useAdminContext()
 
     function combineValidators(...validators) {
         return (value) => {

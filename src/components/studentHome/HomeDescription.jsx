@@ -30,6 +30,11 @@ import {
   ];
   
   const useStyles = createStyles((theme) => ({
+    container: {
+      width: '100vw',
+      height: '100%',
+      padding : '40px'
+    },
     title: {
       fontSize: 34,
       fontWeight: 900,
@@ -87,7 +92,7 @@ import {
     ));
     return (
   
-      <Container size="lg" py="xl"    >
+      <Container size="lg" py="xl"  className={classes.container}  >
 
         <Title order={2} className={classes.title} align="center" mt="sm">
           this website provide student this functionality 

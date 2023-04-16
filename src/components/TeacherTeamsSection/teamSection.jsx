@@ -1,6 +1,9 @@
+import { Drawer, ScrollArea, Tabs } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { IconChartHistogram, IconListCheck, IconPuzzle, IconPuzzle2, IconUsers } from '@tabler/icons'
 import React from 'react'
 import { useEffect } from 'react'
-import { Navigate, Outlet, Routes } from 'react-router'
+import { Navigate, Outlet, Routes, useNavigate } from 'react-router'
 import { useStudentContext } from '../../contexts/studentContext'
 import { useTeacherContext } from '../../contexts/teacherContext'
 
@@ -9,21 +12,23 @@ import './teamSection.css'
 function TeamsSection() {
 
    const {isInTeam}  =  useTeacherContext()
-
+    const navigate = useNavigate() ;
+    const [opened , {close, open}] = useDisclosure(false)
     return (
         isInTeam ? 
-        <>            <div className='main-page-name'>
-        <h1></h1>
-    </div>
-            <div className='container-blog-section'>
+        <>
+{/*        
+                <Tabs variant="default" orientation="horizontal" defaultValue="choiceList">
+                    <Tabs.List>
+                        <Tabs.Tab value="settings" onClick={open} icon={<IconUsers size="1.4rem" color='teal' />}>teams information</Tabs.Tab>
+                    </Tabs.List> 
+                </Tabs> */}
 
-                <Outlet  />
-                <span className='separator'></span>
+        <div className='container-blog-section'>
+            <Outlet />
+        </div>
+    </> :  <Navigate to='/teacher'/>
 
-                <TeamInfo />
-
-            </div>
-        </> :  <Navigate to='/teacher'/>
 
 
     )

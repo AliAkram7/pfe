@@ -33,7 +33,8 @@ const useStyles = createStyles((theme) => ({
 export function ThemeDescriptionContent(props) {
 
     const { row } = props;
-    const { teacher,
+    const {
+        teacher,
         title,
         description,
         send_at,
@@ -43,18 +44,18 @@ export function ThemeDescriptionContent(props) {
         research_domain,
     } = row;
 
-    const listKeyWord = key_word.map((key) => {
+    const listKeyWord = key_word?.map((key) => {
 
         return (
-       
-                <Text fz="md" >
-                    - {key.key}
-                </Text>
+
+            <Text fz="md" >
+                - {key?.key}
+            </Text>
 
         )
     })
 
-    const listWorkPlan = work_plan.map((plan) => {
+    const listWorkPlan = work_plan?.map((plan) => {
         return (<Text fz="md" >
             - {plan.plan}
         </Text>)
@@ -77,19 +78,34 @@ export function ThemeDescriptionContent(props) {
                 <Text fz="md" >
                     {title}
                 </Text>
-                <Text c='teal'  >key words :</Text>
-                {listKeyWord}
+
+                {key_word?.length > 0 ?
+                    <>
+                        <Text c='teal'  >key words :</Text>
+                        {listKeyWord}
+                    </>
+                    : null}
+
                 <Text c='teal'  >Description :</Text>
                 <Text fz="md" >
                     {description}
                 </Text>
-                <Text c='teal'  >objective of the project  :</Text>
-                <Text fz="md" >
-                    {objectives_of_the_project}
-                </Text>
-                <Text c='teal'  >work plan :</Text>
-                {listWorkPlan}
+                {objectives_of_the_project ? <>
+                    <Text c='teal'  >objective of the project  :</Text>
+                    <Text fz="md" >
+                        objectives_of_the_project
+                    </Text>
+                </>
+                    : null
+                }
 
+                {work_plan?.length > 0 ?
+                    <>
+                        <Text c='teal'  >work plan :</Text>
+                        {listWorkPlan}
+                    </>
+                    : null
+                }
             </TypographyStylesProvider>
         </Paper>
     );

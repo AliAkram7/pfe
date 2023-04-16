@@ -9,14 +9,34 @@ import {
     Drawer,
     ScrollArea,
     Modal,
+    Image,
+    Container,
 } from '@mantine/core';
-import logo from "../../../imges/1668930505521.png";
+import logo from "../../../imges/1669627809076.png";
+// import logo from "../../../imges/1668930505521.png";
 import { useDisclosure } from '@mantine/hooks';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoginTo from '../../loginTo/loginTo';
 import { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
+    header: {
+    backgroundColor: theme.fn.variant({ variant: 'filled', color: 'teal' }).background,
+    borderBottom: 0,
+
+},
+
+inner: {
+    height: (70),
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    padding:' 0 10px'
+},
+
+
+
     link: {
         display: 'flex',
         alignItems: 'center',
@@ -84,6 +104,7 @@ function HomeHeader() {
 
   const [opened, setOpened] = useState(false);
 
+  const navigate = useNavigate() ;
 
 
     return (<>
@@ -95,21 +116,54 @@ function HomeHeader() {
             <LoginTo />
         </Modal>
         <Box >
-            <Header height={85} px="xl">
-                <Group position="apart" >
+            {/* <Header height={70}  px={'xl'}    >
+                <Group position="apart"   >
 
                     <div className='MainLogo-img'>
-                        <img src={logo} alt='' />
+                        <Image maw={50}     src={logo} alt='' ></Image>
+                   
                     </div>
 
 
                     <Group className={classes.hiddenMobile}>
-                        <Button variant='light' color='green' size='lg' onClick={() => setOpened(true)}    >Log in</Button>
-                        {/* <Button>Sign up</Button> */}
+                        <Button variant='light' color='green' size='md' onClick={() => setOpened(true)}    >Log in</Button>
+                        <Button>Sign up</Button>
                     </Group>
 
                     <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
                 </Group>
+            </Header> */}
+
+<Header height={70} className={classes.header} color='teal'  >
+                <Container fluid={true} >
+                    <div className={classes.inner}>
+                        <div className='profile-navbar-content'>
+                            <div className='profile-navbar-img'>
+                                <img src={logo}
+                                    alt='' />
+                            </div>
+                            <div className='ProfileUniv-name'>
+                                universite
+                                <br />
+                                <h5>mustapha stambouli</h5>
+                            </div>
+                            <hr  className={`ProfileUniv-name-diviser ${classes.hiddenMobile}`} />
+                        </div>
+                        <Group spacing={5} className={classes.links}>
+                            {/* {items} */}
+                            <Group className={classes.hiddenMobile}>
+                        <Button variant='white' color='green' size='sm'
+                        //  onClick={() => setOpened(true)} 
+                        onClick={()=>{navigate('/login')}}
+                           >Log in</Button>
+                        {/* <Button>Sign up</Button> */}
+                    </Group>
+
+                    <Burger color='white'  opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
+                        </Group>
+                     
+                    </div>
+                </Container>
             </Header>
 
             <Drawer
@@ -123,8 +177,6 @@ function HomeHeader() {
             >
                 <ScrollArea sx={{ height: 'calc(100vh - 60px)' }} mx="-md">
                     <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
-
-
 
                     <Group position="left" grow pb="xl" px="md">
                         <Button variant='light' color='green' size='lg'  onClick={() => setOpened(true)}  > Log in    </Button>

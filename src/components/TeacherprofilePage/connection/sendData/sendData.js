@@ -8,7 +8,6 @@ export const useSendStudentUpdatedData = () => {
     const queryClient = useQueryClient() ; 
     return useMutation(sendUpdatedData, {
         onError: (response) => {
-            console.log(response.message);
 
             showNotification({
                 title: 'error in changing information ',

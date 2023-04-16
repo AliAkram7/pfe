@@ -5,8 +5,12 @@ export const fetchDepartmentInfo=()=>{
     return axiosClient.get('teacher/department_manager/get_department_info') ; 
 }
 
-
 export const fetchStudentsData= ({queryKey}) => {
     const payload = queryKey[1] ;
     return axiosClient.get(`/teacher/department_manager/fetchStudentsData/${payload}`) ; 
+}
+
+
+export const adminfetchDepartmentsInfo=()=>{
+    return axiosClient.get('/admin/getDepartmentsInfo') ; 
 }

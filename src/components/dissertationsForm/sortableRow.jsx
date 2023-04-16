@@ -1,6 +1,7 @@
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
 import {IconGripVertical} from "@tabler/icons";
+import { nanoid } from "nanoid";
 
 export function Row(props) { //
     const {
@@ -14,7 +15,7 @@ export function Row(props) { //
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        boxShadow:'0.02px 1px 0.02px 0.02px  black',
+        // boxShadow:'0.02px 1px 0.02px 0.02px  black',
     }
 
     return (
@@ -22,9 +23,8 @@ export function Row(props) { //
             style={style}
             {...attributes}
             {...listeners}
-            key={
-                props.name
-        }>
+            key={nanoid()} 
+        >
             <td>
                 <IconGripVertical size={18}
                     stroke={1.5}/>

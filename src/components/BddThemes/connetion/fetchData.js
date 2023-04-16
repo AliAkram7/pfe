@@ -11,7 +11,7 @@ const fetchSpecialtyInformation = () => {
 
 export const useFetchSpecialtyInformation = () => {
     return useQuery('fetchSpecialtyInformation', fetchSpecialtyInformation, {
-        refetchInterval: 30 * 1000,
+        // refetchInterval: 30 * 1000,
 
     }
     )
@@ -40,9 +40,9 @@ export const useValidateTheme = () => {
 
     return useMutation(validateTheme, {
         onSuccess :()=>{
-
             queryClient.invalidateQueries('fetchListOfTheme');
         }
+        
     }
     )
 }
@@ -68,8 +68,20 @@ return useMutation(publishListOfTheme ,  {
 })
 
 }
+const affectThemeToStudents =()=>{
+    return axiosClient.post('/teacher/specialty_manager/affectThemeToStudents') ; 
+}
+
+export const useAffectThemeToStudents=()=>{
+    return useMutation(affectThemeToStudents, {}) ; 
+}
 
 
+const affectFramerToStudents =()=>{
+    return axiosClient.post('/teacher/specialty_manager/affectFramerToStudents') ; 
+}
 
-
+export const useAffectFramerToStudents=()=>{
+    return useMutation(affectFramerToStudents, {}) ; 
+}
 

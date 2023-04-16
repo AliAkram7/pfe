@@ -1,5 +1,6 @@
 import { Container, Title, Accordion, createStyles, List, ThemeIcon } from "@mantine/core";
 import { IconPaperclip } from "@tabler/icons";
+import { nanoid } from "nanoid";
 import { createContext } from "react";
 import { Link } from "react-router-dom";
 import { useTeacherContext } from "../../../contexts/teacherContext";
@@ -43,9 +44,9 @@ export function TeacherBlogTask() {
 
 
     const teamRooms = getAllRooms?.data.map((room) => {
-        const k = Math.random()
+        
         return (<Task 
-            key={k}
+            key={nanoid()}
             title={room.room_name}
             description={room.discription} 
             creater={room.name}
@@ -61,9 +62,9 @@ export function TeacherBlogTask() {
     return (<>
         <div className='blog-section'>
 
-            <h1>team rooms</h1>
+            <h1>state of progress</h1>
 
-            <Container size='lg'
+            <Container fluid
                 className={
                     classes.wrapper
                 }>
