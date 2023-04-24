@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
+import { useTeacherContext } from '../../contexts/teacherContext';
 
 import { ThemeDescriptionContent } from '../BddThemes/themeDescriptionContent';
 import CreateAppointment from '../TeacherTeamsSection/createAppointment';
@@ -15,7 +16,7 @@ import CreateAppointmentPresentation from './juryGroupToTeam';
 
 function TeamOption(props) {
 
-
+    const { affectationMethod } = useTeacherContext()
     const [selectedDate, setSelectedDate] = useState(0)
 
     const [statisticOpened, { open: openStatistic, close: closeStatistic }] = useDisclosure()
@@ -37,7 +38,6 @@ function TeamOption(props) {
                             period number {period.num_period}
                         </Text>
                     </HoverCard.Target>
-
                 </HoverCard>
             </Menu.Item>
         )
@@ -92,16 +92,19 @@ function TeamOption(props) {
                 </SimpleGrid>
             </Modal>
             <Modal
+                key={nanoid()}
                 opened={juryOptionOpened}
                 onClose={closeJuryOption}
                 size={'xl'}
             >
-                <CreateAppointmentPresentation />
+                <CreateAppointmentPresentation row={props?.row} ThemeRequirement={props?.row?.theme_workOn?.key_word} />
             </Modal>
 
 
 
-            <Menu shadow="md" position='left' width={200} closeDelay={10} transition={'scale-x'} zIndex={20}  >
+
+
+            <Menu shadow="md" position='left' width={200} closeDelay={10} transition={'scale-x'} zIndex={20}   >
                 <Menu.Target>
                     <Button variant='white' ><IconDotsVertical color='teal' /></Button>
                 </Menu.Target>
@@ -109,7 +112,7 @@ function TeamOption(props) {
                     <Menu.Label>options</Menu.Label>
                     <Menu.Item color='teal' icon={<IconZoomQuestion size={14} color='teal' />} onClick={showMore}   >show all details</Menu.Item>
                     {listPeriods}
-                    <Menu.Item color='teal' icon={<IconZoomQuestion size={14} color='teal' />} onClick={openJuryOption}   >Jury members</Menu.Item>
+                    {affectationMethod == 1 ? <Menu.Item color='teal' icon={<IconZoomQuestion size={14} color='teal' />} onClick={openJuryOption}   >Jury members</Menu.Item> : null}
                 </Menu.Dropdown>
             </Menu>
         </>

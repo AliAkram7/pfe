@@ -1,4 +1,4 @@
-import { Button, Drawer, Flex, List, LoadingOverlay, Modal, SimpleGrid, ThemeIcon, Tooltip, Transition, useMantineTheme } from '@mantine/core'
+import { Button, Drawer, Flex, Group, List, LoadingOverlay, Modal, SimpleGrid, Text, ThemeIcon, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconArrowLeft, IconPaperclip, IconPlus } from '@tabler/icons'
 import React, { useEffect, useState } from 'react'
@@ -159,18 +159,24 @@ function StudentsManagement() {
 
 
                 <div className='Student-managment-menu'  >
-                    <div className='specialtyName' ><Flex  align={'center'} >  <Tooltip label={'all departments'}>
+                    <div className='specialtyName' ><Flex align={'center'} >  <Tooltip label={'all departments'}>
                         <Button color='teal' variant='white' onClick={drawerOpen} >
                             <IconDotsVertical size={20} />
                         </Button>
-                    </Tooltip>   <h3> {_selectedSpeciality?.fullname}</h3> </Flex></div>
+                    </Tooltip><h3>{_selectedSpeciality?.fullname}</h3></Flex></div>
 
-                    <Outlet />
-                    <Tooltip label="add students">
-                        <Button color='teal' onClick={open}   >
-                            <IconPlus size={20} />
-                        </Button>
-                    </Tooltip>
+                    <Group spacing={20}>
+                        <Tooltip label="add teachers">
+                            <Button color='teal' onClick={open}>
+                                <Flex align={'center'} gap={8}>
+                                    <IconPlus size={20} />
+                                    <Text>Add Student</Text>
+                                </Flex>
+                            </Button>
+                        </Tooltip>
+                        <Outlet />
+                    </Group>
+
                 </div>
 
 

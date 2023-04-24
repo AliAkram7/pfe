@@ -64,7 +64,7 @@ function AdminNavbar() {
 
     //** ------------------------------------------------------------------------ admin context ------------------------------------------------------------------------  */
     const { user, token, setRole, ndToken, setNdToken } = useStateContext()
-    const {adminToken, setAdminToken} = useAdminContext()
+    const { adminToken, setAdminToken } = useAdminContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
 
@@ -87,14 +87,14 @@ function AdminNavbar() {
         <div className="sidbar--header-main"  >
             <div className={`${classes.MainPage}`}
             >
-                  
+
                 <HeaderAdmin opened={openedSide} open={open} close={close} />
                 <section className='main'>
                     <div className='main-page-name'>
-                        <Tabs variant="default" orientation="horizontal" defaultValue="home"   >
+                        <Tabs variant="default" orientation="horizontal" defaultValue="students_management"   >
                             <Tabs.List>
-                                <Tabs.Tab value="home" onClick={() => { navigate('/admin') }} icon={<IconHome color='teal' size="1.2rem" />} key={nanoid()} >
-                                </Tabs.Tab>
+                                {/* <Tabs.Tab value="home" onClick={() => { navigate('/admin') }} icon={<IconHome color='teal' size="1.2rem" />} key={nanoid()} >
+                                </Tabs.Tab> */}
                                 <Tabs.Tab value="students_management" onClick={() => { navigate('students_management') }} icon={<IconUsers color='teal' size="1.2rem" />} key={nanoid()} >students management</Tabs.Tab>
                                 <Tabs.Tab value="teacher_management" onClick={() => { navigate('teacher_management') }} icon={<IconUsers size="1.2rem" color='teal' />} key={nanoid()} >teacher management</Tabs.Tab>
                             </Tabs.List>

@@ -8,6 +8,7 @@ import { Outlet } from 'react-router';
 import logo from "../../../imges/1669627809076.png";
 import Logout from '../../logout/logout';
 import ProfileMenu from '../../profileMenu/profileMenu';
+import ProfileMenuAdmin from '../../profileMenuAdmin/profileMenu';
 // import { SideBarStudent } from './sidebar';
 
 
@@ -110,7 +111,7 @@ export function HeaderAdmin(props) {
                         </div>
                         <Group spacing={5} className={classes.links}>
                             {/* {items} */}
-                            <ProfileMenu setOpened={setOpenedLogout}   key={nanoid()} />
+                            <ProfileMenuAdmin setOpened={setOpenedLogout}   key={nanoid()} />
                         </Group>
                         <Burger
                             opened={props.opened}

@@ -32,25 +32,30 @@ export default function Member(props) {
                 return teacher;
             }
         });
+
         setTeachers(updatedTeachers);
+
+
 
     };
 
     const fields = form.values?.groups[active]?.map((item, index) => {
 
         return (
-            <Group key={item.key} mt="xs"   >
+            <Group key={item.key} mt="xs" grow      >
                 <Select
                     key={item.key}
                     data={teachers}
-                    placeholder="jury member"
+                    placeholder={item.label}
+                    label={item.label}
                     withAsterisk
                     searchable
                     clearable
                     sx={{ flex: 1 }}
-                    // defaultValue={defaultSelected[index].active  == active + 1  ? defaultSelected[index].value : null}
-                    
+                    defaultValue={item.code}
+                    minDropdownHeight={1000}
                     onChange={(value) => { handleCodeChange(value, index, active) }}
+
                 />
             </Group>)
     });
@@ -95,18 +100,7 @@ export default function Member(props) {
             </Modal>
 
 
-            <Box sx={{ maxWidth: 500, minHeight: 300 }} mx="auto"    >
-                {fields.length > 0 ? (
-                    <Group mb="xs">
-                        <Text weight={500} size="sm" sx={{ flex: 1 }}>
-                            Name
-                        </Text>
-                    </Group>
-                ) : (
-                    <Text color="dimmed" align="center">
-                        No one here...
-                    </Text>
-                )}
+            <Box sx={{ maxWidth: 500, minHeight: 380 }} mx="auto"    >
 
                 {fields}
 

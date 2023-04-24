@@ -90,7 +90,7 @@ export function ThemeCrud(props) {
             id: obj.id,
             title: String(obj.title),
             description: String(obj.description),
-            objectives_of_the_project: String(obj.objectives_of_the_project),
+            objectives_of_the_project: obj.objectives_of_the_project,
             key_word: obj.key_word,
             work_plan: obj.work_plan,
             research_domain: String(obj.research_domain),

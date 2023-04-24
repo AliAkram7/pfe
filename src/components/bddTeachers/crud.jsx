@@ -204,6 +204,7 @@ export function TeacherCrud() {
   const handleSearchChange = (event) => {
     const { value } = event.currentTarget;
     setSearch(value);
+
     data = fetchTeachersData?.data.list_accounts.map(obj => ({
       code: String(obj.code),
       name: String(obj.name),
@@ -215,9 +216,9 @@ export function TeacherCrud() {
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
       Axes_and_themes_of_recherche: JSON.parse(obj.Axes_and_themes_of_recherche),
-
       Edit: 'false'
     }));
+
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
@@ -225,6 +226,7 @@ export function TeacherCrud() {
 
 
   function RenderUpdateRow(props) {
+    
     const [name, setName] = useState(props.row.name)
     const [code, setCode] = useState(props.row.code)
     const [institutional_email, setInstitutional_email] = useState(props.row.institutional_email)
@@ -425,14 +427,14 @@ export function TeacherCrud() {
     isLoading ? <p>loading...</p> :
       (<>
         <ScrollArea scrollbarSize={0} striped >
-          <TextInput
+          {/* <TextInput
             placeholder="Search by any field"
             mb="lg"
             icon={<IconSearch size={14} stroke={1.5} />}
             value={search}
             variant='default'
             onChange={handleSearchChange}
-          />
+          /> */}
           <Table
             // withColumnBorders={true}
 
@@ -463,9 +465,10 @@ export function TeacherCrud() {
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('role')}
                   children='role'
-                /><Th sorted={sortBy === 'Research_axes_and_themes'}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting('Research_axes_and_themes')}
+                /><Th 
+                // sorted={sortBy === 'Research_axes_and_themes'}
+                  // reversed={reverseSortDirection}
+                  // onSort={() => setSorting('Research_axes_and_themes')}
                   children='Research axes and themes'
                 /><Th sorted={sortBy === 'logged_at'}
                   reversed={reverseSortDirection}

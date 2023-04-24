@@ -46,6 +46,7 @@ import TeacherManagement from "./components/bddTeachers/TeacherManagement";
 import { TeacherCrud } from "./components/bddTeachers/crud";
 import { SuggestionThemeLicense } from "./components/SuggestionTheme/SuggestionFormLicence";
 import TeamsFollowUp from "./components/bddTeamFollowUp/followUp";
+import { CalendarPresentation } from "./components/Calender/calender";
 
 
 
@@ -56,11 +57,11 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/login",
-                element: <Login  key={nanoid()} />
+                element: <Login key={nanoid()} />
             }, {
                 index: true,
                 path: "/",
-                element: [<HomeHeader   key={nanoid()} />,  <HomeHeroSection  key={nanoid()} />],
+                element: [<HomeHeader key={nanoid()} />, <HomeHeroSection key={nanoid()} />],
             },
         ]
     },
@@ -75,8 +76,8 @@ const router = createBrowserRouter([
                 children: [
                     {
                         index: true,
-                        element: <HeroSection  key={nanoid()}  />
-                    }, 
+                        element: <HeroSection key={nanoid()} />
+                    },
                     {
                         path: 'ranking',
                         element: <Ranking key={nanoid()} />
@@ -88,31 +89,35 @@ const router = createBrowserRouter([
                         path: 'profile',
                         element: <ProfilePage key={nanoid()} />
                     },
-                     {
+                    {
                         path: 'faq',
                         element: <Faq key={nanoid()} />
                     },
-                    
+                    {
+                        path: 'calender',
+                        element: <CalendarPresentation key={nanoid()} />
+                    },
+
                     {
                         path: 'team-section',
-                        element: <TeamSection  key={nanoid()} />,
+                        element: <TeamSection key={nanoid()} />,
                         // errorElement:<PageNotFound/> , 
                         children: [
-                            {   
-                                index:true  , 
+                            {
+                                index: true,
                                 // path:'team-section' , 
-                                element: <DisserForm key={nanoid()} />, 
+                                element: <DisserForm key={nanoid()} />,
                                 // errorElement:<PageNotFound/> , 
                             },
                             {
-                                path:'blog', 
+                                path: 'blog',
                                 element: <BlogTask key={nanoid()} />,
                                 // errorElement:<PageNotFound/> 
                             },
                             {
                                 path: 'room',
-                                
-                                element: <BlogDiscussion key={nanoid()}  />,
+
+                                element: <BlogDiscussion key={nanoid()} />,
                                 // errorElement:<PageNotFound/> 
                             }
                         ]
@@ -144,49 +149,52 @@ const router = createBrowserRouter([
                     {
                         path: 'profile',
                         element: <TeacherProfilePage />
-                    }, 
+                    },
                     {
-                        path:'students_management', 
-                        element:<StudentsManagement  />, 
-                        children:[{
-                            index:true  , 
-                        element : <StudentsCrud/>
+                        path: 'students_management',
+                        element: <StudentsManagement />,
+                        children: [{
+                            index: true,
+                            element: <StudentsCrud />
                         }]
                     },
                     {
                         path: 'suggestion_theme',
-                        element: < SuggestionTheme/>
-                    }, 
+                        element: < SuggestionTheme />
+                    },
                     {
                         path: 'themes_management',
-                        element: <ThemeManagement/>, 
-                        children:[{
-                            index:true , 
-                            element: <ThemeCrud/>
+                        element: <ThemeManagement />,
+                        children: [{
+                            index: true,
+                            element: <ThemeCrud />
                         }]
                     },
                     {
                         path: 'rank_management',
-                        element: <RankManagement/>, 
-                        children:[{
-                            index:true , 
+                        element: <RankManagement />,
+                        children: [{
+                            index: true,
                             element: <RankCrud />
                         }]
-                    }, 
+                    },
                     {
 
                         path: 'teams_management',
-                        element: <TeamsManagement/>, 
-                    }, 
+                        element: <TeamsManagement />,
+                    },
                     {
                         path: 'framer_management',
-                        element: <FramerManagement/>, 
-                    }, 
-             
+                        element: <FramerManagement />,
+                    },
+                    {
+                        path: 'calender',
+                        element: <CalendarPresentation key={nanoid()} />
+                    },
                     {
                         path: 'teams-section',
-                        element: <TeamsSection />, 
-                        children:[
+                        element: <TeamsSection />,
+                        children: [
                             {
                                 index: true,
                                 element: <TeacherBlogTask />,
@@ -195,12 +203,12 @@ const router = createBrowserRouter([
                                 path: 'room',
                                 element: <TeacherBlogDiscussion />,
                             },
-                         
+
                             // SuggestionThemeLicense
                         ]
 
 
-                    },     {
+                    }, {
                         path: 'framing_sheet_License',
                         element: <SuggestionThemeLicense />,
                     },
@@ -213,7 +221,7 @@ const router = createBrowserRouter([
             }
 
         ]
-    } , 
+    },
     {
         path: '/admin',
         element: <AdminLayout />,
@@ -224,23 +232,23 @@ const router = createBrowserRouter([
                 element: <AdminNavbar />,
                 children: [
                     {
-                        path:'students_management', 
-                        element:<StudentsManagement  />, 
-                        children:[{
-                            index:true  , 
-                        element : <StudentsCrud/>
+                        path: 'students_management',
+                        element: <StudentsManagement />,
+                        children: [{
+                            index: true,
+                            element: <StudentsCrud />
                         }]
                     },
                     {
-                        path:'teacher_management', 
-                        element:<TeacherManagement  />, 
-                        children:[{
-                            index:true  , 
-                        element : <TeacherCrud/>
+                        path: 'teacher_management',
+                        element: <TeacherManagement />,
+                        children: [{
+                            index: true,
+                            element: <TeacherCrud />
                         }]
                     },
 
-                  {
+                    {
                         path: 'faq',
                         element: <Faq key={nanoid()} />
                     },

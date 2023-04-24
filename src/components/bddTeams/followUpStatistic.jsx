@@ -54,7 +54,10 @@ function FollowUpStatistic(props) {
 
                 renderDay={(date) => {
                     const day = date.getDate();
+
+                    
                     const appointmentDates = getAppointmentsDates?.data || [];
+
 
                     const isAppointmentDay = appointmentDates.some(
                         (appointmentDate) =>

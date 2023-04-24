@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { Stepper, Button, Group, TextInput, PasswordInput, Code, Flex, Text, SimpleGrid, Grid, Modal } from '@mantine/core';
+import { Stepper, Button, Group, Flex, Text, SimpleGrid, Modal, Highlight } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import Member from './juryMembersForm';
-import { IconCircleLetterX, IconCircleX, IconMinus, IconPlus, IconX } from '@tabler/icons';
-import { randomId, useDisclosure } from '@mantine/hooks';
-import { showNotification } from '@mantine/notifications';
+import { IconMinus, IconPlus } from '@tabler/icons';
+import { useDisclosure } from '@mantine/hooks';
 import { nanoid } from 'nanoid';
-import { useFetchTeachers, useSendLicenseJuryMember } from './connection/connection';
+import { useFetchJuryMembersGroups, useFetchTeachers, useSendLicenseJuryMember } from './connection/connection';
 
 export default function JuryMembersForm(props) {
     const [active, setActive] = useState(0);
@@ -18,36 +17,37 @@ export default function JuryMembersForm(props) {
     const [isErrorForm, setIsErrorForm] = useState(true)
 
 
-    // Get an array of unique group numbers
-    const groupNumbers = [...new Set(fetchTeachers?.data.map((teacher) => teacher.group_number))];
+    const { data: fetchJuryMembersGroups } = useFetchJuryMembersGroups()
 
-    // Create a separate list of teachers for each group
-    const teacherLists = groupNumbers.map((groupNumber) => {
-        const groupTeachers = fetchTeachers?.data
-            .filter((teacher) => teacher.group_number === groupNumber)
-            .map((teacher) => <p key={nanoid()}>{teacher.label}</p>);
+    const teacherLists = fetchJuryMembersGroups?.data.map((group) => {
+                                                                                                                                                                                                                                                                                                                                                        
+        const listOfTeachers = group.subLabel.map((teacher) => {
+            if (teacher.isPresident == 1) {
+                return <p key={nanoid()}>president : {teacher.teacher}</p>
+            }
+            return <p key={nanoid()}>examiner : {teacher.teacher}</p>
+        })
 
-
-        if (groupTeachers.length === 0) {
-            return null;
-        }
         return (
-            groupNumber &&
-            <Group key={nanoid()}>
-                <SimpleGrid >
-                    <Text>Group {groupNumber}</Text>
-                    {groupTeachers}
+                <SimpleGrid>
+                    <Text key={nanoid()} size={18}   ><Highlight color={'teal'}    >{group.label}  </Highlight>  </Text>
+                    {listOfTeachers}
                 </SimpleGrid>
-            </Group>
+
         );
     });
-    // const filteredLists = teacherLists.filter((list) => list !== null);
-
 
     const form = useForm({
         initialValues: {
             groups: [
-                [{ code: '', key: nanoid() }, { code: '', key: nanoid() }, { code: '', key: nanoid() }],
+                [
+
+                    { code: '', isPresident: 0, isInvite: 0, label: 'examiner 1', key: nanoid() },
+                    { code: '', isPresident: 0, isInvite: 0, label: 'examiner 2', key: nanoid() },
+                    { code: '', isPresident: 0, isInvite: 0, label: 'examiner 3', key: nanoid() },
+
+                ]
+                ,
             ]
         },
         validate: (values) => {
@@ -117,11 +117,11 @@ export default function JuryMembersForm(props) {
                 size='xl'
             >
                 <>
-                    <Group>
+                <SimpleGrid spacing={15}>
 
                         {teacherLists}
 
-                    </Group>
+                    </SimpleGrid>
                 </>
             </Modal>
 

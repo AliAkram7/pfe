@@ -33,11 +33,6 @@ function AddFollowUpForm(props) {
 
     const [selectedData, setSelectedData] = useState([])
 
-
-
-
-
-
     const form = useForm({
         initialValues: {
             nPeriod: 1,

@@ -93,7 +93,7 @@ const fetchTeachers = () => {
 export const useFetchTeachers = () => {
     const queryClient = useQueryClient()
     return useQuery('fetchTeachersJury', fetchTeachers, {
-        // refetchOnWindowFocus : false, 
+        refetchOnWindowFocus: false,
     });
 }
 
@@ -104,4 +104,41 @@ const sendLicenseJuryMember = (payload) => {
 
 export const useSendLicenseJuryMember = () => {
     return useMutation(sendLicenseJuryMember, {});
+}
+
+// /teacher/specialty_manager/fetchJuryMembersGroups
+
+
+const fetchJuryMembersGroups = () => {
+    return axiosClient.get('/teacher/specialty_manager/fetchJuryMembersGroups');
+}
+
+
+export const useFetchJuryMembersGroups = () => {
+
+    return useQuery('fetchJuryMembersGroups', fetchJuryMembersGroups, {
+        refetchOnWindowFocus: false,
+    });
+}
+
+
+
+const createPresentation = (payload) => {
+    return axiosClient.post('/teacher/specialty_manager/createPresentation', payload);
+}
+
+export const useCreatePresentation = () => {
+    return useMutation(createPresentation, {});
+}
+
+
+// /teacher/specialty_manager/affectJuryToTeamsRn
+
+
+const createPresentationRn = (payload) => {
+    return axiosClient.post('/teacher/specialty_manager/affectJuryToTeamsRn', payload);
+}
+
+export const useCreatePresentationRn = () => {
+    return useMutation(createPresentationRn, {});
 }

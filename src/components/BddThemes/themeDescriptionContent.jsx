@@ -93,7 +93,7 @@ export function ThemeDescriptionContent(props) {
                 {objectives_of_the_project ? <>
                     <Text c='teal'  >objective of the project  :</Text>
                     <Text fz="md" >
-                        objectives_of_the_project
+                    {objectives_of_the_project}
                     </Text>
                 </>
                     : null

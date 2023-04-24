@@ -66,6 +66,7 @@ function ProfilePage() {
                         <h3 className='person-email'>{student?.email}</h3>
                         <h3 className='person-code'>{student?.tel}</h3>
                         <h5 className='person-code'>(N){student?.code}</h5>
+                 
 
                         <h3 className='person-info-change'>
                             <Button 

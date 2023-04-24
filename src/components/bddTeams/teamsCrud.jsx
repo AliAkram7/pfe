@@ -57,10 +57,10 @@ const useStyles = createStyles((theme) => ({
 function Th(props) {
     const { classes } = useStyles();
     return (
-        <th className={classes.th}>
-            <UnstyledButton onClick={props.onSort} className={classes.control}>
-                <Group position="left">
-                    <Text weight={300} size="sm">
+        <th className={classes.th} key={nanoid()}>
+            <UnstyledButton onClick={props.onSort} className={classes.control}  >
+                <Group position="left"  >
+                    <Text key={nanoid()} weight={300} size="sm">
                         {props.children}
                     </Text>
                 </Group>
@@ -116,7 +116,7 @@ export function TeamsCrud(props) {
 
     const mapData = () => {
         return fetchListTeams?.data.map((obj) => ({
-            team_id : obj.team_id ,
+            team_id: obj.team_id,
             supervisor_info: {
                 name: obj.supervisor_info?.name,
                 institutional_email: obj.supervisor_info?.institutional_email,
@@ -162,24 +162,24 @@ export function TeamsCrud(props) {
     const classes = useStyles()
 
     const rows = sortedData?.map((row) => {
-        const k = Math.random();
+
         return (<>
 
-            <tr key={k}>
-                <td><TeamOption row={row} /></td>
+            <tr key={nanoid()} >
+                <td key={nanoid()}  > <TeamOption row={row} /></td>
 
                 <td>
                     <HoverCard width={300} shadow="md">
-                        <HoverCard.Target>
-                            <Text>
+                        <HoverCard.Target key={nanoid()} >
+                            <Text key={nanoid()} >
                                 {row.member_1.name}, {row.member_2.name}
                             </Text>
                         </HoverCard.Target>
                         <HoverCard.Dropdown>
-                            <Text > <Highlight color='teal'>  student : </Highlight>
+                            <Text key={nanoid()}> <Highlight color='teal'>  student : </Highlight>
                                 {row.member_1?.name} <Highlight color='teal'>  with code : </Highlight>  {row.member_1?.code}
                             </Text>
-                            {row.member_2.name != null && row.member_2.name != undefined ? (<Text  > <Highlight color='teal'>  student : </Highlight> {row.member_2?.name}  <Highlight color='teal'>  with code : </Highlight> {row.member_2?.code} </Text>) : null}
+                            {row.member_2.name != null && row.member_2.name != undefined ? (<Text key={nanoid()} > <Highlight color='teal'>  student : </Highlight> {row.member_2?.name}  <Highlight color='teal'>  with code : </Highlight> {row.member_2?.code} </Text>) : null}
                         </HoverCard.Dropdown>
                     </HoverCard>
                 </td>
@@ -187,10 +187,10 @@ export function TeamsCrud(props) {
 
                 <td>
 
-                    <HoverCard width={280} shadow="md">
-                        <HoverCard.Target>
+                    <HoverCard width={280} shadow="md" key={nanoid()} >
+                        <HoverCard.Target key={nanoid()} >
                             {/* <Spoiler maxHeight={60} showLabel="Show more" hideLabel="Hide" onClick={() => (showMore(row))}   > */}
-                            {row.supervisor_info?.name ? (<Text>
+                            {row.supervisor_info?.name ? (<Text key={nanoid()} >
                                 {row.supervisor_info?.name}
                             </Text>) :
                                 <Badge color='red'   >without</Badge>}
@@ -216,22 +216,14 @@ export function TeamsCrud(props) {
                     </HoverCard>
                 </td>
 
-                {/* //!! themes */}
-                {/* list_theme: obj.list_theme.map((theme) => {
-                theme = {
-                    id: theme?.id,
-                    title: theme?.title,
-                    description: theme?.description,
-                }
-            }) */}
-                <td>
+                <td key={nanoid()} >
                     <HoverCard width={280} shadow="md">
                         <HoverCard.Target>
-                            <Spoiler maxHeight={40} showLabel="Show more" hideLabel="Hide"   >
-                                <Text>
+                            <Spoiler key={nanoid()} maxHeight={40} showLabel="Show more" hideLabel="Hide"   >
+                                <Text key={nanoid()} >
                                     {/* { row.list_theme ?  */}
                                     {row.list_theme?.map((theme, idx) => {
-                                        return (<><Text display='flex' >
+                                        return (<><Text key={nanoid()} display='flex' >
                                             <Highlight color='green' >{idx + 1}</Highlight> - {theme?.title}
                                         </Text><br /> </>)
                                     })}
@@ -242,8 +234,8 @@ export function TeamsCrud(props) {
                         </HoverCard.Target>
 
                     </HoverCard>
-                </td>
-                <td>
+                </td >
+                <td key={nanoid()} >
                     <HoverCard width={280} shadow="md">
                         <HoverCard.Target>
                             <Text>{row.theme_workOn?.title.length > 30 ? row.theme_workOn?.title.slice(0, 30) + "..." : row.theme_workOn?.title}</Text>
@@ -261,30 +253,19 @@ export function TeamsCrud(props) {
     );
     return (
         <>
-          
 
 
-            {/* <Modal opened={description_content} onClose={hide} size='xl'    >
-                <SimpleGrid  >
-                    <ThemeDescriptionContent row={theme_description} />
-                </SimpleGrid>
-            </Modal> */}
-            <ScrollArea scrollbarSize={1} >
-                {/* <TextInput
-                    placeholder="Search by any field"
-                    mb="lg"
-                    icon={<IconSearch size={14} stroke={1.5} />}
-                    value={search}
-                    variant='filled'
-                    onChange={handleSearchChange}
-                /> */}
-                <Table
+
+
+            <ScrollArea key={nanoid()} scrollbarSize={1} >
+
+                <Table key={nanoid()}
                     horizontalSpacing="xl"
                     verticalSpacing="xl"
                     sx={{ tableLayout: 'fixed', minWidth: 1000, maxWidth: 1600, minHeight: 260 }}
-                ><thead>
-                        <LoadingOverlay visible={props.publishLoading} />
-                        <tr><Th />
+                ><thead key={nanoid()} >
+                        <LoadingOverlay key={nanoid()} visible={props.publishLoading} />
+                        <tr><Th key={nanoid()} />
                             <Th
                                 children='members'
                             /><Th
@@ -301,9 +282,9 @@ export function TeamsCrud(props) {
                         {rows?.length > 0 ? (
                             rows
                         ) : (
-                            <tr>
-                                <td >
-                                    <Text weight={500} align="center"  >
+                            <tr key={nanoid()} >
+                                <td key={nanoid()} >
+                                    <Text key={nanoid()} weight={500} align="center"  >
                                         Nothing found
                                     </Text>
                                 </td>

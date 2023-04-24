@@ -1,6 +1,6 @@
 import { Button, Drawer, Flex, Group, LoadingOverlay, Modal, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconArrowLeft, IconBrandTelegram, IconClipboard, IconPlus, IconShare } from '@tabler/icons'
+import { IconArrowLeft, IconBrandTelegram, IconCalendar, IconClipboard, IconPlus, IconShare } from '@tabler/icons'
 import { nanoid } from 'nanoid'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router'
@@ -14,6 +14,7 @@ import AddFollowUpForm from './addPeriodForm'
 import AddTeamsForm from './addTeamsForm'
 import JuryMembersForm from './juryMembersLayout'
 import JuryMembersMasterForm from './juryMembersLayoutMaster'
+import PresentationForm from './PresentationForm'
 import { TeamsCrud } from './teamsCrud'
 
 function TeamsManagement() {
@@ -61,6 +62,11 @@ function TeamsManagement() {
     }
     ] = useDisclosure(false);
 
+    const [presentationFormOpened, {
+        close: presentationFormClose,
+        open: presentationFormOpen
+    }
+    ] = useDisclosure(false);
     const [juryMemberFormOpened, {
         close: juryMemberFormClose,
         open: juryMemberFormOpen
@@ -97,6 +103,7 @@ function TeamsManagement() {
 
 
     }
+
 
 
 
@@ -149,6 +156,28 @@ function TeamsManagement() {
                     </div>
                 </Drawer>
 
+                <Drawer
+                    key={nanoid()}
+                    position={'bottom'}
+                    withCloseButton={true}
+                    closeOnClickOutside={true}
+                    opened={presentationFormOpened}
+                    onClose={presentationFormClose}
+                    title={<Button variant='light' >help</Button>}
+                    closeOnEscape={false}
+                    size="lg"
+                    zIndex={9999}
+
+                >
+                    <div className='add-students' >
+
+                        <div className='byStudents'>
+                            <PresentationForm />
+                        </div>
+                    </div>
+                </Drawer>
+
+
                 <Modal
                     key={nanoid()}
                     position={'bottom'}
@@ -164,14 +193,15 @@ function TeamsManagement() {
                 >
                     {affectationMethod == 2 ?
                         <JuryMembersForm currentGroupOpened={currentGroupOpened} closeCurrentGroup={closeCurrentGroup} />
-                        :
-                        <JuryMembersMasterForm currentGroupOpened={currentGroupOpened} closeCurrentGroup={closeCurrentGroup} />
+                        : null
+                        // <JuryMembersMasterForm currentGroupOpened={currentGroupOpened} closeCurrentGroup={closeCurrentGroup} />
 
 
                     }
 
 
                 </Modal>
+
 
 
 
@@ -195,7 +225,11 @@ function TeamsManagement() {
                             <Tooltip label="affect themes to students">
                                 <Button color='teal' onClick={handleAffectThemeToStudents}   >
                                     <Flex gap={10} >
-                                        <Text>affect themes</Text>
+                                        {affectationMethod == 1 ?
+                                            <Text>affect themes</Text>
+                                            :
+                                            <Text>affect supervisors</Text>
+                                        }
                                         <IconShare size={20} />
                                     </Flex>
                                 </Button>
@@ -207,15 +241,26 @@ function TeamsManagement() {
                                     </Flex>
                                 </Button>
                             </Tooltip>
-                            {
-                                <Tooltip label="jury members">
-                                    <Button color='teal' onClick={juryMemberFormOpen}  >
-                                        <Flex align={'center'} justify='space-between' gap={10} >
-                                            <Text> jury  members </Text><IconPlus size={20} />
-                                        </Flex>
-                                    </Button>
-                                </Tooltip>
+                            {affectationMethod == 2 ?
+                                <>
+                                    <Tooltip  label="jury members">
+                                        <Button color='teal' onClick={juryMemberFormOpen}  >
+                                            <Flex align={'center'} justify='space-between' gap={10} >
+                                                <Text> jury  members </Text><IconPlus size={20} />
+                                            </Flex>
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip  label="Presentation Date">
+                                        <Button color='teal' onClick={presentationFormOpen}  >
+                                            <Flex align={'center'} justify='space-between' gap={10} >
+                                                <Text> Presentation Date</Text><IconCalendar size={20} />
+                                            </Flex>
+                                        </Button>
+                                    </Tooltip>
+                                </>
+                                : null
                             }
+
 
                         </Group>
                         < TeamsCrud />

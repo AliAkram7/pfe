@@ -1,177 +1,326 @@
-import { useState } from 'react';
-import { Stepper, Button, Group, TextInput, PasswordInput, Code, Flex, Text, SimpleGrid, Grid, Modal } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import Member from './juryMembersForm';
-import { IconCircleLetterX, IconCircleX, IconMinus, IconPlus, IconX } from '@tabler/icons';
-import { randomId, useDisclosure } from '@mantine/hooks';
-import { showNotification } from '@mantine/notifications';
+import { forwardRef, useState } from 'react';
+import { Group, SimpleGrid, ScrollArea, Box, Select } from '@mantine/core';
 import { nanoid } from 'nanoid';
-import { useFetchTeachers, useSendLicenseJuryMember } from './connection/connection';
-import MemberMaster from './juryMembersFormMaster';
+
+import { Progress, PasswordInput, Text, Center } from '@mantine/core';
+import { useInputState } from '@mantine/hooks';
+import { IconCheck, IconPlus, IconUser, IconX } from '@tabler/icons-react';
+import { GroupMember } from './juryMemberSelectOption';
+
+function ThemeRequirement({ meets, label }
+    // : { meets: boolean; label: string }
+) {
+    return (
+        <Text color={meets ? 'teal' : 'red'} mt={5} size="sm">
+            <Center inline>
+                {meets ? <IconCheck size="0.9rem" stroke={1.5} /> : <IconX size="0.9rem" stroke={1.5} />}
+                <Box ml={7}>{label}</Box>
+            </Center>
+        </Text>
+    );
+}
+
+// const requirements = [
+//     { re: /[0-9]/, label: 'Includes number' },
+//     { re: /[a-z]/, label: 'Includes lowercase letter' },
+//     { re: /[A-Z]/, label: 'Includes uppercase letter' },
+//     { re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'Includes special symbol' },
+// ];
+
+function getStrength(profiles, requirements
+    // : string
+) {
+    let multiplier = 0;
+
+
+    // console.log(requirements)
+    let test = [];
+
+    profiles.forEach(item => {
+        item.label.forEach(label => {
+            test.push(label.label);
+        });
+    });
+
+
+
+
+    requirements.forEach((requirement) => {
+        const searchValue = requirement.re;
+
+        // console.log(test)
+
+        const valueExists = test.includes(searchValue);
+
+        if (!valueExists) {
+            // console.log(`The value '${searchValue}' exists in the array.`);
+            multiplier += 1;
+        } else {
+            // console.log(`The value '${searchValue}' does not exist in the array.`);
+        }
+
+    });
+
+    return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 0);
+}
+
+export function ThemeStrength(props) {
+
+    const { profiles, ThemeRe } = props
+
+    const re = JSON.parse(ThemeRe).map(obj => { return { re: obj.key, label: "include " + obj.key } })
+
+    const [requirements, setRequirements] = useState(re)
+
+
+    // console.log(requirements)
+
+
+    // console.log(requirement)
+
+    const [value, setValue] = useInputState('');
+
+    const strength = getStrength(profiles, requirements);
+
+    let test = [];
+
+    profiles.forEach(item => {
+        item.label.forEach(label => {
+            test.push(label.label);
+        });
+    });
+
+
+
+    const checks = requirements.map((requirement, index) => (
+        <ThemeRequirement key={index} label={requirement.label}
+            meets={test.includes(requirement.re)}
+        />
+    ));
+
+    const bars = Array(requirements.length)
+        .fill(0)
+        .map((_, index) => (
+            <Progress
+                styles={{ bar: { transitionDuration: '0ms' } }}
+                value={
+                    strength >= ((index + 1) / requirements.length) * 100 ? 100 : 0
+                }
+                color={strength > 50 ? 'teal' : 'yellow'}
+                key={index}
+                size={3}
+            />
+        ));
+
+    return (
+        <div>
+
+            <Group spacing={5} grow mt="xs" mb="md">
+                {bars}
+            </Group>
+
+            {/* <ThemeRequirement label="Has at least 6 characters" meets={value.length > 5} /> */}
+            {checks}
+        </div>
+    );
+}
+
+const SelectItem = forwardRef(({ image, label, subLabel, ...others } = data, ref) => (
+
+    <div ref={ref} {...others}>
+        <GroupMember icon={IconUser} label={label}
+            initiallyOpened={true} links={subLabel}
+        />
+    </div>
+));
+
 
 export default function JuryMembersMasterForm(props) {
-    const [active, setActive] = useState(0);
-    const [conformationModalOpened, { open: openConformationModal, close: closeConformationModal }] = useDisclosure()
 
-
-    const { data: fetchTeachers, isLoading, isSuccess } = useFetchTeachers()
-
-    const [isErrorForm, setIsErrorForm] = useState(true)
-
-
-    // Get an array of unique group numbers
-    const groupNumbers = [...new Set(fetchTeachers?.data.map((teacher) => teacher.group_number))];
-
-    // Create a separate list of teachers for each group
-    const teacherLists = groupNumbers.map((groupNumber) => {
-        const groupTeachers = fetchTeachers?.data
-            .filter((teacher) => teacher.group_number === groupNumber)
-            .map((teacher) => <p key={nanoid()}>{teacher.label}</p>);
-
-
-        if (groupTeachers.length === 0) {
-            return null;
-        }
-        return (
-            groupNumber &&
-            <Group key={nanoid()}>
-                <SimpleGrid >
-                    <Text>Group {groupNumber}</Text>
-                    {groupTeachers}
-                </SimpleGrid>
-            </Group>
-        );
-    });
-    // const filteredLists = teacherLists.filter((list) => list !== null);
-
-
-    const form = useForm({
-        initialValues: {
-            groups: [
-                [
-                    { code: '', isPresident: 1, isInvite: 0, label: 'president', key: nanoid() },
-                    { code: '', isPresident: 0, isInvite: 1, label: 'examiner 1 (Invited Specialization Manager)', key: nanoid() },
-                    { code: '', isPresident: 0, isInvite: 0, label: 'examiner 2', key: nanoid() },
-                    { code: '', isPresident: 0, isInvite: 0, label: 'examiner 3', key: nanoid() }
-                ]
-            ]
-        },
-        validate: (values) => {
-            const group = values.groups[active];
-            const hasEmptyEmployeeName = group.some((employeeObj) => {
-                return !employeeObj.code;
-            });
-            return hasEmptyEmployeeName
-                ? ({ groups: `Employee names in group ${active} cannot be empty` })
-                : null;
-        },
-    });
-
-
-    const nextStep = () =>
-        setActive((current) => {
-            if (form.validate().hasErrors) {
-
-                return current;
-            }
-            return current < form.values.groups?.length ? current + 1 : current;
-        });
-    const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+    const { form, ThemeRe } = props;
 
 
 
-    const { mutate: sendLicenseJuryMember } = useSendLicenseJuryMember()
-
-    const handleConfirm = () => {
-        console.log(form.values)
-        // sendLicenseJuryMember(form.values)
-    }
-
-    const DynamicStepper = form.values.groups.map((group, idx) => {
-        return (
-            <Stepper.Step label={`group${idx + 1}`}
-                key={nanoid()}
-            >
-                {
-                    !isLoading ?
-                        <MemberMaster form={form} active={active}
-                            teachers={fetchTeachers.data}
-                            conformationModalOpened={conformationModalOpened} close={closeConformationModal}
-                            handleConfirm={handleConfirm}
-                        />
-                        : null}
-            </Stepper.Step>
-        )
-    })
+    const [teachers, setTeachers] = useState(props.teachers)
+    const [profiles, setProfiles] = useState([]);
 
 
-
+    // console.log(teachers)
 
     return (
         <>
 
-            <Modal
-                opened={props.currentGroupOpened}
+            <SimpleGrid key={nanoid()}  >
+                <Group grow
+                    key={nanoid()}
+                >
 
-                onClose={props.closeCurrentGroup}
-                size='xl'
-            >
-                <>
-                    <Group>
+                    <ScrollArea>
+                        <Box sx={{ maxWidth: 600 }} mx="auto"    >
 
-                        {teacherLists}
+                            {/* <Group key={nanoid()} mt="xs"   > */}
+                            <>
+                                <Select
+                                    name='president'
+                                    data={teachers}
+                                    placeholder={"president"}
+                                    itemComponent={SelectItem}
+                                    label={"president"}
+                                    withAsterisk
+                                    searchable
+                                    sx={{ flex: 1 }}
+                                    value={form.values.president}
+                                    onChange={(value) => {
 
-                    </Group>
-                </>
-            </Modal>
+                                        form.setValues({ "president": value });
 
-            <form >
-                <SimpleGrid  >
-                    <Flex align={'center'} gap={8} >
-                        <Button variant='subtle' label={"add group"} disabled={form.values.groups.length >= 12} onClick={() =>
-                            form.insertListItem(`groups`, [
-                                { code: '', isPresident: 1, isInvite: 0, label: 'president', key: nanoid() },
-                                { code: form.values.groups[0][1], isPresident: 0, isInvite: 1, label: 'examiner 1 (Invited Specialization Manager)', key: nanoid() },
-                                { code: '', isPresident: 0, isInvite: 0, label: 'examiner 2', key: nanoid() },
-                                { code: '', isPresident: 0, isInvite: 0, label: 'examiner 3', key: nanoid() }
-                            ])
-                        }
-                            w={'5%'}
-                        ><Flex align={'center'} gap={8}><IconPlus size={18} /> </Flex> </Button>
+                                        const temp = form.values.president
 
-                        <Button variant='subtle' disabled={form.values.groups.length == 1} label={"add group"} onClick={() => {
-                            form.removeListItem('groups', form.values.groups.length - 1);
-                            prevStep()
-                        }
+                                        let index = profiles.findIndex(obj => obj.code === temp);
+                                        if (index !== -1 && temp !== '') {
+                                            setProfiles(profiles.splice(index, 1))
+                                        }
+                                        const newTeacherProfile = profiles.filter(obj => String(obj.code) !== temp)
 
-                        }
-                            w={'5%'}
-                        ><Flex align={'center'} gap={8}><IconMinus size={18} /> </Flex> </Button>
-                    </Flex>
-                    <Stepper active={active} breakpoint="sm">
-                        {DynamicStepper}
+                                        setProfiles(newTeacherProfile)
 
 
+                                        const updatedTeachers = teachers.map((teacher) => {
+                                            if (teacher.value === value) {
+                                                const teacherProfile = JSON.parse(teacher.Axes_and_themes_of_recherche)
+                                                setProfiles([...profiles, { code: teacher.value, label: teacherProfile }])
+                                                return { ...teacher, disabled: 1 };
+                                            } if (teacher.value === temp) {
+                                                return { ...teacher, disabled: 0 };
+                                            }
+                                            else {
+                                                return teacher;
+                                            }
+                                        });
+                                        setTeachers(updatedTeachers);
+                                    }}
 
-                        {/* 
-                        <Stepper.Completed>
-                        Completed! Form values:
-                        <Code block mt="xl">
-                            {JSON.stringify(form.values, null, 2)}
-                        </Code>
-                    </Stepper.Completed> */}
-                    </Stepper>
-                </SimpleGrid>
-                <Group position="right" mt="xl">
-                    {(active < form.values.groups?.length && active > 0) && (
-                        <Button variant="default" onClick={prevStep}>
-                            Back
-                        </Button>
-                    )}
-                    {active < form.values.groups?.length - 1 && <Button disabled={!form.isValid()} onClick={nextStep}>Next</Button>}
-                    {active == form.values.groups?.length - 1 && <Button disabled={!form.isValid()} onClick={openConformationModal}>terminate</Button>}
+
+                                // {...form.getInputProps('president')}
+                                />
+                                <Select
+                                    name='ex1'
+                                    data={teachers}
+                                    placeholder={"examiner 1"}
+                                    label={"examiner 1"}
+                                    itemComponent={SelectItem}
+                                    withAsterisk
+                                    searchable
+                                    sx={{ flex: 1 }}
+                                    value={form.values.ex1}
+                                    onChange={(value) => {
+                                        form.setValues({ "ex1": value });
+                                        let temp = form.values.ex1
+                                        let index = profiles.findIndex(obj => obj.code === temp);
+                                        if (index !== -1 && temp !== '') {
+                                            setProfiles(profiles.splice(index, 1))
+                                        }
+                                        const updatedTeachers = teachers.map((teacher) => {
+                                            if (teacher.value === value) {
+                                                let teacherProfile = JSON.parse(teacher.Axes_and_themes_of_recherche)
+                                                setProfiles([...profiles, { code: teacher.value, label: teacherProfile }])
+                                                return { ...teacher, disabled: 1 };
+                                            } if (teacher.value === temp) {
+
+                                                return { ...teacher, disabled: 0 };
+                                            }
+                                            else {
+                                                return teacher;
+                                            }
+                                        });
+                                        setTeachers(updatedTeachers);
+                                    }}
+                                // {...form.getInputProps('ex1')}
+                                />
+                                <Select
+                                    name='ex2'
+                                    key={nanoid}
+                                    data={teachers}
+                                    placeholder={"examiner 2"}
+                                    itemComponent={SelectItem}
+                                    label={"examiner 2"}
+                                    withAsterisk
+                                    searchable
+                                    sx={{ flex: 1 }}
+                                    value={form.values.ex2}
+                                    onChange={(value) => {
+                                        form.setValues({ "ex2": value });
+
+                                        let temp = form.values.ex2
+                                        let index = profiles.findIndex(obj => obj.code === temp);
+                                        if (index !== -1 && temp !== '') {
+                                            setProfiles(profiles.splice(index, 1))
+                                        }
+                                        const updatedTeachers = teachers.map((teacher) => {
+                                            if (teacher.value === value) {
+                                                let teacherProfile = JSON.parse(teacher.Axes_and_themes_of_recherche)
+                                                setProfiles([...profiles, { code: teacher.value, label: teacherProfile }])
+                                                return { ...teacher, disabled: 1 };
+                                            } if (teacher.value === temp) {
+
+                                                return { ...teacher, disabled: 0 };
+                                            }
+                                            else {
+                                                return teacher;
+                                            }
+                                        });
+                                        setTeachers(updatedTeachers);
+                                    }}
+                                // {...form.getInputProps('ex2')}
+                                />
+                                <Select
+                                    name='ex3'
+                                    data={teachers}
+                                    placeholder={"examiner 3"}
+                                    itemComponent={SelectItem}
+                                    label={"examiner 3"}
+                                    withAsterisk
+                                    searchable
+                                    sx={{ flex: 1 }}
+                                    value={form.values.ex3}
+                                    onChange={(value) => {
+                                        form.setValues({ "ex3": value });
+                                        let temp = form.values.ex3
+                                        let index = profiles.findIndex(obj => obj.code === temp);
+                                        if (index !== -1 && temp !== '') {
+                                            setProfiles(profiles.splice(index, 1))
+                                        }
+                                        const updatedTeachers = teachers.map((teacher) => {
+                                            if (teacher.value === value) {
+                                                let teacherProfile = JSON.parse(teacher.Axes_and_themes_of_recherche)
+                                                setProfiles([...profiles, { code: teacher.value, label: teacherProfile }])
+                                                return { ...teacher, disabled: 1 };
+                                            } if (teacher.value === temp) {
+                                                let teacherProfile = profiles.filter(obj => !obj.code !== teacher.value)
+                                                setProfiles(teacherProfile)
+                                                return { ...teacher, disabled: 0 };
+                                            }
+                                            else {
+                                                return teacher;
+                                            }
+                                        });
+                                        setTeachers(updatedTeachers);
+                                    }}
+                                // {...form.getInputProps('ex3')}
+                                />
+                                <ThemeStrength profiles={profiles} ThemeRe={ThemeRe} />
+                            </>
+
+                            {/* </Group> */}
+
+
+                        </Box>
+                    </ScrollArea>
+
+
                 </Group>
-            </form>
+            </SimpleGrid>
+
         </>
     );
 } 
