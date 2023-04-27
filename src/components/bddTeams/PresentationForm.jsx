@@ -44,7 +44,7 @@ export default function PresentationForm(props) {
         },
     });
 
-    const { mutate: createPresentationRn } = useCreatePresentationRn()
+    const { mutate: createPresentationRn, isLoading: createPresentationRnLoading } = useCreatePresentationRn()
 
     const handleSubmit = (values) => {
 
@@ -59,7 +59,7 @@ export default function PresentationForm(props) {
 
         const payload = { date_presentation: dateApp }
 
-      console.log(payload)
+        console.log(payload)
         createPresentationRn(payload);
 
 
@@ -70,7 +70,7 @@ export default function PresentationForm(props) {
         <>
 
             <LoadingOverlay
-                // visible={addIsLoading}
+                visible={createPresentationRnLoading}
                 overlayBlur={1}
                 loaderProps={{ size: 'md', color: 'gold' }}
                 overlayOpacity={0.3}

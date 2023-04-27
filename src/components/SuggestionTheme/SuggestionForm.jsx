@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { useSendSuggestion } from './connection/sendSuggestion';
 import { Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useFetchResearchFocus } from './connection/fetchData';
 
 
 function KeyWord(props) {
@@ -121,7 +122,7 @@ export function SuggestionTheme() {
     const [opened, { open, close }] = useDisclosure(false)
 
 
-
+    const { data: fetchResearchFocus, isLoading: fetchResearchFocusIsLoading } = useFetchResearchFocus()
 
     const chooseDep = department.map((dep) => {
         return (<Tabs.Tab value={dep.dep} onClick={() => { setSelectedDep(dep.dep); setSpecialtyAv(dep.specialtyAvailable) }}    >{dep.dep}</Tabs.Tab>)
@@ -133,7 +134,9 @@ export function SuggestionTheme() {
         initialValues: {
             title: '',
             specialty: '',
-            searchDomain: '',
+            searchDomain: [
+                // { value: '', label : '' },
+            ],
             keyWords: [
                 // { value: '', label : '' },
             ],
@@ -150,8 +153,8 @@ export function SuggestionTheme() {
         validate: {
             title: isNotEmpty('cannot be empty'),
             specialty: isNotEmpty('cannot be empty'),
-            searchDomain: isNotEmpty('cannot be empty'),
-            keyWords: (value) => (value.length < 3 ? 'at least insert 4 key word ' : null),
+            searchDomain: (value) => (value.length < 1 ? 'at least select 1 Research Area ' : null),
+            keyWords: (value) => (value.length < 1 ? 'at least insert 1 key word ' : null),
             description: (value) => (value.length < 10 ? 'too short description' : null),
             objectives: isNotEmpty('cannot be empty'),
             workPlan: isNotEmpty('cannot be empty')
@@ -163,6 +166,9 @@ export function SuggestionTheme() {
 
 
     const { mutate: sendSuggestion } = useSendSuggestion()
+
+    // console.log(form.values.searchDomain)
+
 
     const onSubmit = (values) => {
         console.log(values)
@@ -191,6 +197,8 @@ export function SuggestionTheme() {
             }
         })
 
+
+        console.log(payload)
 
         sendSuggestion(payload);
 
@@ -252,16 +260,19 @@ export function SuggestionTheme() {
                                 data={specialtyAv}
                                 {...form.getInputProps('specialty')}
                             />
-                            <Textarea
-                                withAsterisk
-                                label='research domain'
-                                placeholder='research domain'
-                                name='searchDomain'
-                                minRows={2}
-                                {...form.getInputProps('searchDomain')}
 
-                            />
-
+                            {!fetchResearchFocusIsLoading ?
+                                <MultiSelect
+                                    withAsterisk
+                                    data={fetchResearchFocus?.data}
+                                    label='research domain'
+                                    placeholder='research domain'
+                                    name='searchDomain'
+                                    minRows={2}
+                                    {...form.getInputProps('searchDomain')}
+                                />
+                                : null
+                            }
                             <SimpleGrid  >
                                 {/* <Text size='sm'   >key words</Text> */}
                                 <SimpleGrid cols={1}    >
@@ -311,6 +322,7 @@ export function SuggestionTheme() {
                             data={form.getInputProps('workPlan').value}
                             searchable
                             creatable
+                            size='md'
                             getCreateLabel={(query) => `+ Create ${query}`}
                             onCreate={(query) => {
                                 const item = { value: query, label: query };

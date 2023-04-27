@@ -18,7 +18,7 @@ import ChangeInfo from "../../profilePage/changeInfo";
 import { useDisclosure } from "@mantine/hooks";
 import { HeaderStudent } from "./header";
 import { SideBarStudent } from "./sidebar";
-import { IconChartHistogram, IconHome, IconListCheck, IconPuzzle2 } from "@tabler/icons";
+import { IconCalendar, IconChartHistogram, IconHome, IconListCheck, IconPuzzle2 } from "@tabler/icons";
 import TeamInfo from "../../teamSection/teamInfo";
 import { nanoid } from "nanoid";
 
@@ -244,6 +244,7 @@ function ProfileNavbar() {
                                 <Tabs.Tab value="home" onClick={() => { navigate('/student') }} icon={<IconHome color='teal' size="1.2rem" />} key={nanoid()} >
                                 </Tabs.Tab>
                                 <Tabs.Tab value="ranking" onClick={() => { navigate('ranking') }} icon={<IconChartHistogram color='teal' size="1.2rem" />} key={nanoid()} >rank</Tabs.Tab>
+                                <Tabs.Tab value="calendar" onClick={() => { navigate('calender') }} icon={<IconCalendar color='teal' size="1.2rem" />}>Calendar</Tabs.Tab>
 
 
                                 {

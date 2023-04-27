@@ -61,6 +61,19 @@ export function ThemeDescriptionContent(props) {
         </Text>)
     })
 
+    // research_domain
+
+    console.log(research_domain)
+
+    // const research_domain_decoded = JSON.parse(research_domain)
+
+
+    const list_research_domain = research_domain?.map((domain) => {
+        return (<Text fz="md" >
+            - {domain.Axes_and_themes_of_recherche}
+        </Text>)
+    })
+
     const { classes } = useStyles();
     return (
         <Paper radius="lg" className={classes.comment}>
@@ -79,6 +92,18 @@ export function ThemeDescriptionContent(props) {
                     {title}
                 </Text>
 
+
+
+                {list_research_domain?.length > 0 ?
+                    <>
+                        <Text c='teal' >Research Area :</Text>
+                        <Text fz="md" >
+                            {list_research_domain}
+                        </Text>
+                    </>
+                    :
+                    null
+                }
                 {key_word?.length > 0 ?
                     <>
                         <Text c='teal'  >key words :</Text>
@@ -93,7 +118,7 @@ export function ThemeDescriptionContent(props) {
                 {objectives_of_the_project ? <>
                     <Text c='teal'  >objective of the project  :</Text>
                     <Text fz="md" >
-                    {objectives_of_the_project}
+                        {objectives_of_the_project}
                     </Text>
                 </>
                     : null

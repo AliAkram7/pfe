@@ -140,5 +140,21 @@ const createPresentationRn = (payload) => {
 }
 
 export const useCreatePresentationRn = () => {
-    return useMutation(createPresentationRn, {});
+    return useMutation(createPresentationRn, {
+        onError: (response) => {
+            showNotification({
+                title: 'error',
+                message: 'some things goes wrong try again later',
+                color: 'red',
+            })
+        },
+        onSuccess: () => {
+            showNotification({
+                title: 'presentation date fixed successfully',
+                message: '',
+                color: 'green',
+            });
+
+        },
+    });
 }

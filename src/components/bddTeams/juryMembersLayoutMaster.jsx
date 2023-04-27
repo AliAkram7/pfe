@@ -68,7 +68,7 @@ export function ThemeStrength(props) {
 
     const { profiles, ThemeRe } = props
 
-    const re = JSON.parse(ThemeRe).map(obj => { return { re: obj.key, label: "include " + obj.key } })
+    const re = JSON.parse(ThemeRe).map(obj => { return { re: obj.Axes_and_themes_of_recherche, label: "include " + obj.Axes_and_themes_of_recherche } })
 
     const [requirements, setRequirements] = useState(re)
 

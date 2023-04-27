@@ -57,9 +57,9 @@ function Th(props) {
     const { classes } = useStyles();
     return (
         <th className={classes.th}>
-            <UnstyledButton   className={classes.control}>
+            <UnstyledButton className={classes.control}>
                 <Group position="left">
-                    <Text  key={nanoid()}  weight={300} size="sm">
+                    <Text key={nanoid()} weight={300} size="sm">
                         {props.children}
                     </Text>
                 </Group>
@@ -83,7 +83,7 @@ export function ThemeCrud(props) {
 
 
     let data = [{}]; //* list of theme
-    let fullData  = [{}] ; 
+    let fullData = [{}];
     const mapData = () => {
         return fetchListTheme?.data.map((obj) => ({
             key: nanoid(),
@@ -93,7 +93,7 @@ export function ThemeCrud(props) {
             objectives_of_the_project: obj.objectives_of_the_project,
             key_word: obj.key_word,
             work_plan: obj.work_plan,
-            research_domain: String(obj.research_domain),
+            research_domain: obj.research_domain,
             status: String(obj.specialty_manager_validation),
             teacher: String(obj.name),
             send_at: new Date(obj.created_at).toLocaleDateString(
@@ -142,7 +142,7 @@ export function ThemeCrud(props) {
                 </td>
                 <td    >
 
-                    <HoverCard key={row.key}  width={280} shadow="md"   >
+                    <HoverCard key={row.key} width={280} shadow="md"   >
                         <HoverCard.Target>
                             <Text key={row.key}  >{row.description.length > 40 ? row.description.slice(0, 40) + " ..." : row.title}</Text>
                             {/* <Button  onClick={() => { showMore(row) }}  >showMore</Button> */}
@@ -196,26 +196,26 @@ export function ThemeCrud(props) {
                             key={nanoid()}
 
                             children='description'
-                        /><Th 
-                        // sorted={sortBy === 'teacher'}
-                        //     reversed={reverseSortDirection}
-                        //     onSort={() => setSorting('teacher')}
+                        /><Th
+                            // sorted={sortBy === 'teacher'}
+                            //     reversed={reverseSortDirection}
+                            //     onSort={() => setSorting('teacher')}
                             children='teacher'
-                        key={nanoid()}
+                            key={nanoid()}
 
                         /><Th
-                        //  sorted={sortBy === 'send_at'}
-                        //     reversed={reverseSortDirection}
-                        //     onSort={() => setSorting('send_at')}
+                            //  sorted={sortBy === 'send_at'}
+                            //     reversed={reverseSortDirection}
+                            //     onSort={() => setSorting('send_at')}
                             children='send at'
-                        key={nanoid()}
+                            key={nanoid()}
 
                         /><Th
-                        //  sorted={sortBy === 'status'}
-                        //     reversed={reverseSortDirection}
-                        //     onSort={() => setSorting('status')}
+                            //  sorted={sortBy === 'status'}
+                            //     reversed={reverseSortDirection}
+                            //     onSort={() => setSorting('status')}
                             children='status'
-                        key={nanoid()}
+                            key={nanoid()}
 
                         /></tr></thead><tbody>
                     {rows?.length > 0 ? (

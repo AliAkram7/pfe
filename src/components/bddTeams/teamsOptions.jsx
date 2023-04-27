@@ -97,7 +97,7 @@ function TeamOption(props) {
                 onClose={closeJuryOption}
                 size={'xl'}
             >
-                <CreateAppointmentPresentation row={props?.row} ThemeRequirement={props?.row?.theme_workOn?.key_word} />
+                <CreateAppointmentPresentation row={props?.row} ThemeRequirement={props?.row?.theme_workOn?.research_domain} />
             </Modal>
 
 

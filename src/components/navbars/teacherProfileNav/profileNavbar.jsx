@@ -234,7 +234,7 @@ function TeaherProfileNavbar() {
                                 <Tabs.Tab value="home" onClick={() => { navigate('/teacher') }} icon={<IconHome color='teal' size="1.2rem" />}>
                                 </Tabs.Tab>
                                 <Tabs.Tab value="suggestion_theme" onClick={() => { navigate('suggestion_theme') }} icon={<IconBulb color='teal' size="1.2rem" />}>Suggest topics</Tabs.Tab>
-                                <Tabs.Tab value="calendar" onClick={() => { navigate('calender') }} icon={<IconCalendar color='teal' size="1.2rem" />}>Calender</Tabs.Tab>
+                                <Tabs.Tab value="calendar" onClick={() => { navigate('calender') }} icon={<IconCalendar color='teal' size="1.2rem" />}>Calendar</Tabs.Tab>
                                 {isDepartmentManager == 1 ? <Tabs.Tab value="students_management" onClick={() => { navigate('students_management') }} icon={<IconListCheck color='teal' size="1.2rem" />}>Students</Tabs.Tab> : null}
                                 {isSpecialtyManager && affectationMethod != 2 ? <Tabs.Tab value="themes_management" onClick={() => { navigate('themes_management') }} icon={<IconSchool size="1.2rem" color='teal' />}>Themes</Tabs.Tab> : null}
                                 {isSpecialtyManager == 1 ? <Tabs.Tab value="rank_management" onClick={() => { navigate('rank_management') }} icon={<IconChartArrowsVertical color='teal' size="1.2rem" />}>Ranking</Tabs.Tab> : null}
