@@ -4,23 +4,25 @@ import { useMutation } from "react-query";
 import { showNotification } from "@mantine/notifications";
 
 
-const fetchListTeams = () => {
-    return axiosClient.get('/teacher/specialty_manager/fetchTeams');
+const fetchListTeams = ({ queryKey }) => {
+    const selectedYearId = queryKey[1];
+    return axiosClient.get(`/teacher/specialty_manager/fetchTeams/${selectedYearId}`);
 }
-export const userFetchListTeams = () => {
-    return useQuery('fetchListTeams', fetchListTeams, {
+export const userFetchListTeams = (selectedYearId) => {
+    return useQuery(['fetchListTeams', selectedYearId], fetchListTeams, {
         // refetchInterval: 30 * 1000,
         refetchOnWindowFocus: false,
         // cacheTime: 1000 
     })
 }
 
-const fetchSingleStudents = () => {
-    return axiosClient.get('/teacher/specialty_manager/fetchSingleStudents');
+const fetchSingleStudents = ({queryKey}) => {
+    const  selectedYearId = queryKey[1] ;
+    return axiosClient.get(`/teacher/specialty_manager/fetchSingleStudents/${selectedYearId}`);
 }
 
-export const useFetchSingleStudents = () => {
-    return useQuery("fetchSingleStudents", fetchSingleStudents, {});
+export const useFetchSingleStudents = (selectedYearId) => {
+    return useQuery(["fetchSingleStudents", selectedYearId], fetchSingleStudents, {});
 }
 
 // /teacher/specialty_manager/addSingleStudentInTeam

@@ -26,6 +26,7 @@ import { userFetchListTeams } from './connection/connection';
 import TeamOption from './teamsOptions';
 import FollowUpStatistic from './followUpStatistic';
 import { nanoid } from 'nanoid';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 const useStyles = createStyles((theme) => ({
     th: {
@@ -103,7 +104,8 @@ export function TeamsCrud(props) {
 
 
     // *  -------------------------- fetch Students data ----------------------------------------------------------- *
-    const { data: fetchListTeams } = userFetchListTeams()
+    const { selectedYearId, selectedSpeciality, selectedYearString } = useStateContext()
+    const { data: fetchListTeams } = userFetchListTeams(selectedYearId)
     // *  ------------------------------------------------------------------------------------------------------------------ *
 
     const [search, setSearch] = useState('');
@@ -143,11 +145,6 @@ export function TeamsCrud(props) {
     const memoizedData = useMemo(() => {
         return mapData();
     }, [fetchListTeams?.data]);
-
-
-
-
-
 
 
 

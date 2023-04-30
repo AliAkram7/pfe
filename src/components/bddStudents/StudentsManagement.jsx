@@ -1,4 +1,4 @@
-import { Button, Drawer, Flex, Group, List, LoadingOverlay, Modal, SimpleGrid, Text, ThemeIcon, Tooltip, Transition, useMantineTheme } from '@mantine/core'
+import { Button, Drawer, Flex, Group, Highlight, List, LoadingOverlay, Modal, SimpleGrid, Text, ThemeIcon, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconArrowLeft, IconPaperclip, IconPlus } from '@tabler/icons'
 import React, { useEffect, useState } from 'react'
@@ -28,6 +28,7 @@ function StudentsManagement() {
     }
     const { data: AdminFetchDepartmentsInfo } = useAdminfetchDepartmentsInfo(onSuccess)
     const { setSelectedSpeciality } = useAdminContext()
+    const {selectedYearString} = useStateContext()
     const [_selectedSpeciality, _setSelectedSpeciality] = useState(AdminFetchDepartmentsInfo?.data[0].speciality_info[0])
     const [contextSet, setContextSet] = useState(false)
 
@@ -163,7 +164,7 @@ function StudentsManagement() {
                         <Button color='teal' variant='white' onClick={drawerOpen} >
                             <IconDotsVertical size={20} />
                         </Button>
-                    </Tooltip><h3>{_selectedSpeciality?.fullname}</h3></Flex></div>
+                    </Tooltip><h3>{_selectedSpeciality?.fullname}  <Highlight color={'teal'}>{selectedYearString}</Highlight> </h3>   </Flex></div>
 
                     <Group spacing={20}>
                         <Tooltip label="add teachers">

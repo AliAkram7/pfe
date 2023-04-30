@@ -1,6 +1,6 @@
 import { Button, Drawer, Flex, Grid, Group, LoadingOverlay, Modal, SimpleGrid, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconArrowLeft, IconBrandTelegram, IconClipboard, IconPlus, IconShare } from '@tabler/icons'
+import { IconArrowLeft, IconBrandTelegram, IconClipboard, IconDotsVertical, IconPlus, IconShare } from '@tabler/icons'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -17,6 +17,8 @@ import { RankCrud } from './rankCrud'
 import UploadRanks from './uploadRanks'
 
 import uploadRankHelp from '../../imges/uploadRankHelp.png'
+import { useTeacherFetchYearScholar } from './connection/connection'
+import { SpecialtiesInfo } from './specialty'
 function RankManagement() {
 
 
@@ -27,11 +29,14 @@ function RankManagement() {
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
     const { teacher, isSpecialtyManager } = useTeacherContext()
+    const {selectedYearString} = useStateContext()
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
 
     const onSuccess = () => {
     }
+
+
     // !! fetch specialty  information 
     const [specialtyInformation, setSpecialtyInformation] = useState({})
     const [contextSet, setContextSet] = useState(false)
@@ -39,6 +44,15 @@ function RankManagement() {
     const { data: fetchSpecialtyInformation } = useFetchSpecialtyInformation();
 
 
+    const { data: teacherFetchYearScholar, isLoading: teacherFetchYearScholarIsLoading } = useTeacherFetchYearScholar()
+
+
+    const years = teacherFetchYearScholar?.data?.map((year) => {
+        return {
+            label: `${year.start_date} - ${year.end_date}`,
+            value: year.id,
+        }
+    })
 
 
     if (fetchSpecialtyInformation && !contextSet) {
@@ -49,7 +63,7 @@ function RankManagement() {
 
     const theme = useMantineTheme();
 
-    const [helpOpened, {open : helpOpen ,close : helpClose  }] =  useDisclosure()
+    const [helpOpened, { open: helpOpen, close: helpClose }] = useDisclosure()
 
     const [opened, {
         close,
@@ -58,9 +72,15 @@ function RankManagement() {
     ] = useDisclosure(false);
 
 
+    const [openYearScholar, {
+        close: yearScholarClose,
+        open: yearScholarOpen,
+    }
+    ] = useDisclosure(false);
 
 
     // const { mutate: publishListOfTheme , isLoading : publishLoading,  } = usePublishListOfTheme();
+
 
 
 
@@ -77,7 +97,7 @@ function RankManagement() {
                         closeOnClickOutside={true}
                         opened={opened}
                         onClose={close}
-                        title={<Button  onClick={helpOpen}  variant='light' >help</Button>}
+                        title={<Button onClick={helpOpen} variant='light' >help</Button>}
                         closeOnEscape={false}
                         size="lg"
                         zIndex={9999}
@@ -107,12 +127,35 @@ function RankManagement() {
                     </Button>
                 </Modal>
 
+                <Drawer
+                    opened={openYearScholar}
+                    onClose={yearScholarClose}
+                    overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+                    overlayOpacity={0.3}
+                    overlayBlur={3}
+                    position='right'
+                    size="xl"
+                >
+                    <div className='Student-managment-nav'>
+                        <SimpleGrid cols={1} spacing='md' >
+                            {/* {department_menu} */}
+                            <SpecialtiesInfo icon={IconPlus} label={specialtyInformation?.fullname}
+                                initiallyOpened={false}
+                                links={years}
+
+                            />
+                        </SimpleGrid>
+
+                    </div>
+
+                </Drawer>
+
                 <div className='Student-managment'>
 
                     <div className='Student-managment-menu'  >
 
                         {specialtyInformation ?
-                            <div className='specialtyName' ><h3 style={{ textTransform: 'capitalize' }} ><Text fz="lg" color='teal' >{specialtyInformation.fullname}</Text> list of ranking </h3> </div>
+                            <div className='specialtyName' ><Flex>  <Button variant='white' onClick={yearScholarOpen} > <IconDotsVertical /> </Button><h3 style={{ textTransform: 'capitalize' }} ><Text fz="lg" color='teal' >{specialtyInformation?.fullname}  {selectedYearString} </Text> list of ranking </h3></Flex> </div>
                             : <h3>loading...</h3>
                         }
                         <Group spacing={20} >

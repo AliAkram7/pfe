@@ -13,7 +13,10 @@ const adminContext = createContext({
     setSelectedSpeciality: () => { },
     selectedSpeciality_id: null,
     setSelectedSpeciality_id: () => { },
-
+    selectedYearId: null,
+    setSelectedYearId: () => { },
+    selectedYearString: null,
+    setSelectedYearString: () => { },
 })
 
 
@@ -22,7 +25,8 @@ export const AdminContextProvider = ({ children }) => {
     const [adminToken, _setAdminToken] = useState(null)
     const [selectedSpeciality, setSelectedSpeciality] = useState()
     const [selectedSpeciality_id, setSelectedSpeciality_id] = useState()
-
+    const [selectedYearId, setSelectedYearId] = useState(1)
+    const [selectedYearString, setSelectedYearString] = useState()
     // !! decode the special information from the token and check the token if is hase role teacher !! 
 
     const setAdminToken = (token) => {
@@ -42,8 +46,9 @@ export const AdminContextProvider = ({ children }) => {
         {
             adminToken, setAdminToken,
             setSelectedSpeciality, selectedSpeciality,
-             selectedSpeciality_id, setSelectedSpeciality_id,
-
+            selectedSpeciality_id, setSelectedSpeciality_id,
+            selectedYearId , setSelectedYearId ,
+            selectedYearString, setSelectedYearString
         }
     }> {children} </adminContext.Provider>)
 }

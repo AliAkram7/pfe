@@ -29,6 +29,10 @@ const studentContext = createContext({
     hasSupervisor: null,
     setHasSupervisor: () => { },
 
+    studentSpecialtyId: null,
+    setStudentSpecialtyId: () => { },
+
+
 })
 
 export const StudentContextProvider = ({ children }) => {
@@ -38,12 +42,13 @@ export const StudentContextProvider = ({ children }) => {
     const [roomDiscription, setRoomDiscription] = useState(null)
     const [roomName, setRoomName] = useState(null)
     const [roomId, setRoomId] = useState(null)
-    const [firstLogin, setFirstLogin] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).first_login : null)
-    const [affMethod, setAffMethod] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).aff_method : null)
+    const [firstLogin, setFirstLogin] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).first_login : null);
+    const [affMethod, setAffMethod] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).aff_method : null);
     const [choiceStatus, setChoiceStatus] = useState(true);
     const [hasSupervisor, setHasSupervisor] = useState(false);
     //!!  decode the special information from the token and check the token if is has role student  !! 
-
+    const [studentSpecialtyId, setStudentSpecialtyId] =
+        useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).studentSpecialtyId : null);
 
     const setStudentToken = (token) => {
         if (token) {
@@ -68,9 +73,9 @@ export const StudentContextProvider = ({ children }) => {
             roomDiscription, roomName,
             roomId, firstLogin, setFirstLogin,
             affMethod, setAffMethod,
-            choiceStatus, setChoiceStatus, 
-            hasSupervisor, setHasSupervisor
-
+            choiceStatus, setChoiceStatus,
+            hasSupervisor, setHasSupervisor,
+            studentSpecialtyId, setStudentSpecialtyId
         }
     }> {children} </studentContext.Provider>)
 }

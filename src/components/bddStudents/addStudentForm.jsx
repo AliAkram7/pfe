@@ -1,11 +1,12 @@
 import { Button, createStyles, Group, LoadingOverlay, SimpleGrid, TextInput } from '@mantine/core';
-import { isEmail, isNotEmpty, useForm,hasLength, matches } from '@mantine/form';
+import { isEmail, isNotEmpty, useForm, hasLength, matches } from '@mantine/form';
 
 import { Form, Formik } from 'formik';
 import React from 'react'
 import * as Yup from 'yup'
 import "yup-phone-lite";
 import { useAdminContext } from '../../contexts/adminContext';
+import { useStateContext } from '../../contexts/ContextProvider';
 import { useTeacherContext } from '../../contexts/teacherContext';
 import FormikControl from '../FormControl/FormikControl';
 import { useAddStudent } from './connection/sendData/sendData';
@@ -32,20 +33,21 @@ function AddStudentForm(props) {
 
 
 
-    const { mutate: addStudent } = useAddStudent()
+const { mutate: addStudent } = useAddStudent()
     const { selectedSpeciality } = useAdminContext()
+    const { selectedYearId } = useStateContext()
 
     function combineValidators(...validators) {
         return (value) => {
-          for (let i = 0; i < validators.length; i += 1) {
-            const error = validators[i](value);
-            if (error) {
-              return error;
+            for (let i = 0; i < validators.length; i += 1) {
+                const error = validators[i](value);
+                if (error) {
+                    return error;
+                }
             }
-          }
-          return null;
+            return null;
         };
-      }
+    }
 
     const form = useForm({
 
@@ -58,11 +60,11 @@ function AddStudentForm(props) {
             name: combineValidators(
                 hasLength({ min: 3, max: 26 }, 'Name must be 2-35 characters long'),
                 matches(/^[^0-9]*$/gm, 'Name should not contain numbers'),
-              ),
-            code:combineValidators(
+            ),
+            code: combineValidators(
                 hasLength({ min: 8, max: 12 }, 'code must be 8-12  long'),
                 matches(/[0-9]+$/gm, 'Name should contain at least one number', true),
-              ),
+            ),
         }
 
 
@@ -73,7 +75,8 @@ function AddStudentForm(props) {
         const payload = {
             name: values.name,
             code: values.code,
-            specialty_id: selectedSpeciality?.id
+            specialty_id: selectedSpeciality?.id,
+            yearId: selectedYearId,
         }
         addStudent(payload);
 
@@ -95,21 +98,21 @@ function AddStudentForm(props) {
             <div className='box'>
                 <form onSubmit={form.onSubmit(onSubmit)}   >
                     <SimpleGrid >
-                    <TextInput
-                        label='Full name of student'
-                        {...form.getInputProps('name')}
-                    />
+                        <TextInput
+                            label='Full name of student'
+                            {...form.getInputProps('name')}
+                        />
 
-                    <TextInput
-                        label='Code'
-                        {...form.getInputProps('code')}
-                    />
+                        <TextInput
+                            label='Code'
+                            {...form.getInputProps('code')}
+                        />
 
-                    <Button
-                        type='submit'
-                    >
-                        save
-                    </Button>
+                        <Button
+                            type='submit'
+                        >
+                            save
+                        </Button>
                     </SimpleGrid>
                 </form>
             </div>

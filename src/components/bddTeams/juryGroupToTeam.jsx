@@ -23,7 +23,7 @@ function CreateAppointmentPresentation(props) {
 
     let teachersDomain = []
     teachersDomain = fetchTeachers?.data.map(teacher => {
-        return { ...teacher, subLabel: JSON.parse(teacher.Axes_and_themes_of_recherche) }
+        return { ...teacher, subLabel: teacher.Axes_and_themes_of_recherche ? JSON.parse(teacher.Axes_and_themes_of_recherche) : [] }
     })
 
     useEffect(() => {
@@ -105,7 +105,7 @@ function CreateAppointmentPresentation(props) {
         };
 
 
-        
+
 
         console.log(payload)
 

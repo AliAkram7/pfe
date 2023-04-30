@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { adminfetchDepartmentsInfo,  fetchDepartmentInfo, fetchStudentsData } from "./axiosUrl";
+import { adminfetchDepartmentsInfo,  adminFetchYearScholar,  fetchDepartmentInfo, fetchStudentsData } from "./axiosUrl";
 
 
 export const useFetchDepartmentInfo=(onSuccess)=>{
@@ -11,9 +11,9 @@ export const useFetchDepartmentInfo=(onSuccess)=>{
 // fetchStudentsDate
 
 
-export const useFetchStudentsData=(payload)=>{
+export const useFetchStudentsData=(payload, year)=>{
 
-    return useQuery(['fetchStudentsData', payload], fetchStudentsData,
+    return useQuery(['fetchStudentsData', payload ,year ], fetchStudentsData,
      {  onSuccess:()=>{} , 
             refetchOnWindowFocus:false, 
     }
@@ -26,3 +26,13 @@ export const useAdminfetchDepartmentsInfo=(onSuccess)=>{
      {  onSuccess:()=>{} , 
     }  )
 }
+
+
+
+export const useAdminFetchYearScholar=(onSuccess)=>{
+    return useQuery('adminFetchYearScholar', adminFetchYearScholar,
+     {  onSuccess:()=>{} , 
+    }  )
+}
+// adminFetchYearScholar
+

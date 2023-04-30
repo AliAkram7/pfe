@@ -20,6 +20,7 @@ import { useUpdateStudent } from './connection/sendData/sendData';
 import { useQueryClient } from 'react-query';
 import { useAdminContext } from '../../contexts/adminContext';
 import { nanoid } from 'nanoid';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -98,9 +99,12 @@ function sortData(
 export function StudentsCrud() {
 
 
+
+
   // *  -------------------------- fetch Students data     ----------------------------------------- *
   const { selectedSpeciality } = useAdminContext()
-  const { data: fetchStudentsData } = useFetchStudentsData(selectedSpeciality?.id)
+  const { selectedYearId } = useStateContext()
+  const { data: fetchStudentsData } = useFetchStudentsData(selectedSpeciality?.id, selectedYearId)
   // *  ---------------------------------------------------------------------------------------------------- *
 
 
@@ -115,7 +119,7 @@ export function StudentsCrud() {
       code: String(obj.code),
       name: String(obj.name),
       email: String(obj.email),
-      tel:String(obj.tel),
+      tel: String(obj.tel),
       default_password: String(obj.default_password),
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
@@ -137,7 +141,7 @@ export function StudentsCrud() {
       name: String(obj.name),
       default_password: String(obj.default_password),
       email: String(obj.email),
-      tel:String(obj.tel),
+      tel: String(obj.tel),
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
@@ -158,12 +162,12 @@ export function StudentsCrud() {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-      data = fetchStudentsData?.data.list_accounts.map(obj => ({
+    data = fetchStudentsData?.data.list_accounts.map(obj => ({
       code: String(obj.code),
       name: String(obj.name),
       default_password: String(obj.default_password),
       email: String(obj.email),
-      tel:String(obj.tel),
+      tel: String(obj.tel),
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
@@ -179,9 +183,8 @@ export function StudentsCrud() {
     data = fetchStudentsData?.data.list_accounts.map(obj => ({
       code: String(obj.code),
       name: String(obj.name),
-
       email: String(obj.email),
-      tel:String(obj.tel),
+      tel: String(obj.tel),
       default_password: String(obj.default_password),
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
@@ -200,9 +203,9 @@ export function StudentsCrud() {
     const [default_password, setDefault_password] = useState(props.row.default_password)
     const default_value = { name: props.row.name, code: props.row.code, default_password: props.row.default_password }
     const { mutate: updateStudent } = useUpdateStudent()
-    const queryClient = useQueryClient() ;
+    const queryClient = useQueryClient();
 
-    
+
     const onUpdate = () => {
       let payload = {}
 
@@ -262,12 +265,12 @@ export function StudentsCrud() {
             <td>{row.default_password}</td>
           </>) :
           <RenderUpdateRow row={row} />}
-        <td>{row.email ==='null'  ?   <Badge variant="outline" color='teal' fullWidth>
+        <td>{row.email === 'null' ? <Badge variant="outline" color='teal' fullWidth>
           no information
-        </Badge> : row.email }</td>
-        <td>{row.tel  ==='null'  ?   <Badge variant="outline" color='teal' fullWidth>
+        </Badge> : row.email}</td>
+        <td>{row.tel === 'null' ? <Badge variant="outline" color='teal' fullWidth>
           no information
-        </Badge> : row.tel }</td>
+        </Badge> : row.tel}</td>
         <td>{row.logged === 'logged' ? <Badge variant="filled" color='teal' fullWidth>
           logged
         </Badge> : <Badge variant="filled" color='red' fullWidth>

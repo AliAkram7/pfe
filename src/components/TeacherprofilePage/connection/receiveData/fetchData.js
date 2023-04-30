@@ -6,7 +6,7 @@ export const useFetchTeacherData =(onSuccess, onError)=>{
     return useQuery('fetchTeacherData',fetchTeacherData,{
         onSuccess, 
         onError,
-        refetchInterval: 1000*3, 
+        // refetchInterval: 1000*3, 
     },
     )
 }

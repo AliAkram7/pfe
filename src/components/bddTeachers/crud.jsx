@@ -129,7 +129,7 @@ export function TeacherCrud() {
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
-      Axes_and_themes_of_recherche: JSON.parse(obj.Axes_and_themes_of_recherche),
+      Axes_and_themes_of_recherche: obj.Axes_and_themes_of_recherche ? JSON.parse(obj.Axes_and_themes_of_recherche) : [],
       Edit: 'false'
     }));
     setSortedData(data)
@@ -164,7 +164,7 @@ export function TeacherCrud() {
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
-      Axes_and_themes_of_recherche: JSON.parse(obj.Axes_and_themes_of_recherche),
+      Axes_and_themes_of_recherche: obj.Axes_and_themes_of_recherche ? JSON.parse(obj.Axes_and_themes_of_recherche) : [],
 
       Edit: 'false'
     }));
@@ -193,7 +193,7 @@ export function TeacherCrud() {
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
-      Axes_and_themes_of_recherche: JSON.parse(obj.Axes_and_themes_of_recherche),
+      Axes_and_themes_of_recherche: obj.Axes_and_themes_of_recherche ? JSON.parse(obj.Axes_and_themes_of_recherche) : [],
 
       Edit: 'false'
     }));
@@ -215,7 +215,7 @@ export function TeacherCrud() {
       logged: obj.logged == 0 ? 'not yet' : 'logged',
       logged_at: String(obj.logged_at),
       account_status: obj.account_status == 0 ? 'locked' : 'unlocked',
-      Axes_and_themes_of_recherche: JSON.parse(obj.Axes_and_themes_of_recherche),
+      Axes_and_themes_of_recherche: obj.Axes_and_themes_of_recherche ? JSON.parse(obj.Axes_and_themes_of_recherche) : [],
       Edit: 'false'
     }));
 
@@ -226,7 +226,7 @@ export function TeacherCrud() {
 
 
   function RenderUpdateRow(props) {
-    
+
     const [name, setName] = useState(props.row.name)
     const [code, setCode] = useState(props.row.code)
     const [institutional_email, setInstitutional_email] = useState(props.row.institutional_email)
@@ -465,8 +465,8 @@ export function TeacherCrud() {
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('role')}
                   children='role'
-                /><Th 
-                // sorted={sortBy === 'Research_axes_and_themes'}
+                /><Th
+                  // sorted={sortBy === 'Research_axes_and_themes'}
                   // reversed={reverseSortDirection}
                   // onSort={() => setSorting('Research_axes_and_themes')}
                   children='Research axes and themes'

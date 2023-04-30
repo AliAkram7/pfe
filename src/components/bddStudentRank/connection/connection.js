@@ -2,25 +2,27 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import axiosClient from "../../../axois-client";
 
 
-const getRanking = () => {
-    return axiosClient.get('/teacher/specialty_manager/getRanking');
+const getRanking = ({ queryKey }) => {
+    const selectedYearId = queryKey[1];
 
+    return axiosClient.get(`/teacher/specialty_manager/getRanking/${selectedYearId}`);
 }
 
-export const useGetRanking = () => {
-    return useQuery('MSFetchRanking', getRanking, {
+
+export const useGetRanking = (selectedYearId) => {
+    return useQuery(['MSFetchRanking', selectedYearId], getRanking, {
         // refetchOnWindowFocus:false , 
         refetchInterval: 30 * 1000,
-
     }
     )
 }
-const getStudentsWithoutRank = () => {
-    return axiosClient.get('/teacher/specialty_manager/getStudentWithoutRank');
+const getStudentsWithoutRank = ({ queryKey }) => {
+    const selectedYearId = queryKey[1]
+    return axiosClient.get(`/teacher/specialty_manager/getStudentWithoutRank/${selectedYearId}`);
 }
 
-export const useGetStudentsWithoutRank = () => {
-    return useQuery('getStudentsWithoutRank', getStudentsWithoutRank, {});
+export const useGetStudentsWithoutRank = (selectedYearId) => {
+    return useQuery(['getStudentsWithoutRank', selectedYearId], getStudentsWithoutRank, {});
 }
 
 const addRankByStudent = (payload) => {
@@ -42,8 +44,11 @@ const uploadStudentsRanks = (payload) => {
 }
 
 export const useUploadStudentsRanks = () => {
+    const queryClient = useQueryClient()
     return useMutation(uploadStudentsRanks, {
-        
+        onSuccess: () => {
+            queryClient.invalidateQueries('MSFetchRanking')
+        }
     })
 }
 
@@ -56,24 +61,34 @@ const deleteStudentRank = (payload) => {
 export const useDeleteStudentRank = () => {
     const queryClient = useQueryClient()
     return useMutation(deleteStudentRank, {
-        onSuccess:()=>{
+        onSuccess: () => {
             queryClient.invalidateQueries('MSFetchRanking')
         }
     })
 }
 
-const updateRank=(payload)=>{
-    return axiosClient.post('/teacher/specialty_manager/updateRank',payload) ; 
+const updateRank = (payload) => {
+    return axiosClient.post('/teacher/specialty_manager/updateRank', payload);
 }
 
 
-export const useUpdateRank=()=>{
-    const queryClient = useQueryClient() ; 
+export const useUpdateRank = () => {
+    const queryClient = useQueryClient();
     return useMutation(updateRank, {
-        onSuccess:()=>{
+        onSuccess: () => {
             queryClient.invalidateQueries('MSFetchRanking')
         }
     })
 }
 
+export const teacherFetchYearScholar = () => {
+    return axiosClient.get('/teacher/fetchYearsScholar');
+}
 
+
+export const useTeacherFetchYearScholar = (onSuccess) => {
+    return useQuery('teacherFetchYearScholar', teacherFetchYearScholar,
+        {
+            onSuccess: () => { },
+        })
+}

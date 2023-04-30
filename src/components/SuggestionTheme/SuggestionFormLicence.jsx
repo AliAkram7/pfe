@@ -27,7 +27,8 @@ export function SuggestionThemeLicense() {
     const { data: fetchLicenseStudents, isLoading } = useFetchLicenseTeams();
 
 
-    const mapFetchLicenseStudents = fetchLicenseStudents?.data.teams_list.map((team) => {
+
+    const mapFetchLicenseStudents = fetchLicenseStudents?.data?.teams_list?.map((team) => {
         return {
             value: team.team_id,
             label: team?.team_info[0]?.name && team?.team_info[1]?.name
@@ -96,7 +97,7 @@ export function SuggestionThemeLicense() {
 
     return (
         <>
-            <LoadingOverlay visible= {sendLicenseThemeLoading} />
+            <LoadingOverlay visible={sendLicenseThemeLoading} />
             <SimpleGrid w='80%' mt={50} >
                 <SimpleGrid w='100%'  >
                     <Flex justify='flex-start' align='center' >
@@ -116,14 +117,16 @@ export function SuggestionThemeLicense() {
                     <form onSubmit={form.onSubmit(onSubmit)} >
                         <SimpleGrid>
 
-                            {!isLoading ? (
+                            { 
+                            !isLoading && mapFetchLicenseStudents  ?  (
                                 <Select
                                     label='for team'
-                                    data={mapFetchLicenseStudents}
+                                    data={mapFetchLicenseStudents ? mapFetchLicenseStudents : []}
 
                                     {...form.getInputProps('team_id')}
                                 />
-                            ) : null}
+                            ) : <Text>no team found !</Text>
+                            }
 
                             <Group w='50%' grow>
                                 <TextInput
@@ -148,7 +151,7 @@ export function SuggestionThemeLicense() {
                         <Group position="left"
 
                             mt="xl"   >
-                            <Button size='md'
+                            <Button size='sm'
                                 type='submit'
                             >send<IconBrandTelegram />
                             </Button>

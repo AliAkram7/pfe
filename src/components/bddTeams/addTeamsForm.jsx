@@ -28,9 +28,12 @@ const useStyles = createStyles((theme) => ({
 function AddTeamsForm(props) {
     const { classes, cx } = useStyles();
 
-    const { mutate: addSingleStudent , isLoading :addIsLoading } = useAddSingleStudentInTeam()
+    const { selectedYearId } = useTeacherContext()
 
-    const { data: fetchSingleStudents, isLoading } = useFetchSingleStudents();
+
+    const { mutate: addSingleStudent, isLoading: addIsLoading } = useAddSingleStudentInTeam()
+
+    const { data: fetchSingleStudents, isLoading } = useFetchSingleStudents(selectedYearId);
 
     const [selectedData, setSelectedData] = useState([])
 
@@ -43,7 +46,7 @@ function AddTeamsForm(props) {
 
 
     const form = useForm({
-        initialValues: { code: ''  },
+        initialValues: { code: '' },
 
         // functions will be used to validate values at corresponding key
         validate: {

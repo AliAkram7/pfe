@@ -95,7 +95,7 @@ export function SuggestionTheme() {
             specialtyAvailable: [{ value: 'RSD', label: 'networks and distributed system', group: 'Computer Science department' },
             { value: 'ISI', label: 'computer systems engineer', group: 'Computer Science department' },
             { value: 'SITW', label: 'Information systems and web technology', group: 'Computer Science department' },
-            { value: 'CS', label: 'Computer systems', group: 'Computer Science department' },]
+        ]
         },
         {
             dep: 'Physics Department',

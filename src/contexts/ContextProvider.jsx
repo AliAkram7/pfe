@@ -22,6 +22,12 @@ const StateContext = createContext({
     setRoomId: () => { },
     roomId: null,
 
+
+    selectedYearId: null,
+    setSelectedYearId: () => { },
+    selectedYearString: '',
+    setSelectedYearString: () => { },
+
 })
 
 
@@ -36,6 +42,10 @@ export const ContextProvider = ({ children }) => {
     const [roomId, setRoomId] = useState()
 
 
+    const [selectedYearId, setSelectedYearId] = useState(1)
+    const [selectedYearString, setSelectedYearString] = useState()
+
+
     const setToken = (token) => {
         if (token) {
             _setToken(token)
@@ -43,8 +53,8 @@ export const ContextProvider = ({ children }) => {
             const decodedToken = jwt_decode(token);
 
             setRole(decodedToken.role);
-            if(decodedToken.role!='student' && decodedToken.role!='teacher' && decodedToken.role!='admin' ){
-                <Navigate  to='/' />
+            if (decodedToken.role != 'student' && decodedToken.role != 'teacher' && decodedToken.role != 'admin') {
+                <Navigate to='/' />
             }
         } else {
             Cookies.remove('token')
@@ -53,15 +63,14 @@ export const ContextProvider = ({ children }) => {
 
 
 
-
-
-
     return (<StateContext.Provider value={
         {
             user, setToken, token,
             role, setRole, setUser,
             setRoomDiscription, setRoomName, setRoomId,
-            roomId, roomDiscription, roomName, 
+            roomId, roomDiscription, roomName,
+            selectedYearId, setSelectedYearId, 
+            selectedYearString, setSelectedYearString
         }
     }> {children} </StateContext.Provider>)
 }

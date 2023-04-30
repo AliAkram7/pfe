@@ -41,7 +41,7 @@ function TeacherProfilePage(props) {
         setTimeout(setLoaded(true), 2000)
     }, [])
 
-    let profile = <h2>hello</h2>
+    let profile = <h2> nothing found !</h2>
 
     if (teacher?.Axes_and_themes_of_recherche) {
 

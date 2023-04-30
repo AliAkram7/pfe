@@ -67,8 +67,12 @@ function getStrength(profiles, requirements
 export function ThemeStrength(props) {
 
     const { profiles, ThemeRe } = props
-
-    const re = JSON.parse(ThemeRe).map(obj => { return { re: obj.Axes_and_themes_of_recherche, label: "include " + obj.Axes_and_themes_of_recherche } })
+    let re = []
+    try {
+        re = JSON.parse(ThemeRe).map(obj => { return { re: obj.Axes_and_themes_of_recherche, label: "include " + obj.Axes_and_themes_of_recherche } })
+    } catch (error) {
+        re = []
+    }
 
     const [requirements, setRequirements] = useState(re)
 
@@ -187,7 +191,7 @@ export default function JuryMembersMasterForm(props) {
 
                                         const updatedTeachers = teachers.map((teacher) => {
                                             if (teacher.value === value) {
-                                                const teacherProfile = JSON.parse(teacher.Axes_and_themes_of_recherche)
+                                                const teacherProfile = teacher.Axes_and_themes_of_recherche ? JSON.parse(teacher.Axes_and_themes_of_recherche) : []
                                                 setProfiles([...profiles, { code: teacher.value, label: teacherProfile }])
                                                 return { ...teacher, disabled: 1 };
                                             } if (teacher.value === temp) {
@@ -222,7 +226,7 @@ export default function JuryMembersMasterForm(props) {
                                         }
                                         const updatedTeachers = teachers.map((teacher) => {
                                             if (teacher.value === value) {
-                                                let teacherProfile = JSON.parse(teacher.Axes_and_themes_of_recherche)
+                                                let teacherProfile = teacher.Axes_and_themes_of_recherche ? JSON.parse(teacher.Axes_and_themes_of_recherche) : []
                                                 setProfiles([...profiles, { code: teacher.value, label: teacherProfile }])
                                                 return { ...teacher, disabled: 1 };
                                             } if (teacher.value === temp) {
@@ -258,7 +262,7 @@ export default function JuryMembersMasterForm(props) {
                                         }
                                         const updatedTeachers = teachers.map((teacher) => {
                                             if (teacher.value === value) {
-                                                let teacherProfile = JSON.parse(teacher.Axes_and_themes_of_recherche)
+                                                let teacherProfile = teacher.Axes_and_themes_of_recherche ? JSON.parse(teacher.Axes_and_themes_of_recherche) : []
                                                 setProfiles([...profiles, { code: teacher.value, label: teacherProfile }])
                                                 return { ...teacher, disabled: 1 };
                                             } if (teacher.value === temp) {
@@ -292,7 +296,7 @@ export default function JuryMembersMasterForm(props) {
                                         }
                                         const updatedTeachers = teachers.map((teacher) => {
                                             if (teacher.value === value) {
-                                                let teacherProfile = JSON.parse(teacher.Axes_and_themes_of_recherche)
+                                                let teacherProfile = teacher.Axes_and_themes_of_recherche ? JSON.parse(teacher.Axes_and_themes_of_recherche) : []
                                                 setProfiles([...profiles, { code: teacher.value, label: teacherProfile }])
                                                 return { ...teacher, disabled: 1 };
                                             } if (teacher.value === temp) {

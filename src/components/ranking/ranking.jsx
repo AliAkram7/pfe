@@ -1,10 +1,14 @@
-import { createStyles, Group, ScrollArea, Table, Text, TextInput, UnstyledButton } from "@mantine/core";
+import { Button, createStyles, Drawer, Flex, Group, ScrollArea, SimpleGrid, Table, Text, TextInput, UnstyledButton, useMantineTheme } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons";
+import { IconDotsVertical, IconPlus } from "@tabler/icons-react";
 import { nanoid } from "nanoid";
 import React, { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { useStateContext } from "../../contexts/ContextProvider";
-import { useFetchRanking } from "./connection/receiveData/fetchData";
+import { useStudentContext } from "../../contexts/studentContext";
+import { SpecialtiesInfo } from "../bddStudentRank/specialty";
+import { useFetchInscription, useFetchRanking } from "./connection/receiveData/fetchData";
 // import { useFetchRanking } from "./connection/receiveData/fetchData";
 
 import Filter from "./filter";
@@ -42,10 +46,10 @@ const useStyles = createStyles((theme) => ({
 function Th(props) {
     const { classes } = useStyles();
     return (
-        <th  key={nanoid()}  className={classes.th}>
+        <th key={nanoid()} className={classes.th}>
             <UnstyledButton onClick={props.onSort} className={classes.control}>
                 <Group position="left">
-                    <Text  key={nanoid()}  weight={300} size="sm">
+                    <Text key={nanoid()} weight={300} size="sm">
                         {props.children}
                     </Text>
                 </Group>
@@ -86,13 +90,13 @@ function sortData(
 
 export default function Ranking() {
 
-    const { data: ranking } = useFetchRanking()
+    const { studentSpecialtyId, setStudentSpecialtyId } = useStudentContext()
+
+    const { data: ranking } = useFetchRanking(studentSpecialtyId)
+
+    const { data: inscription } = useFetchInscription()
 
     const student_rank = ranking?.data?.student_rank.map((student, rank) => { return { ...student, rank: rank + 1 } })
-
-
-
-
 
 
     const [search, setSearch] = useState('');
@@ -154,7 +158,15 @@ export default function Ranking() {
         setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
     };
 
+    const theme = useMantineTheme();
 
+
+
+    const [openYearScholar, {
+        close: yearScholarClose,
+        open: yearScholarOpen,
+    }
+    ] = useDisclosure(false);
 
     const rows = sortedData?.map((row) => {
 
@@ -165,11 +177,6 @@ export default function Ranking() {
                 <td key={nanoid()} >{row.ms1}</td>
                 <td key={nanoid()} >{row.ms2}</td>
                 <td key={nanoid()} >{row.mgc}</td>
-
-
-
-
-
             </tr>
         </>
         )
@@ -178,62 +185,92 @@ export default function Ranking() {
     return (
         <>
 
-{rows?.length > 0 ?   (
-<>
-            <div className='Student-managment'>
+            <Drawer
+                opened={openYearScholar}
+                onClose={yearScholarClose}
+                overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+                overlayOpacity={0.3}
+                overlayBlur={3}
+                position='right'
+                size="xl"
+            >
+                <div className='Student-managment-nav'>
+                    <SimpleGrid cols={1} spacing='md' >
+                        {/* {department_menu} */}
+                        {
+                            inscription?.data.map((item) => {
+                                return (
+                                    <SpecialtiesInfo
+                                        icon={IconPlus}
+                                        label={item.label}
+                                        initiallyOpened={false}
+                                        links={item.links}
+                                    />)
+                            })
+                        }
+                    </SimpleGrid>
 
-                <div className='Student-managment-menu'  >
+                </div>
+
+            </Drawer>
 
 
-                    <div className='specialtyName' ><h3 style={{ textTransform: 'capitalize' }} ><Text fz="lg" color='teal' >{ranking?.data.speciality_name} {ranking?.data.year_scholar}</Text> list of ranking </h3> </div>
+            <>
 
-                    <Group spacing={20} >
+                <div className='Student-managment'>
 
-                        <ScrollArea scrollbarSize={1}  key={nanoid()} >
+                    <div className='Student-managment-menu'  >
 
-                            <Table
-                                horizontalSpacing="md"
-                                verticalSpacing="md"
-                                sx={{ tableLayout: 'fixed', minWidth: 1000, maxWidth: 1400, minHeight: 260 }}
-                            ><thead>
-                                    <tr key={nanoid()} ><Th
-                                        sorted={sortBy === 'student_name'}
-                                        //     reversed={reverseSortDirection}
-                                        onSort={() => setSorting('student_name')}
-                                        children='name'
-                                        key={nanoid()}
-                                    /><Th
 
-                                            children='Observation'
+                        <div className='specialtyName' > <Flex   align={'center'} ><Button variant="white"  onClick={yearScholarOpen}   ><IconDotsVertical /></Button> <h3 style={{ textTransform: 'capitalize' }} ><Text fz="lg" color='teal' >{ranking?.data.speciality_name} {ranking?.data.year_scholar}</Text> list of ranking </h3> </Flex></div>
+
+                        <Group spacing={20} >
+
+                            <ScrollArea scrollbarSize={1} key={nanoid()} >
+
+                                <Table
+                                    horizontalSpacing="md"
+                                    verticalSpacing="md"
+                                    sx={{ tableLayout: 'fixed', minWidth: 1000, maxWidth: 1400, minHeight: 260 }}
+                                ><thead>
+                                        <tr key={nanoid()} ><Th
+                                            sorted={sortBy === 'student_name'}
+                                            //     reversed={reverseSortDirection}
+                                            onSort={() => setSorting('student_name')}
+                                            children='name'
                                             key={nanoid()}
                                         /><Th
 
-                                            children='MS1'
-                                            key={nanoid()}
-                                        /><Th
-                                            children='MS2'
-                                            key={nanoid()}
-                                        /><Th
-                                            children='MGC'
-                                            key={nanoid()}
-                                        /></tr>
-                                </thead>
-                                <tbody key={nanoid} >
-                                        {rows?.length > 0 ?  rows  :
-                                        <tr  key={nanoid()} >
-                                            <td key={nanoid()} >
-                                                <Text weight={500} align="center"  key={nanoid()}>
-                                                    Nothing found
-                                                </Text>
-                                            </td>
-                                        </tr>
+                                                children='Observation'
+                                                key={nanoid()}
+                                            /><Th
+
+                                                children='MS1'
+                                                key={nanoid()}
+                                            /><Th
+                                                children='MS2'
+                                                key={nanoid()}
+                                            /><Th
+                                                children='MGC'
+                                                key={nanoid()}
+                                            /></tr>
+                                    </thead>
+                                    <tbody key={nanoid} >
+                                        {rows?.length > 0 ? rows :
+                                            <tr key={nanoid()} >
+                                                <td key={nanoid()} >
+                                                    <Text weight={500} align="center" key={nanoid()}>
+                                                        Nothing found
+                                                    </Text>
+                                                </td>
+                                            </tr>
                                         }
-                                </tbody>
-                            </Table>
-                        </ScrollArea>
-                    </Group>
-                </div></div>
-                </>) :  "loading..." } 
+                                    </tbody>
+                                </Table>
+                            </ScrollArea>
+                        </Group>
+                    </div></div>
+            </>
         </>)
 
 }

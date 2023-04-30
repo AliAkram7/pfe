@@ -4,6 +4,7 @@ import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons';
 import { useTeacherContext } from '../../contexts/teacherContext';
 import { useUploadStudentsRanks } from './connection/connection';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 const useStyles = createStyles((theme) => ({
     wrapper: {
@@ -33,6 +34,7 @@ function UploadRanks(props) {
     const openRef = useRef(null);
 
     const { selectedSpeciality } = useTeacherContext();
+    const { selectedYearId } = useStateContext
     const { mutate: uploadStudentRanks } = useUploadStudentsRanks()
 
     return (
@@ -42,6 +44,7 @@ function UploadRanks(props) {
                 onDrop={(files) => {
                     const formData = new FormData();
                     formData.append('file', files[0]);
+                    formData.append('yearId', selectedYearId);
                     uploadStudentRanks(formData)
                     props.closeModel()
                 }}

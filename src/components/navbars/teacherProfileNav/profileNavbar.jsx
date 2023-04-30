@@ -72,7 +72,6 @@ function TeaherProfileNavbar() {
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
     const { teacher, setTeacher, setTeacherToken, isDepartmentManager, setIsInTeam, isInTeam, isSpecialtyManager, affectationMethod, } = useTeacherContext()
-
     const [firstLoginOpened, { close: firstLoginClose, open: firstLoginOpen, }] = useDisclosure(false);
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
     useEffect(() => {
@@ -81,8 +80,8 @@ function TeaherProfileNavbar() {
     }, [])
 
     const onSuccess = () => {
-        setTeacher(data?.data.user);
-        setRole(data?.data.role)
+        setTeacher(data?.data?.user);
+        setRole(data?.data?.role)
     }
 
     const onError = () => {
@@ -99,7 +98,7 @@ function TeaherProfileNavbar() {
 
     useEffect(() => {
 
-        if (getTeamsInformation?.data.teams_list.length > 0) {
+        if (getTeamsInformation?.data?.teams_list?.length > 0) {
             setIsInTeam(true)
         }
     }, [getTeamsInformation?.data.teams_list])

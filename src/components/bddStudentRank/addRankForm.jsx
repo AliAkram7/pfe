@@ -4,6 +4,7 @@ import { Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react'
 import * as Yup from 'yup'
 import "yup-phone-lite";
+import { useStateContext } from '../../contexts/ContextProvider';
 import { useTeacherContext } from '../../contexts/teacherContext';
 import FormikControl from '../FormControl/FormikControl';
 import { useAddRankStudent, useGetStudentsWithoutRank } from './connection/connection';
@@ -27,18 +28,15 @@ const useStyles = createStyles((theme) => ({
 function AddRankForm(props) {
     const { classes, cx } = useStyles();
 
+    const {selectedYearId}  = useStateContext()
+
     const { mutate: addRank , isLoading :addIsLoading } = useAddRankStudent()
 
-    const { data: getStudentWithoutRank, isLoading } = useGetStudentsWithoutRank()
+    const { data: getStudentWithoutRank, isLoading } = useGetStudentsWithoutRank(selectedYearId)
 
     const [selectedData, setSelectedData] = useState([])
 
     console.log(getStudentWithoutRank?.data?.student_without_rank)
-
-    useEffect(() => {
-
-
-    }, [])
 
 
 
@@ -81,6 +79,7 @@ function AddRankForm(props) {
     const handleSubmit = (values) => {
 
         const payload = {
+            yearId: selectedYearId , 
             code: values.code,
             ms1: values.ms1,
             ms2: values.ms2,
@@ -88,10 +87,6 @@ function AddRankForm(props) {
             obs: values.obs
         }
 
-        console.log(payload)
-
-
-        console.log(payload)
 
         addRank(payload)
         props.closeModel()

@@ -37,6 +37,12 @@ const teacherContext = createContext({
     setFirstLogin: () => { },
 
 
+    selectedYearId: null,
+    setSelectedYearId: () => { },
+    selectedYearString: '',
+    setSelectedYearString: () => { },
+
+
 })
 
 export const TeacherContextProvider = ({ children }) => {
@@ -53,7 +59,12 @@ export const TeacherContextProvider = ({ children }) => {
     const [isSpecialtyManager, setIsSpecialtyManager] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).specialty_manager : 0)
     const [affectationMethod, setAffectationMethod] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).pfe_method : 0)
     const [firstLogin, setFirstLogin] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).first_login : null)
-    // !! decode the special information from the token and check the token if is hase role teacher !! 
+
+    // !! decode the special information from the token and check the token if is has role teacher !! 
+
+    const [selectedYearId, setSelectedYearId] = useState(Cookies.get('token') ? jwt_decode(Cookies.get('token')).year_scholar_id : 1)
+    const [selectedYearString, setSelectedYearString] = useState()
+
 
     const setTeacherToken = (token) => {
         if (token) {
@@ -82,9 +93,11 @@ export const TeacherContextProvider = ({ children }) => {
         {
             teacher, setTeacher, teacherToken, setTeacherToken, setRoomDiscription, setRoomName, setRoomId, roomDiscription, roomName, roomId, setIsInTeam, isInTeam,
             teamSelected, setTeamSelected, isDepartmentManager, setIsDepartmentManager, setSelectedSpeciality, selectedSpeciality, selectedSpeciality_id, setSelectedSpeciality_id,
-            isSpecialtyManager, setIsSpecialtyManager, 
-            affectationMethod, setAffectationMethod , 
-            firstLogin, setFirstLogin , 
+            isSpecialtyManager, setIsSpecialtyManager,
+            affectationMethod, setAffectationMethod,
+            firstLogin, setFirstLogin,
+            selectedYearId, setSelectedYearId,
+            selectedYearString, setSelectedYearString,
         }
     }> {children} </teacherContext.Provider>)
 }

@@ -4,6 +4,8 @@ import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons';
 import { useUploadStudentSeeder } from './connection/sendData/sendData';
 import { useTeacherContext } from '../../contexts/teacherContext';
+import { useAdminContext } from '../../contexts/adminContext';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -32,20 +34,23 @@ function UploadFile(props) {
   const { classes, theme } = useStyles();
   const openRef = useRef(null);
 
-  const {selectedSpeciality} = useTeacherContext() ; 
-  const {mutate: uploadStudentSeeder} = useUploadStudentSeeder()
+  const { selectedSpeciality } = useAdminContext();
+  const { selectedYearId } = useStateContext()
+  const { mutate: uploadStudentSeeder } = useUploadStudentSeeder()
 
   return (
     <div className={classes.wrapper}>
       <Dropzone
         openRef={openRef}
-        onDrop={(files) =>{
+        onDrop={(files) => {
           const formData = new FormData();
           formData.append('file', files[0]);
           formData.append('specialty_id', selectedSpeciality?.id);
-             uploadStudentSeeder(formData)
-             props.closeModel()
-            }  } 
+          formData.append('yearId', selectedYearId);
+
+          uploadStudentSeeder(formData)
+          props.closeModel()
+        }}
         onReject={(files) => console.log('rejected files', files)}
         className={classes.dropzone}
         radius="md"
@@ -87,4 +92,4 @@ function UploadFile(props) {
   );
 }
 
-export default UploadFile  ; 
+export default UploadFile; 

@@ -1,6 +1,8 @@
 import { Menu, Button, Text } from '@mantine/core';
 import { IconDotsVertical, IconEdit, IconX } from '@tabler/icons';
 import { useQueryClient } from 'react-query';
+import { useStateContext } from '../../contexts/ContextProvider';
+import { useTeacherContext } from '../../contexts/teacherContext';
 
 import { useDeleteStudentRank } from './connection/connection';
 
@@ -8,11 +10,12 @@ function RankOption(props) {
 
 
   const queryClient = useQueryClient();
+  const {selectedYearId} = useStateContext()
 
   const {mutate : deleteRank } = useDeleteStudentRank()
 
   const onDelete = () => {
-    const payload = { code: props.row.code }
+    const payload = { yearId : selectedYearId,   code: props.row.code }
       deleteRank(payload) ; 
   }
 

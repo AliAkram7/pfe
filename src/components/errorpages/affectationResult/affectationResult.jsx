@@ -49,38 +49,38 @@ function PageDissertationClosed(props) {
             className={classes.description}
           >
 
-<div className="conformation-form">
-                {/* <h3>are you sure you want the list :
+            <div className="conformation-form">
+              {/* <h3>are you sure you want the list :
                 </h3> */}
 
-                <div className="final-list">
-                    <List size={20} > {
-                    
-                        props?.data?.map((item, idx) => {
-                            return <>
-                            <List.Item
-                            icon={
-                                // <ThemeIcon  size={24} radius="xl">
-                                  <IconCircle size="1rem" />
-                                // </ThemeIcon>
-                              }
-                                key={nanoid()}
-                            >
-                                <span> {
-                                    idx + 1
-                                } </span>
-                                - {
-                                // item.id
-                            } {
-                                item.title ? item.title : item.label
-                            } </List.Item> <br /> </>
-                            
+              <div className="final-list">
+                <List size={20} > {
 
-                    })
-                    
-                    }   </List>
-                </div>
-                </div>
+                  props?.data?.map((item, idx) => {
+                    return <>
+                      <List.Item
+                        icon={
+                          // <ThemeIcon  size={24} radius="xl">
+                          <IconCircle size="1rem" />
+                          // </ThemeIcon>
+                        }
+                        key={nanoid()}
+                      >
+                        <span> {
+                          idx + 1
+                        } </span>
+                        - {
+                          // item.id
+                        } {
+                          item.title ? item.title : item.label
+                        } </List.Item> <br /> </>
+
+
+                  })
+
+                }   </List>
+              </div>
+            </div>
 
             {/* this section is closed good luck */}
           </Text>

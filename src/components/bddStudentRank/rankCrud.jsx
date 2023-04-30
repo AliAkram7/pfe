@@ -26,6 +26,7 @@ import { useQueryClient } from 'react-query';
 import { useGetRanking, useUpdateRank } from './connection/connection';
 import RankOption from './rankOption';
 import { isNotEmpty, useForm } from '@mantine/form';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 const useStyles = createStyles((theme) => ({
     th: {
@@ -210,8 +211,12 @@ export function RankCrud() {
 
 
 
+    const {selectedYearId, selectedSpeciality} = useStateContext()
+
+    console.log(selectedYearId)
+
     // *  -------------------------- fetch ranking  data ----------------------------------------------------------- *
-    const { data: getRanking } = useGetRanking()
+    const { data: getRanking } = useGetRanking(selectedYearId)
     // *  ------------------------------------------------------------------------------------------------------------------ *
 
     const [search, setSearch] = useState('');

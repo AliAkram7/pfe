@@ -1,12 +1,15 @@
-import { Button, Drawer, Flex, Group, LoadingOverlay, Modal, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
+import { Button, Drawer, Flex, Group, LoadingOverlay, Modal, SimpleGrid, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconArrowLeft, IconBrandTelegram, IconCalendar, IconClipboard, IconPlus, IconShare } from '@tabler/icons'
+import { IconDotsVertical } from '@tabler/icons-react'
 import { nanoid } from 'nanoid'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useStateContext } from '../../contexts/ContextProvider'
 import { useTeacherContext } from '../../contexts/teacherContext'
+import { useTeacherFetchYearScholar } from '../bddStudentRank/connection/connection'
+import { SpecialtiesInfo } from '../bddStudentRank/specialty'
 import { useAffectFramerToStudents, useAffectThemeToStudents, useFetchSpecialtyInformation } from '../BddThemes/connetion/fetchData'
 
 import './../bddStudents/StudentsManagement.css'
@@ -27,6 +30,8 @@ function TeamsManagement() {
     //** ------------------------------------------------------------------------ teacher context ------------------------------------------------------------------------  */
     const { user, token, setRole } = useStateContext()
     const { teacher, isSpecialtyManager, affectationMethod } = useTeacherContext()
+    const {selectedYearString} = useStateContext()
+
     //** ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
 
 
@@ -104,6 +109,22 @@ function TeamsManagement() {
 
     }
 
+
+    const [openYearScholar, {
+        close: yearScholarClose,
+        open: yearScholarOpen,
+    }
+    ] = useDisclosure(false);
+
+
+    const { data: teacherFetchYearScholar, isLoading: teacherFetchYearScholarIsLoading } = useTeacherFetchYearScholar()
+
+    const years = teacherFetchYearScholar?.data?.map((year) => {
+        return {
+            label: `${year.start_date} - ${year.end_date}`,
+            value: year.id,
+        }
+    })
 
 
 
@@ -202,7 +223,28 @@ function TeamsManagement() {
 
                 </Modal>
 
+                <Drawer
+                    opened={openYearScholar}
+                    onClose={yearScholarClose}
+                    overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+                    overlayOpacity={0.3}
+                    overlayBlur={3}
+                    position='right'
+                    size="xl"
+                >
+                    <div className='Student-managment-nav'>
+                        <SimpleGrid cols={1} spacing='md' >
+                            {/* {department_menu} */}
+                            <SpecialtiesInfo icon={IconPlus} label={specialtyInformation?.fullname}
+                                initiallyOpened={false}
+                                links={years}
 
+                            />
+                        </SimpleGrid>
+
+                    </div>
+
+                </Drawer>
 
 
                 <div className='Student-managment'>
@@ -210,7 +252,15 @@ function TeamsManagement() {
                     <div className='Student-managment-menu'  >
 
                         {specialtyInformation ?
-                            <div className='specialtyName' > <h3>  <Text fz="lg" color='teal' >{specialtyInformation.fullname}</Text> list of teams </h3> </div>
+                            <div className='specialtyName' >
+
+
+                                <Flex>
+                                    <Button variant='white' onClick={yearScholarOpen} ><IconDotsVertical /></Button> <h3>  <Text fz="lg" color='teal' >{specialtyInformation.fullname}  {selectedYearString}  </Text> list of teams </h3>
+                                </Flex>
+
+
+                            </div>
                             : <h3>loading...</h3>
                         }
                         <Group spacing={'20px'} mb={30} >
@@ -243,14 +293,14 @@ function TeamsManagement() {
                             </Tooltip>
                             {affectationMethod == 2 ?
                                 <>
-                                    <Tooltip  label="jury members">
+                                    <Tooltip label="jury members">
                                         <Button color='teal' onClick={juryMemberFormOpen}  >
                                             <Flex align={'center'} justify='space-between' gap={10} >
                                                 <Text> jury  members </Text><IconPlus size={20} />
                                             </Flex>
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip  label="Presentation Date">
+                                    <Tooltip label="Presentation Date">
                                         <Button color='teal' onClick={presentationFormOpen}  >
                                             <Flex align={'center'} justify='space-between' gap={10} >
                                                 <Text> Presentation Date</Text><IconCalendar size={20} />

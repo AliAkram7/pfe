@@ -109,19 +109,19 @@ function DisserForm() {
     const [contextSet, setContextSet] = useState(false)
 
 
-    const {setChoiceStatus, choiceStatus , hasSupervisor , setHasSupervisor} = useStudentContext()
+    const { setChoiceStatus, choiceStatus, hasSupervisor, setHasSupervisor } = useStudentContext()
 
 
     const { data: getStudentTeamInformation } = useGetStudentTeamInformation()
 
     useEffect(() => {
-        if(getStudentTeamInformation?.data?.supervsorInfo?.name){
+        if (getStudentTeamInformation?.data?.supervsorInfo?.name) {
             setHasSupervisor(true)
-        }else{  
+        } else {
             setHasSupervisor(false)
         }
     }, [getStudentTeamInformation?.data?.supervsorInfo?.name])
-    
+
 
     let data = [{}]; //* list of theme
 
@@ -135,7 +135,7 @@ function DisserForm() {
     };
     const mapData2 = () => {
         return fetchedTheme?.data?.list_theme.map((obj) => ({
-            key:nanoid() , 
+            key: nanoid(),
             id: obj.id,
             title: obj.title,
         }));
@@ -170,13 +170,13 @@ function DisserForm() {
 
     useEffect(() => {
 
-        if( (  sortedData?.length == 0) && !isLoading  ) {
+        if ((sortedData?.length == 0) && !isLoading) {
             setChoiceStatus(false)
-        }else{
+        } else {
             setChoiceStatus(true)
         }
     }, [sortedData])
-    
+
 
 
 
@@ -186,8 +186,8 @@ function DisserForm() {
         setContextSet(true)
     }
 
-    
-    
+
+
 
 
 
@@ -215,117 +215,121 @@ function DisserForm() {
     }
     ] = useDisclosure(false);
 
-    if(!choiceStatus)  return   <PageNotUploadedYet/>  
+    // if(!choiceStatus)  return   <PageNotUploadedYet/>  
 
-    if(hasSupervisor)   return    <PageDissertationClosed   data={data2[1].length > 0 && data2[0].length == 0 ? data2[1] : sortedData2} /> 
+    if (hasSupervisor) return <PageDissertationClosed data={data2[1].length > 0 && data2[0].length == 0 ? data2[1] : sortedData2} />
     return (
 
         <>
             {sortedData ?
-                (   
-                <>
-                    {
-                        sortedData ?
-                            <SendData
-                                key={nanoid()}
-                                opened={opened}
-                                close={close}
-                                data={data2[1].length > 0 && data2[0].length == 0 ? data2[1] : sortedData2} /> : null}
+                (
+                    <>
+                        {
+                            sortedData ?
+                                <SendData
+                                    key={nanoid()}
+                                    opened={opened}
+                                    close={close}
+                                    data={data2[1].length > 0 && data2[0].length == 0 ? data2[1] : sortedData2} /> : null}
 
-                    <div className='disser-section'>
-                        <Group position="center" grow    >
-                            <SimpleGrid spacing='xl' verticalSpacing="xl"  >
-                                <Tabs defaultValue="drag" onTabChange={() => { setData2([memoizedData, []]) }}  >
-                                    <Tabs.List>
-                                        <Tabs.Tab value="drag" icon={<IconHandClick size="0.8rem" />} key={nanoid()} >drag method</Tabs.Tab>
-                                        <Tabs.Tab value="select" icon={<IconClick size="0.8rem" />} key={nanoid()} >select method </Tabs.Tab>
-                                    </Tabs.List>
+                        <div className='disser-section'>
+                            <Group  grow    >
+                                <SimpleGrid spacing='xl' verticalSpacing="xl"  >
+                                    <Tabs defaultValue="drag" onTabChange={() => { setData2([memoizedData, []]) }}  >
+                                        <Tabs.List>
+                                            {/* <Tabs.Tab value="drag" icon={<IconHandClick size="0.8rem" />} key={nanoid()} >drag method</Tabs.Tab> */}
+                                            <Tabs.Tab value="select" icon={<IconClick size="0.8rem" />} key={nanoid()} >click to change list</Tabs.Tab>
+                                        </Tabs.List>
 
-                                    <Tabs.Panel value="drag" pt="xs">
+                                        <Tabs.Panel value="drag" pt="xs">
 
-                                        <DndContext collisionDetection={closestCenter}
-                                            onDragEnd={handleDragEnd}>
-                                            {
-                                                sortedData ?
-                                                    <SortableContext items={sortedData2}
-                                                        strategy={verticalListSortingStrategy}>
-                                                        <Table
-                                                            withColumnBorders
-                                                            withBorder
-                                                            highlightOnHover
-                                                            striped
-                                                            horizontalSpacing="sm"
-                                                            verticalSpacing="sm"
-                                                            sx={{ tableLayout: 'revert', width: '99%', minHeight: 360 }}
-                                                            key={nanoid()}
-                                                        >
-
-                                                            <thead ><tr key={nanoid()} ><Th
+                                            <DndContext collisionDetection={closestCenter}
+                                                onDragEnd={handleDragEnd}>
+                                                {
+                                                    sortedData ?
+                                                        <SortableContext items={sortedData2}
+                                                            strategy={verticalListSortingStrategy}>
+                                                            <Table
+                                                                withColumnBorders
+                                                                withBorder
+                                                                highlightOnHover
+                                                                striped
+                                                                horizontalSpacing="sm"
+                                                                verticalSpacing="sm"
+                                                                sx={{ tableLayout: 'revert', width: '99%', minHeight: 360 }}
                                                                 key={nanoid()}
+                                                            >
 
-                                                            /><Th
-                                                                    children='name'
+                                                                <thead ><tr key={nanoid()} ><Th
                                                                     key={nanoid()}
 
                                                                 /><Th
-                                                                    children='rank'
-                                                                    key={nanoid()}
-                                                                /></tr>
-                                                            </thead>
-                                                            <tbody key={nanoid()} >
-                                                                {rows?.length > 0 ? (
-                                                                    rows
-                                                                ) : (
-                                                                    <tr key={nanoid()} >
-                                                                        <td key={nanoid()} >
-                                                                            <Text key={nanoid()} weight={500} align="center">
-                                                                                Nothing found
-                                                                            </Text>
-                                                                        </td>
-                                                                    </tr>
-                                                                )}
-                                                            </tbody>
-                                                        </Table>
-                                                    </SortableContext> : 'loading...'}
-                                        </DndContext>
-                                    </Tabs.Panel>
+                                                                        children='name'
+                                                                        key={nanoid()}
 
-                                    <Tabs.Panel value="select" pt="xl"   >
+                                                                    /><Th
+                                                                        children='rank'
+                                                                        key={nanoid()}
+                                                                    /></tr>
+                                                                </thead>
+                                                                <tbody key={nanoid()} >
+                                                                    {rows?.length > 0 ? (
+                                                                        rows
+                                                                    ) : (
+                                                                        <tr key={nanoid()} >
+                                                                            <td key={nanoid()} >
+                                                                                <Text key={nanoid()} weight={500} align="center">
+                                                                                    Nothing found
+                                                                                </Text>
+                                                                            </td>
+                                                                        </tr>
+                                                                    )}
+                                                                </tbody>
+                                                            </Table>
+                                                        </SortableContext> : 'loading...'}
+                                            </DndContext>
 
-                                        {sortedData && data2[0] ?
-                                            <TransferList
-                                                key={nanoid()}
-                                                value={data2}
-                                                onChange={setData2}
-                                                searchPlaceholder="Search..."
-                                                nothingFound="Nothing here"
-                                                titles={['Current choice list', 'New choice list']}
-                                                style={{ width: '99%', height: 500 }}
-                                                breakpoint='lg'
-                                                listHeight={450}
-                                            /> : null}
+                                        </Tabs.Panel>
 
-                                    </Tabs.Panel>
+                                        <Tabs.Panel value="select" pt="xl"   >
 
-                                </Tabs>
+                                            <SimpleGrid spacing={30}     >
+                                                {sortedData && data2[0] ?
+                                                    <TransferList
+                                                        key={nanoid()}
+                                                        value={data2}
+                                                        onChange={setData2}
+                                                        searchPlaceholder="Search..."
+                                                        nothingFound="Nothing here"
+                                                        titles={['Current choice list', 'New choice list']}
+                                                        style={{ width: '99%', height: 450 }}
+                                                        breakpoint='lg'
+                                                        listHeight={250}
+                                                    /> : null}
+                                                <Button onClick={open}
+                                                    variant='light' style={{ width: '10%' }}
+                                                    disabled={data2[1].length > 0 && !data2[0].length == 0 || rows?.length == 0}
+                                                    key={nanoid()}
 
-                                {/* <Overlay opacity={0.2} color="white" zIndex={1} /> */}
+                                                >send</Button>
+                                            </SimpleGrid>
+                                        </Tabs.Panel>
 
-                            </SimpleGrid>
 
-                        </Group>
-                        <Button onClick={open}
-                            variant='light' style={{ width: '10%' }}
-                            disabled={data2[1].length > 0 && !data2[0].length == 0}
-                            key={nanoid()}
+                                    </Tabs>
 
-                        >send</Button>
+                                    {/* <Overlay opacity={0.2} color="white" zIndex={1} /> */}
 
-                    </div>
-                </>
+                                </SimpleGrid>
+
+                            </Group>
+
+
+                        </div>
+                    </>
                 )
                 : "loading..."}
-                </>
+        </>
     );
 
     function handleDragEnd(event) { // console.log("drag ended called");
