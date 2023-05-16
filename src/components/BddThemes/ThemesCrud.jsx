@@ -25,6 +25,7 @@ import { userFetchListTheme } from './connetion/fetchData';
 import ThemeOption from './themeOptions';
 import { useDisclosure } from '@mantine/hooks';
 import { ThemeDescriptionContent } from './themeDescriptionContent';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 const useStyles = createStyles((theme) => ({
     th: {
@@ -73,7 +74,9 @@ export function ThemeCrud(props) {
 
 
     // *  -------------------------- fetch Students data ----------------------------------------------------------- *
-    const { data: fetchListTheme } = userFetchListTheme()
+    
+    const  {selectedYearId} = useStateContext()
+    const { data: fetchListTheme } = userFetchListTheme(selectedYearId)
     // *  ------------------------------------------------------------------------------------------------------------------ *
 
     const [search, setSearch] = useState('');

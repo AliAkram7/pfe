@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 import "yup-phone-lite";
 import React, { useEffect, useState } from 'react'
 import { Form, Formik } from 'formik';
-import { Button, LoadingOverlay, Modal } from '@mantine/core';
+import { Button, Highlight, LoadingOverlay, Modal, TextInput } from '@mantine/core';
 import FormikControl from '../FormControl/FormikControl';
 
 import { useSendStudentUpdatedData } from './connection/sendData/sendData';
@@ -11,7 +11,9 @@ import { useStudentContext } from '../../contexts/studentContext';
 import axiosClient from '../../axois-client';
 import { useStateContext } from '../../contexts/ContextProvider';
 import jwt_decode from 'jwt-decode';
-import { useForm } from '@mantine/form';
+import { isEmail, isNotEmpty, useForm } from '@mantine/form';
+import { combineValidators, isPasswordValid, isPhoneNumber } from '../TeacherprofilePage/changeInfo';
+import { IconAt, IconDeviceMobile, IconKey } from '@tabler/icons';
 
 function ChangeInfo(props) {
 
@@ -44,7 +46,36 @@ function ChangeInfo(props) {
   });
 
 
+  const changInfoForm = useForm({
+    initialValues: {
+      personal_email: student?.email ?  student?.email : "",
+      tel: student?.tel ? student?.tel : "",
+      newPassword: "",
+      prPassword: '',
+      confirm: "",
 
+    },
+    validate: {
+      personal_email: combineValidators(
+        isNotEmpty("field required"),
+         isEmail('invalid email format')
+      ),
+      tel: combineValidators(
+        isNotEmpty('field required'),
+        isPhoneNumber('invalid number format')
+
+      ),
+      prPassword: combineValidators(
+        ...(!firstLogin ? [isNotEmpty("field required"), isPasswordValid("Password must contain at least 1 uppercase letter and 1 number")] : [])
+      ),
+      newPassword: combineValidators(
+        isPasswordValid("Password must contain at least 1 uppercase letter and 1 number"),
+        ...(firstLogin ? [isNotEmpty("field required"),] : []),
+      ),
+      confirm: (value, values) =>
+        value !== values.newPassword ? 'Passwords did not match' : null,
+    }
+  })
 
 
   const validationSchema = Yup.object({
@@ -98,33 +129,42 @@ function ChangeInfo(props) {
     ,
   });
   const { mutate: updateInfo, isLoading, isSuccess } = useSendStudentUpdatedData()
-  const onSubmit = (value) => {
+  const onSubmit = (values) => {
     // console.log(value);
+
+    //   personal_email: student?.email ?  student?.email : "",
+      // tel: student?.tel ? student?.tel : "",
+      // newPassword: "",
+      // prPassword: '',
+      // confirm: "",
     let sendData = {}
-    if (value.email !== student.email) {
+    if (values.personal_email !== student.email) {
       sendData = {
-        email: value.email
+        email: values.personal_email
       }
     }
-    if (value.tel !== student?.tel) {
+    if (values.tel !== student?.tel) {
       sendData = {
         ...sendData,
-        tel: value.tel
+        tel: values.tel
       }
     }
-    if ((value.newPassword !== "" && value.confirm !== "") && value.newPassword !== value.prPassword) {
+    if ((values.newPassword !== "" && values.confirm !== "") && values.newPassword !== values.prPassword) {
       sendData = {
         ...sendData,
-        newPassword: value.newPassword,
-        confirm: value.confirm,
+        newPassword: values.newPassword,
+        confirm: values.confirm,
       }
     }
-    if (value.prPassword !== "") {
+    if (values.prPassword !== "") {
       sendData = {
         ...sendData,
-        prPassword: value.prPassword,
+        prPassword: values.prPassword,
       };
     }
+
+
+
 
     // const {data} = useSendStudentUpdatedData(sendData);
 
@@ -139,6 +179,9 @@ function ChangeInfo(props) {
 
   };
 
+
+
+  
 
   useEffect(() => {
 
@@ -162,9 +205,80 @@ function ChangeInfo(props) {
 
 
 
+return ( <Modal
+  position='bottom'
+  withCloseButton={true}
+  closeOnClickOutside={false}
+  opened={props.opened || firstLogin}
+  onClose={props.close}
+  size={600}icon
+  title={  "change information"}
+  closeOnEscape={false}
+>
+  <LoadingOverlay
+    visible={isLoading}
+    overlayBlur={1}
+    loaderProps={{ size: 'md', color: 'gold' }}
+    overlayOpacity={0.3}
+    overlayColor="whitesmoke"
+  />
+    <h3> hello {student?.name} </h3> 
+    {firstLogin ? <h4><Highlight color='teal'>this is your First Login</Highlight></h4> : null}
+  <h4>strong password required. Enter 8-16 characters, Do not include common words or names, Combine uppercase letters, lowercase letters and numbers <br /> <br />
+  </h4>
 
 
-  return (
+  {/* <div > */}
+    <form onSubmit={changInfoForm.onSubmit(onSubmit)} >
+      <TextInput
+
+        label='personal email'
+        {...changInfoForm.getInputProps('personal_email')}
+        icon={<IconAt size={16} />}
+      />
+      <TextInput
+
+        label='phone number'
+        {...changInfoForm.getInputProps('tel')}
+        icon={<IconDeviceMobile size={16} />}
+      />
+
+      {!firstLogin && <TextInput
+        type={'password'}
+        label='password'
+        {...changInfoForm.getInputProps('prPassword')}
+        icon={<IconKey size={16} />}
+      />}
+
+      <TextInput
+        type={'password'}
+        label='new password'
+        {...changInfoForm.getInputProps('newPassword')}
+        icon={<IconKey size={16} />}
+
+      />
+
+
+      <TextInput
+        type={'password'}
+        label='confirm'
+        {...changInfoForm.getInputProps('confirm')}
+        icon={<IconKey size={16} />}
+
+      />
+
+      <Button
+        my={20}
+        type='submit'
+      >
+        confirm change
+      </Button>
+    </form>
+  {/* </div> */}
+
+</Modal>)
+
+  const y =  (
     <Modal
       withCloseButton={true}
       closeOnClickOutside={false}
@@ -192,13 +306,13 @@ function ChangeInfo(props) {
           return (
             <div className='box'>
               <Form>
-                <FormikControl
+                <TextInput
                   control='input'
                   type='text'
                   label='email'
                   name='email'
                 />
-                <FormikControl
+                <TextInput
                   control='input'
                   type='text'
                   label='phone number'
@@ -206,7 +320,7 @@ function ChangeInfo(props) {
                 />
 
                 {firstLogin == false ?
-                  <FormikControl
+                  <TextInput
                     control='input'
                     type='password'
                     label='previos password'
@@ -214,13 +328,13 @@ function ChangeInfo(props) {
                   /> : null
                 }
 
-                <FormikControl
+                <TextInput
                   control='input'
                   type='password'
                   label='set new password'
                   name='newPassword'
                 />
-                <FormikControl
+                <TextInput
                   control='input'
                   type='password'
                   label='confirm '

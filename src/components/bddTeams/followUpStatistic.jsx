@@ -25,7 +25,7 @@ function FollowUpStatistic(props) {
         <Modal  
             opened={openedStatistic}
             onClose={close}
-            size='xl'
+            size='100vw'
          >
             <AppointmentsRowData  selectedAppointment_id={selectedAppointment_id}  />
         </Modal>

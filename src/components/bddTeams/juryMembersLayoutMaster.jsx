@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react';
-import { Group, SimpleGrid, ScrollArea, Box, Select } from '@mantine/core';
+import { Group, SimpleGrid, ScrollArea, Box, Select, Highlight } from '@mantine/core';
 import { nanoid } from 'nanoid';
 
 import { Progress, PasswordInput, Text, Center } from '@mantine/core';
@@ -311,8 +311,15 @@ export default function JuryMembersMasterForm(props) {
                                         setTeachers(updatedTeachers);
                                     }}
                                 // {...form.getInputProps('ex3')}
+
                                 />
-                                <ThemeStrength profiles={profiles} ThemeRe={ThemeRe} />
+
+
+                                <SimpleGrid mt={10} >
+                                    <p><Highlight color="teal" >  Domain of search of Dissertation :   </Highlight></p>
+                                    <ThemeStrength profiles={profiles} ThemeRe={ThemeRe} />
+                                </SimpleGrid>
+
                             </>
 
                             {/* </Group> */}

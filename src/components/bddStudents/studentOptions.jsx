@@ -1,25 +1,46 @@
 import { Menu, Button, Text } from '@mantine/core';
-import { Icon123, Icon3dCubeSphere, IconAlertTriangle, IconArrowRotaryFirstLeft, IconArrowUpCircle, IconDotsVertical, IconEdit, IconLockOff, IconLockOpen, IconMessageCircle, IconPanoramaHorizontal, IconPanoramaVertical, IconRecycle, IconRefresh, IconSettings, IconX } from '@tabler/icons';
+import { Icon123, Icon3dCubeSphere, IconAlertTriangle, IconArrowRotaryFirstLeft, IconArrowUpCircle, IconDotsVertical, IconEdit, IconLockOff, IconLockOpen, IconMessageCircle, IconPanoramaHorizontal, IconPanoramaVertical, IconRecycle, IconRefresh, IconSettings, IconTrash, IconX } from '@tabler/icons';
 import { useQueryClient } from 'react-query';
-import { useDeleteStudent, useLockStudentAccount, useResetStudent, useUnLockStudentAccount } from './connection/sendData/sendData';
+import { useAdminContext } from '../../contexts/adminContext';
+import { useStateContext } from '../../contexts/ContextProvider';
+import { useTeacherContext } from '../../contexts/teacherContext';
+import { useDeleteInscription, useDeleteStudent, useLockStudentAccount, useResetStudent, useUnLockStudentAccount } from './connection/sendData/sendData';
 // import { IconSettings, IconSearch, IconPhoto, IconMessageCircle, IconTrash, IconArrowsLeftRight } from '@tabler/icons-react';
 
 function StudentOption(props) {
 
 
+  const {selectedYearId} = useStateContext()
+
+
+  console.log("selected yearID",selectedYearId)
+
     const {mutate : deleteStudent } = useDeleteStudent() ; 
     const onDelete=()=>{
         const payload ={
-            code : props.row.code
+            code : props.row.code , 
+            yearId: selectedYearId 
         }
         deleteStudent(payload)    
     }
+
+    const {mutate : deleteInscription } = useDeleteInscription() ; 
+
+    const onDeleteInscription=()=>{
+      const payload ={
+        code : props.row.code , 
+        yearId: selectedYearId 
+      }
+        deleteInscription(payload)    
+    }
+
 
 
     const {mutate : resetStudent } = useResetStudent() ; 
     const onReset=()=>{
         const payload ={
-            code : props.row.code
+            code : props.row.code,
+            yearId: selectedYearId 
         }
         resetStudent(payload)    
     }
@@ -60,7 +81,8 @@ function StudentOption(props) {
         <Menu.Item   color='teal'  icon={<IconLockOpen color='teal' size={14} /> } onClick={onUnLock}    > unlock  account</Menu.Item>
         }
         <Menu.Item   color='red'  icon={<IconRefresh color='red' size={14}   /> } onClick={onReset}    >reset account</Menu.Item>
-        <Menu.Item   color='red'  icon={<IconX color='red' size={14}   /> } onClick={onDelete}    >delete account</Menu.Item>
+        <Menu.Item   color='red'  icon={<IconTrash color='red' size={14}   /> } onClick={onDelete}    >delete account</Menu.Item>
+        <Menu.Item   color='red'  icon={<IconTrash color='red' size={14}   /> } onClick={onDeleteInscription}    >delete  Inscription</Menu.Item>
 
       </Menu.Dropdown>
     </Menu>

@@ -91,7 +91,7 @@ function TeamInfo() {
                             }
                             className="team-section-nav"
                         >
-                            <List.Item><Link onClick={open}  >create room</Link></List.Item>
+                            <List.Item><Link onClick={open}  >create new chat room</Link></List.Item>
                         </List>
 
 

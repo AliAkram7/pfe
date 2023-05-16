@@ -306,7 +306,7 @@ export function StudentsCrud() {
           >
             <thead>
               <tr>
-                <Th /><Th sorted={sortBy === 'code'}
+                <th /><Th sorted={sortBy === 'code'}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('code')}
                   children='Code'

@@ -18,11 +18,12 @@ export const useFetchSpecialtyInformation = () => {
 }
 
 
-const fetchListTheme = () => {
-    return axiosClient.get('/teacher/specialty_manager/fetchSuggestedTheme');
+const fetchListTheme = ({ queryKey }) => {
+    const yearId = queryKey[1];
+    return axiosClient.get(`/teacher/specialty_manager/fetchSuggestedTheme/${yearId}`);
 }
-export const userFetchListTheme = () => {
-    return useQuery('fetchListOfTheme', fetchListTheme, {
+export const userFetchListTheme = (yearId) => {
+    return useQuery(['fetchListOfTheme', yearId], fetchListTheme, {
         refetchInterval: 30 * 1000,
         // refetchOnWindowFocus: false,
         // cacheTime: 1000 
@@ -39,49 +40,49 @@ export const useValidateTheme = () => {
     const queryClient = useQueryClient()
 
     return useMutation(validateTheme, {
-        onSuccess :()=>{
+        onSuccess: () => {
             queryClient.invalidateQueries('fetchListOfTheme');
         }
-        
+
     }
     )
 }
 
 
-const publishListOfTheme=()=>{
-    return axiosClient.post('/teacher/specialty_manager/publishTheListOfThemes') ; 
+const publishListOfTheme = () => {
+    return axiosClient.post('/teacher/specialty_manager/publishTheListOfThemes');
 }
 
 
-export const  usePublishListOfTheme =()=>{
+export const usePublishListOfTheme = () => {
 
-return useMutation(publishListOfTheme ,  {
-    onSuccess : ()=>{
-        showNotification({
-            title:'theme published successfully',
-            message: '',
-            color:'green',
-            
-          }) ; 
+    return useMutation(publishListOfTheme, {
+        onSuccess: () => {
+            showNotification({
+                title: 'theme published successfully',
+                message: '',
+                color: 'green',
 
-    } , 
-})
+            });
+
+        },
+    })
 
 }
-const affectThemeToStudents =()=>{
-    return axiosClient.post('/teacher/specialty_manager/affectThemeToStudents') ; 
+const affectThemeToStudents = () => {
+    return axiosClient.post('/teacher/specialty_manager/affectThemeToStudents');
 }
 
-export const useAffectThemeToStudents=()=>{
-    return useMutation(affectThemeToStudents, {}) ; 
+export const useAffectThemeToStudents = () => {
+    return useMutation(affectThemeToStudents, {});
 }
 
 
-const affectFramerToStudents =()=>{
-    return axiosClient.post('/teacher/specialty_manager/affectFramerToStudents') ; 
+const affectFramerToStudents = () => {
+    return axiosClient.post('/teacher/specialty_manager/affectFramerToStudents');
 }
 
-export const useAffectFramerToStudents=()=>{
-    return useMutation(affectFramerToStudents, {}) ; 
+export const useAffectFramerToStudents = () => {
+    return useMutation(affectFramerToStudents, {});
 }
 

@@ -44,9 +44,9 @@ function Login() {
 
 
   const form = useForm({
-    initialValues: { code: "", password: "" , },
-      validate: {
-      code: combineValidators(isNotEmpty('code is required'), matches(/^([\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,})|([0-9]{8})$/, 'invalid format')), 
+    initialValues: { code: "", password: "", },
+    validate: {
+      code: combineValidators(isNotEmpty('code is required'), matches(/^([\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,})|([0-9]{8})$/, 'invalid format')),
       password: (value) => (value.length < 8 ? 'password is required !' : null),
     },
   });
@@ -61,7 +61,7 @@ function Login() {
 
   const handleSubmit = async (values) => {
 
-  let logged = false  ; 
+    let logged = false;
 
     let payload = {
       code: values.code,
@@ -70,18 +70,17 @@ function Login() {
 
     const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-    if ( emailPattern.test(values.code))
-    {
+    if (emailPattern.test(values.code)) {
 
       payload = {
-        ...payload, institutional_email : values.code 
+        ...payload, institutional_email: values.code
       }
 
 
       payload = {
-        ...payload, email : values.code 
+        ...payload, email: values.code
       }
-      payload.code = '' ; 
+      payload.code = '';
 
     }
 
@@ -96,58 +95,58 @@ function Login() {
           queryClient.invalidateQueries('fetchStudentData')
           queryClient.invalidateQueries('getStudentTeamInformation')
           queryClient.invalidateQueries('getAllRooms')
-          logged = true ; 
+          logged = true;
           return <Navigate to='student' />
         }).catch((err) => {
           const response = err.response;
           if (response && response.status === 422 || response.status === 401) {
-          
+
           }
         })
 
     }
-     if (!logged) {
+    if (!logged) {
       await axiosClient.post('/teacher/login', payload)
         .then(({ data }) => {
           setToken(data.token)
           setUser(data.user)
-          logged = true  ;
+          logged = true;
           return <Navigate to='/teacher' />
 
         }).catch((err) => {
           const response = err.response;
           if (response && response.status === 422 || response.status === 401) {
-          
+
           }
         })
-      }
-       if (!logged) {
-
-    await axiosClient.post('/admin/login', payload)
-      .then(({ data }) => {
-        setToken(data.token)
-        setUser(data.user)
-        logged = true
-        return <Navigate to='/admin' />
-      }).catch((err) => {
-        const response = err.response;
-        if (response && response.status === 422 || response.status === 401) {
-    
-        }
-      })
-
     }
+    if (!logged) {
 
-    if(!logged){
-      showNotification({
-        title: `can't access`,  message: `code or password is incorrect `, color: 'red',
-        autoClose: true,
-        disallowClose: true, 
+      await axiosClient.post('/admin/login', payload)
+        .then(({ data }) => {
+          setToken(data.token)
+          setUser(data.user)
+          logged = true
+          return <Navigate to='/admin' />
+        }).catch((err) => {
+          const response = err.response;
+          if (response && response.status === 422 || response.status === 401) {
+            
+          }
         })
-      }
 
     }
-  
+
+    if (!logged) {
+      showNotification({
+        title: `can't access`, message: `code or password is incorrect `, color: 'red',
+        autoClose: true,
+        disallowClose: true,
+      })
+    }
+
+  }
+
 
   return (
 
@@ -170,8 +169,8 @@ function Login() {
                 size='md'
                 icon={<IconAt size="1rem" />}
 
-                  { ...form.getInputProps('code')} 
-                  // pattern={"^([\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,})|(code-[0-9]{6})$"}
+                {...form.getInputProps('code')}
+              // pattern={"^([\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,})|(code-[0-9]{6})$"}
               />
 
               <PasswordInput
@@ -196,8 +195,8 @@ function Login() {
 
 
 
-        <Button fullWidth mt="xl" size="sm"  variant="white" color='teal'   >
-          <NavLink to='/'  style={{textDecoration:'none' , color:'black'}} > <Flex align={'center'}  gap='md'   >  <IconArrowLeft size={15} /> back to home </Flex>  </NavLink>
+        <Button fullWidth mt="xl" size="sm" variant="white" color='teal'   >
+          <NavLink to='/' style={{ textDecoration: 'none', color: 'black' }} > <Flex align={'center'} gap='md'   >  <IconArrowLeft size={15} /> back to home </Flex>  </NavLink>
         </Button>
 
 

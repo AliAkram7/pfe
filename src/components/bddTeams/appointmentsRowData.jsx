@@ -9,9 +9,9 @@ function AppointmentsRowData(props) {
 
 
     return (
-        <Table key={nanoid()} align='center' withBorder withColumnBorders
-            horizontalSpacing="lg" verticalSpacing="xl"
-            captionSide
+        <Table key={nanoid()}  withBorder withColumnBorders
+            horizontalSpacing="sm" verticalSpacing="sm"
+            sx={{ tableLayout: 'fixed', minWidth: 1200, maxWidth: 1400, minHeight: 260 }}
         >
             <thead>
                 <tr>

@@ -59,7 +59,7 @@ export function BlogTask() {
                     className={
                         classes.wrapper
                     }>
-                    <Accordion variant='separated'>
+                    <Accordion     variant='separated'>
                         {teamRooms}
                     </Accordion>
 

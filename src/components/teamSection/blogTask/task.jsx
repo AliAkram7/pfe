@@ -55,12 +55,11 @@ function Task(props) {
   return (
     <Accordion.Item className={
       classes.item
-
     }
-
+    
       value={nanoid()}
       >
-      <Accordion.Control className={classes.title} ><List
+      <Accordion.Control className={classes.title}    ><List
         spacing="xs"
         size="xl"
         center
@@ -76,7 +75,7 @@ function Task(props) {
       </List></Accordion.Control>
       <Accordion.Panel>
         {props.description}
-        <Accordion.Item className={classes.createrName}>created by {props.creater} on {new Date(props.timeAgo).toLocaleDateString("en-US", {
+        <Accordion.Item  className={classes.createrName}>created by {props.creater} on {new Date(props.timeAgo).toLocaleDateString("en-US", {
           year: "numeric",
           month: "long",
           day: "numeric",

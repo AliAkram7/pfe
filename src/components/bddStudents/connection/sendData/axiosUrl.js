@@ -14,6 +14,11 @@ export const deleteStudent=(payload)=>{
     return axiosClient.post('/teacher/department_manager/deleteAccount',payload) ;  
 }
 
+export const deleteStudentInscription=(payload)=>{
+    return axiosClient.post('/teacher/department_manager/deleteInscription',payload) ;  
+}
+
+
 export const resetStudent=(payload)=>{
     return axiosClient.post('/teacher/department_manager/resetStudentAccount',payload) ;  
 }

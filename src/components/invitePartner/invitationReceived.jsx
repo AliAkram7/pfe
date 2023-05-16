@@ -113,12 +113,12 @@ return (
                                                 name="accepted"
                                                 onClick={
                                                     (e) => handleAction(item.code, e)
-                                                }>accepted</button>
+                                                }>accept</button>
                                             <button className='btn-refuse-inv'
                                                 name="refused"
                                                 onClick={
                                                     (e) => handleAction(item.code, e)
-                                                }>refused</button>
+                                                }>refuse</button>
                                         </div>
                                         : null
                                     }

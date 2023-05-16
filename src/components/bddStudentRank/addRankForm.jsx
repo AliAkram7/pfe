@@ -58,8 +58,7 @@ function AddRankForm(props) {
             ),
 
             mgc: (value) => (value > 20 ? 'note maximum is 20'
-                : value < 0 ? 'note minimum is 0' : (form.getInputProps('ms1').value + form.getInputProps('ms2').value) / 2 != value ?
-                    'value is incorrect' : null
+                : value < 0 ? 'note minimum is 0' : null
             ),
             obs: isNotEmpty('cannot be empty'),
         },
@@ -92,6 +91,15 @@ function AddRankForm(props) {
         props.closeModel()
 
     };
+
+
+    const obsData = [
+        { label: 'Allowed/S1', value: 1 },
+        { label: 'Allowed/S2', value: 2 },
+        { label: 'Allowed/Debts/S2', value: 3 },
+         { label: 'Allowed/Debts/S1', value: 4 }
+        ]
+
 
     return (
         <>
@@ -154,7 +162,7 @@ function AddRankForm(props) {
                         />
 
                     </SimpleGrid>
-                    <Select data={[{ label: 'accept/s1', value: 1 }, { label: 'dette', value: 2 }]} label='observation'
+                    <Select data={obsData} label='observation'
                         {...form.getInputProps('obs')}
                     ></Select>
                     <Button type='onsubmit' >save</Button>

@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 
 import { combineValidators } from '../TeacherprofilePage/changeInfo';
 import { useCreatePeriod } from './connection/connection';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 
 const useStyles = createStyles((theme) => ({
@@ -47,6 +48,8 @@ function AddFollowUpForm(props) {
 
     const {mutate  : createPeriod} = useCreatePeriod()
 
+    const {selectedYearId}  = useStateContext()
+    
     const handleSubmit = (values) => {
 
         let start_date = values.dateRange[0].toISOString().slice(0, 19).replace('T', ' ');
@@ -55,6 +58,7 @@ function AddFollowUpForm(props) {
             start_date: start_date,
             end_date: end_date,
             nPeriod: values.nPeriod,
+            selectedYearId : selectedYearId
         }
 
         createPeriod(payload) ; 

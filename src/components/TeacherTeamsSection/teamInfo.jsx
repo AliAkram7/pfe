@@ -103,6 +103,7 @@ function TeamInfo() {
                 opened={createAppointmentFormOpened}
                 onClose={closeCreateApp}
                 size={'xl'}
+                title="Create Appointment"
             >
                 <CreateAppointment />
             </Modal>

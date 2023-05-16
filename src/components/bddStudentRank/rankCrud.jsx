@@ -14,6 +14,7 @@ import {
     LoadingOverlay,
     NumberInput,
     SimpleGrid,
+    Badge,
 } from '@mantine/core';
 import { keys } from '@mantine/utils';
 import { IconSearch } from '@tabler/icons';
@@ -27,6 +28,7 @@ import { useGetRanking, useUpdateRank } from './connection/connection';
 import RankOption from './rankOption';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { useStateContext } from '../../contexts/ContextProvider';
+import { nanoid } from 'nanoid';
 
 const useStyles = createStyles((theme) => ({
     th: {
@@ -296,7 +298,17 @@ export function RankCrud() {
 
                 {row.Edit === 'false' ?
                     (<>
-                        <td>{row.observation}</td>
+                        {/* <td>{row.observation}</td> */}
+                        <td key={nanoid()} > 
+                
+                {
+                row.observation == 1 ? <Badge>Allowed/S1</Badge> : 
+                row.observation == 2 ? <Badge>Allowed/S2</Badge> : 
+                row.observation == 3 ? <Badge>Allowed/Debts/S2</Badge> : 
+                row.observation == 4 ? <Badge>Allowed/Debts/S1</Badge> : null
+                }  
+                
+                </td>
                         <td>{row.ms1}</td>
                         <td>{row.ms2}</td>
                         <td>{row.mgc}</td>
@@ -328,7 +340,7 @@ export function RankCrud() {
                     sx={{ tableLayout: 'fixed', minWidth: 1200, maxWidth: 1400, minHeight: 260 }}
                 ><thead>
                         <LoadingOverlay />
-                        <tr><Th /><Th sorted={sortBy === 'student_name'}
+                        <tr key={nanoid()}  ><th /><Th sorted={sortBy === 'student_name'}
                             reversed={reverseSortDirection}
                             onSort={() => setSorting('student_name')}
                             children='name'

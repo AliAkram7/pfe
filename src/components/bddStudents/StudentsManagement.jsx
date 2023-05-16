@@ -28,7 +28,7 @@ function StudentsManagement() {
     }
     const { data: AdminFetchDepartmentsInfo } = useAdminfetchDepartmentsInfo(onSuccess)
     const { setSelectedSpeciality } = useAdminContext()
-    const {selectedYearString} = useStateContext()
+    const { selectedYearString } = useStateContext()
     const [_selectedSpeciality, _setSelectedSpeciality] = useState(AdminFetchDepartmentsInfo?.data[0].speciality_info[0])
     const [contextSet, setContextSet] = useState(false)
 
@@ -126,7 +126,7 @@ function StudentsManagement() {
                 zIndex={10000}
             >
                 <div className='upload-help'   >
-                    <h3>make sure that the file .xlsx  is in the form bellow </h3>
+                    <h3>make sure that the file .xls is in the form bellow </h3>
                     <div className='upload-help-img' >
                         <img src={UploadHelp} alt="help image" />
                     </div>
@@ -160,11 +160,11 @@ function StudentsManagement() {
 
 
                 <div className='Student-managment-menu'  >
-                    <div className='specialtyName' ><Flex align={'center'} >  <Tooltip label={'all departments'}>
+                    <div className='specialtyName' ><Flex align={'center'}  gap={8}  >  <Tooltip label={'all departments'}>
                         <Button color='teal' variant='white' onClick={drawerOpen} >
                             <IconDotsVertical size={20} />
                         </Button>
-                    </Tooltip><h3>{_selectedSpeciality?.fullname}  <Highlight color={'teal'}>{selectedYearString}</Highlight> </h3>   </Flex></div>
+                    </Tooltip><h3>{_selectedSpeciality?.fullname}    <h2>Students</h2>  <Highlight color={'teal'}>{selectedYearString}</Highlight> </h3>   </Flex></div>
 
                     <Group spacing={20}>
                         <Tooltip label="add teachers">

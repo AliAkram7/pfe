@@ -87,14 +87,15 @@ export const useGetAppointmentInfo = (payload) => {
 
 
 
-const fetchTeachers = () => {
-    return axiosClient.get('/teacher/specialty_manager/fetchTeachers');
+const fetchTeachers = ({queryKey}) => {
+    const supervisor_code = queryKey[1]
+    return axiosClient.get(`/teacher/specialty_manager/fetchTeachers/${supervisor_code}`);
 }
 
 
-export const useFetchTeachers = () => {
+export const useFetchTeachers = (payload) => {
     const queryClient = useQueryClient()
-    return useQuery('fetchTeachersJury', fetchTeachers, {
+    return useQuery(['fetchTeachersJury',payload], fetchTeachers, {
         refetchOnWindowFocus: false,
     });
 }

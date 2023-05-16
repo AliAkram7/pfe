@@ -1,4 +1,4 @@
-import { Button, createStyles, Drawer, Flex, Group, ScrollArea, SimpleGrid, Table, Text, TextInput, UnstyledButton, useMantineTheme } from "@mantine/core";
+import { Badge, Button, createStyles, Drawer, Flex, Group, ScrollArea, SimpleGrid, Table, Text, TextInput, UnstyledButton, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons";
 import { IconDotsVertical, IconPlus } from "@tabler/icons-react";
@@ -173,7 +173,16 @@ export default function Ranking() {
         return (<>
             <tr key={nanoid()}>
                 <td key={nanoid()} >{row.student_name}</td>
-                <td key={nanoid()} >{row.observation}</td>
+                <td key={nanoid()} > 
+                
+                {
+                row.observation == 1 ? <Badge>Allowed/S1</Badge> : 
+                row.observation == 2 ? <Badge>Allowed/S2</Badge> : 
+                row.observation == 3 ? <Badge>Allowed/Debts/S2</Badge> : 
+                row.observation == 4 ? <Badge>Allowed/Debts/S1</Badge> : null
+                }  
+                
+                </td>
                 <td key={nanoid()} >{row.ms1}</td>
                 <td key={nanoid()} >{row.ms2}</td>
                 <td key={nanoid()} >{row.mgc}</td>

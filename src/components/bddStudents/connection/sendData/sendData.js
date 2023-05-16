@@ -1,5 +1,6 @@
+import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "react-query";
-import { addStudent, deleteStudent, lockStudentAccount, resetStudent, unLockStudentAccount, updateStudent, uploadStudentSeeder } from "./axiosUrl";
+import { addStudent, deleteStudent, deleteStudentInscription, lockStudentAccount, resetStudent, unLockStudentAccount, updateStudent, uploadStudentSeeder } from "./axiosUrl";
 
 export const useUploadStudentSeeder = () => {
     const QueryClient = useQueryClient();
@@ -7,14 +8,14 @@ export const useUploadStudentSeeder = () => {
 
         onError: (response) => {
             showNotification({
-                title: 'error',
+                title: 'Error',
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
-        },  
-        onSuccess:()=>{
+        },
+        onSuccess: () => {
 
-                QueryClient.invalidateQueries('fetchStudentsData')
+            QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
 }
@@ -27,13 +28,13 @@ export const useAddStudent = () => {
     return useMutation(addStudent, {
         onError: (response) => {
             showNotification({
-                title: 'error',
+                title: 'Error',
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
-        },  
-        onSuccess:()=>{
-                QueryClient.invalidateQueries('fetchStudentsData')
+        },
+        onSuccess: () => {
+            QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
 }
@@ -42,35 +43,65 @@ export const useAddStudent = () => {
 export const useDeleteStudent = () => {
     const QueryClient = useQueryClient();
     return useMutation(deleteStudent, {
-        onError: (response) => {
-           
+        onError: () => {
+
             showNotification({
-                title: 'error',
+                title: 'Error',
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
-        },  
-        onSuccess:()=>{
-
-                QueryClient.invalidateQueries('fetchStudentsData')
+        },
+        onSuccess: () => {
+            showNotification({
+                title: 'Success',
+                message: 'delete students account  successfully',
+                color: 'red',
+            })
+            QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
 }
 
-export const useResetStudent = () => {
+export const useDeleteInscription = () => {
     const QueryClient = useQueryClient();
-    return useMutation(resetStudent, {
-        onError: (response) => {
-           
+    return useMutation(deleteStudentInscription, {
+        onError: () => {
+
             showNotification({
-                title: 'error',
+                title: 'Error',
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
-        },  
-        onSuccess:()=>{
+            QueryClient.invalidateQueries('fetchStudentsData')
 
-                QueryClient.invalidateQueries('fetchStudentsData')
+        },
+        onSuccess: () => {
+            showNotification({
+                title: 'Success',
+                message: 'delete students inscription successfully',
+                color: 'teal',
+            })
+            QueryClient.invalidateQueries('fetchStudentsData')
+        }
+    })
+}
+
+
+
+export const useResetStudent = () => {
+    const QueryClient = useQueryClient();
+    return useMutation(resetStudent, {
+        onError: () => {
+
+            showNotification({
+                title: 'Error',
+                message: 'some things goes wrong try again later',
+                color: 'red',
+            })
+        },
+        onSuccess: () => {
+
+            QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
 }
@@ -82,13 +113,13 @@ export const useUpdateStudent = () => {
     return useMutation(updateStudent, {
         onError: (response) => {
             showNotification({
-                title: 'error',
+                title: 'Error',
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
-        },  
-        onSuccess:()=>{
-                QueryClient.invalidateQueries('fetchStudentsData')
+        },
+        onSuccess: () => {
+            QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
 }
@@ -98,13 +129,13 @@ export const useLockStudentAccount = () => {
     return useMutation(lockStudentAccount, {
         onError: (response) => {
             showNotification({
-                title: 'error',
+                title: 'Error',
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
-        },  
-        onSuccess:()=>{
-                QueryClient.invalidateQueries('fetchStudentsData')
+        },
+        onSuccess: () => {
+            QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
 }
@@ -113,13 +144,13 @@ export const useUnLockStudentAccount = () => {
     return useMutation(unLockStudentAccount, {
         onError: (response) => {
             showNotification({
-                title: 'error',
+                title: 'Error',
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
-        },  
-        onSuccess:()=>{
-                QueryClient.invalidateQueries('fetchStudentsData')
+        },
+        onSuccess: () => {
+            QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
 }

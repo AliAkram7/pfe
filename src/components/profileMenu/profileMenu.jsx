@@ -11,7 +11,7 @@ function ProfileMenu(props) {
     
 
   return (
-    <Menu shadow='sm' width={240}  position="left-start"   classNames='menu-profile' size={45}  withArrow arrowPosition="center"   >
+    <Menu  shadow='sm' width={240}  position="left-start"   classNames='menu-profile' size={45}  withArrow arrowPosition="center"   >
         <Menu.Target   >
           <Avatar/>
         </Menu.Target>

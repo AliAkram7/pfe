@@ -1,4 +1,4 @@
-import { Button, Drawer, Flex, Group, LoadingOverlay, Modal, SimpleGrid, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
+import { Button, Drawer, Flex, Group, Highlight, LoadingOverlay, Modal, SimpleGrid, Text, Tooltip, Transition, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconArrowLeft, IconBrandTelegram, IconCalendar, IconClipboard, IconPlus, IconShare } from '@tabler/icons'
 import { IconDotsVertical } from '@tabler/icons-react'
@@ -53,7 +53,7 @@ function TeamsManagement() {
     }
 
 
-    const theme = useMantineTheme();
+    // const theme = useMantineTheme();
     const [opened, {
         close,
         open
@@ -226,7 +226,6 @@ function TeamsManagement() {
                 <Drawer
                     opened={openYearScholar}
                     onClose={yearScholarClose}
-                    overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
                     overlayOpacity={0.3}
                     overlayBlur={3}
                     position='right'
@@ -256,7 +255,7 @@ function TeamsManagement() {
 
 
                                 <Flex>
-                                    <Button variant='white' onClick={yearScholarOpen} ><IconDotsVertical /></Button> <h3>  <Text fz="lg" color='teal' >{specialtyInformation.fullname}  {selectedYearString}  </Text> list of teams </h3>
+                                    <Button variant='white' onClick={yearScholarOpen} ><IconDotsVertical /></Button> <h3>  <Text fz="lg"  >{specialtyInformation.fullname}  <Highlight  color='teal' >  {selectedYearString}</Highlight></Text> <h2> Teams </h2></h3>
                                 </Flex>
 
 

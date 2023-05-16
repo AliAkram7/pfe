@@ -21,8 +21,6 @@ const StateContext = createContext({
     roomName: null,
     setRoomId: () => { },
     roomId: null,
-
-
     selectedYearId: null,
     setSelectedYearId: () => { },
     selectedYearString: '',
@@ -40,9 +38,7 @@ export const ContextProvider = ({ children }) => {
     const [roomDiscription, setRoomDiscription] = useState()
     const [roomName, setRoomName] = useState()
     const [roomId, setRoomId] = useState()
-
-
-    const [selectedYearId, setSelectedYearId] = useState(1)
+    const [selectedYearId, setSelectedYearId] = useState(2)
     const [selectedYearString, setSelectedYearString] = useState()
 
 

@@ -147,7 +147,7 @@ function TeacherManagement() {
                         {/* <Button color='teal' variant='white' onClick={drawerOpen} >
                             <IconDotsVertical size={20} />
                         </Button> */}
-                        <h3> list of teachers </h3> </Flex></div>
+                        <h2> Teachers </h2> </Flex></div>
                     <Group spacing={20} >
                         <Tooltip label="add teachers">
                             <Button color='teal' onClick={open}   >

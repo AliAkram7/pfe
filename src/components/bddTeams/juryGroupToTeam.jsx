@@ -11,15 +11,21 @@ import JuryMembersMasterForm from './juryMembersLayoutMaster';
 
 function CreateAppointmentPresentation(props) {
 
+    // console.log(props.row.team_id)
+
 
     const { ThemeRequirement, row } = props;
+
+
+    console.log("supervisor code : ", row?.supervisor_info.teacher_code)
 
     const { affectationMethod } = useTeacherContext();
 
 
     const { mutate: createPresentation } = useCreatePresentation()
 
-    const { data: fetchTeachers, isLoading } = useFetchTeachers()
+    const { data: fetchTeachers, isLoading } = useFetchTeachers(row?.supervisor_info.teacher_code)
+
 
     let teachersDomain = []
     teachersDomain = fetchTeachers?.data.map(teacher => {
@@ -180,6 +186,7 @@ function CreateAppointmentPresentation(props) {
                                     label='tester project 1'
                                     placeholder='tester project 1'
                                     {...form.getInputProps('examiner_1')}
+                                    
                                 />
 
                                 <Select

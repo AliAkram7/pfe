@@ -16,6 +16,9 @@ import CreateAppointmentPresentation from './juryGroupToTeam';
 
 function TeamOption(props) {
 
+
+  
+
     const { affectationMethod } = useTeacherContext()
     const [selectedDate, setSelectedDate] = useState(0)
 
@@ -96,8 +99,11 @@ function TeamOption(props) {
                 opened={juryOptionOpened}
                 onClose={closeJuryOption}
                 size={'xl'}
+                title="Presentation date"
             >
-                <CreateAppointmentPresentation row={props?.row} ThemeRequirement={props?.row?.theme_workOn?.research_domain} />
+                <CreateAppointmentPresentation row={props?.row} ThemeRequirement={props?.row?.theme_workOn?.research_domain} 
+                    supervisor_code={props?.row?.supervisor_info?.name}
+                />
             </Modal>
 
 

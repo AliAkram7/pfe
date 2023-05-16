@@ -120,6 +120,7 @@ export function TeamsCrud(props) {
         return fetchListTeams?.data.map((obj) => ({
             team_id: obj.team_id,
             supervisor_info: {
+                teacher_code:obj.supervisor_info?.teacher_code , 
                 name: obj.supervisor_info?.name,
                 institutional_email: obj.supervisor_info?.institutional_email,
                 grad_abName: obj.supervisor_info?.abbreviated_name,
@@ -160,10 +161,13 @@ export function TeamsCrud(props) {
 
     const rows = sortedData?.map((row) => {
 
+
+        console.log(row?.supervisor_info?.teacher_code)
+
         return (<>
 
             <tr key={nanoid()} >
-                <td key={nanoid()}  > <TeamOption row={row} /></td>
+                <td key={nanoid()}  > <TeamOption row={row}     /></td>
 
                 <td>
                     <HoverCard width={300} shadow="md">
