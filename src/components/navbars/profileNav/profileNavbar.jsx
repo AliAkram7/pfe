@@ -101,122 +101,10 @@ function ProfileNavbar() {
         }
     }, [getStudentTeamInformation?.data.team_members.length])
 
-
-
-
-    const x = (
-        <>
-
-            <ChangeInfo opened={firstLoginOpened}
-                close={firstLoginClose} />
-            <NavigationProgress color='gold' />
-            const [opened, setOpened] = useState(false);
-
-            <Modal opened={opened}
-                onClose={
-                    () => setOpened(false)
-                }
-                title='are you sure !'>
-                <Logout setOpened={setOpened} />
-            </Modal>
-
-
-            <div className='sidbar--header-main'>
-                <div className='header-main'
-                    style={
-                        !openSide ? {
-                            width: "93%"
-                        } : null
-                    }>
-                    <header>
-                        <div className='header-content'>
-                            <div className='profile-navbar'>
-                                <div className='profile-navbar-content'>
-                                    <div className='profile-navbar-img'>
-                                        <img src={logo}
-                                            alt='' />
-                                    </div>
-                                    <div className='ProfileUniv-name'>
-                                        universite
-                                        <br />
-                                        <h3>mustapha stambouli</h3>
-                                    </div>
-                                    <hr />
-                                </div>
-                                <ProfileMenu setOpened={setOpened} />
-                            </div>
-                        </div>
-                    </header>
-                    <section className='main'>
-                        <Outlet />
-                    </section>
-                    <ProfileFooter />
-                </div>
-                <div className='sidebar'>
-                    <div className='menu-name'>
-                        <div className='menu-btn'
-                            onClick={
-                                () => {
-                                    setOpenSide(!openSide);
-                                }
-                            }
-                            style={
-                                openSide ? {
-                                    gap: "3px"
-                                } : null
-                            }>
-                            <span style={
-                                openSide ? {
-                                    transform: "rotate(-41deg)",
-                                    width: " 40%"
-                                } : null
-                            }></span>
-                            <span></span>
-                            <span style={
-                                openSide ? {
-                                    transform: "rotate(41deg)",
-                                    width: " 40%"
-                                } : null
-                            }></span>
-                        </div>
-                        {/* <h3>menu</h3> */}
-                    </div>
-                    <div className='menu-list'>
-                        <ul style={
-                            openSide ? {
-                                display: "flex"
-                            } : null
-                        }>
-
-                            {/* //!! special data come from token used here !!    */}
-                            <li>
-                                <Link to='/student'>home</Link>
-                            </li>
-                            <li>
-                                <Link to='ranking'>ranking</Link>
-                            </li>
-                            {/* <li>
-                                <Link to='list_of_dissertations'>dissertations</Link>
-                            </li> */}
-
-
-                            {isInTeam == true ? <li>
-                                <Link to='team-section'>team section</Link>
-                            </li> : null}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
-
-
     const [openedSide, { open, close }] = useDisclosure(false)
 
 
     const activeLink = useLocation();
-
-
 
     return (<>
         <NavigationProgress color='gold' />
@@ -231,13 +119,10 @@ function ProfileNavbar() {
             {/* <ScrollArea offsetScrollbars={false}   > */}
             <div className={`${classes.MainPage}`}
             >
-
                 <ChangeInfo opened={firstLoginOpened}
                     close={firstLoginClose} />
-
                 <HeaderStudent opened={openedSide} open={open} close={close} />
                 <section className='main'>
-
                     <div className='main-page-name'>
                         <Tabs variant="default" orientation="horizontal" defaultValue="home"   >
                             <Tabs.List>

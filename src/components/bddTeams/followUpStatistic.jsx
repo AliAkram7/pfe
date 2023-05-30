@@ -27,7 +27,7 @@ function FollowUpStatistic(props) {
             onClose={close}
             size='100vw'
          >
-            <AppointmentsRowData  selectedAppointment_id={selectedAppointment_id}  />
+            <AppointmentsRowData periodInfo={props?.periodInfo} selectedAppointment_id={selectedAppointment_id}  />
         </Modal>
 
             <Calendar

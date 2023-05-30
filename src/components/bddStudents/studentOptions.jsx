@@ -13,8 +13,6 @@ function StudentOption(props) {
   const {selectedYearId} = useStateContext()
 
 
-  console.log("selected yearID",selectedYearId)
-
     const {mutate : deleteStudent } = useDeleteStudent() ; 
     const onDelete=()=>{
         const payload ={
@@ -48,7 +46,8 @@ function StudentOption(props) {
     const {mutate : lockStudentAccount } = useLockStudentAccount() ; 
     const onLock=()=>{
         const payload ={
-            code : props.row.code
+            code : props.row.code,
+            yearId : selectedYearId 
         }
         lockStudentAccount(payload)    
     }    
@@ -58,7 +57,8 @@ function StudentOption(props) {
     const {mutate : unLockStudentAccount } = useUnLockStudentAccount() ; 
     const onUnLock=()=>{
         const payload ={
-            code : props.row.code
+            code : props.row.code, 
+            yearId : selectedYearId 
         }
         unLockStudentAccount(payload)    
     }    

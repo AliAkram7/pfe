@@ -1,5 +1,5 @@
 import { useForm } from '@mantine/form';
-import { TextInput, Switch, Group, ActionIcon, Box, Text, Button, Code, ScrollArea, Select, Stepper, Modal, SimpleGrid } from '@mantine/core';
+import { TextInput, Switch, Group, ActionIcon, Box, Text, Button, Code, ScrollArea, Select, Stepper, Modal, SimpleGrid, LoadingOverlay } from '@mantine/core';
 import { randomId, useDisclosure } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons';
 import { nanoid } from 'nanoid';
@@ -69,6 +69,7 @@ export default function Member(props) {
                 onClose={props.close}
                 size='xl'
             >
+                <LoadingOverlay visible={props.sendLicenseJuryMemberLoading} />
 
                 <>
                     <Group>
@@ -94,7 +95,7 @@ export default function Member(props) {
                                 )
                             })
                         }
-                        <Button onClick={props.handleConfirm}> confirm  </Button>
+                        <Button onClick={()=>{props.handleConfirm(); props.close();    }}> confirm  </Button>
                     </Group>
                 </>
             </Modal>

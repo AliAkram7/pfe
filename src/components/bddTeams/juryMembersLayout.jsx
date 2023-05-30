@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Stepper, Button, Group, Flex, Text, SimpleGrid, Modal, Highlight } from '@mantine/core';
+import { Stepper, Button, Group, Flex, Text, SimpleGrid, Modal, Highlight, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import Member from './juryMembersForm';
 import { IconMinus, IconPlus } from '@tabler/icons';
@@ -81,7 +81,7 @@ export default function JuryMembersForm(props) {
 
 
 
-    const { mutate: sendLicenseJuryMember } = useSendLicenseJuryMember()
+    const { mutate: sendLicenseJuryMember, isLoading : sendLicenseJuryMemberLoading } = useSendLicenseJuryMember()
 
     const handleConfirm = () => {
         sendLicenseJuryMember(form.values)
@@ -96,8 +96,10 @@ export default function JuryMembersForm(props) {
                     !isLoading ?
                         <Member form={form} active={active}
                             teachers={fetchTeachers.data}
+
                             conformationModalOpened={conformationModalOpened} close={closeConformationModal}
                             handleConfirm={handleConfirm}
+                            sendLicenseJuryMemberLoading={sendLicenseJuryMemberLoading}
                         />
                         : null}
             </Stepper.Step>
@@ -117,6 +119,7 @@ export default function JuryMembersForm(props) {
                 size='xl'
             >
                 <>
+
                 <SimpleGrid spacing={15}>
 
                         {teacherLists}
@@ -126,6 +129,8 @@ export default function JuryMembersForm(props) {
             </Modal>
 
             <form >
+            <LoadingOverlay visible={sendLicenseJuryMemberLoading} />
+
                 <SimpleGrid  >
                     <Flex align={'center'} gap={8} >
                         <Button variant='subtle' label={"add group"} disabled={form.values.groups.length >= 5} onClick={() =>

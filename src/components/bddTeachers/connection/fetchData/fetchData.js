@@ -28,7 +28,7 @@ export const useAdminfetchDepartmentsInfo=(onSuccess)=>{
 
 export const useAdminFetchTeachersData=()=>{
     return useQuery('fetchTeachersData', fetchTeachersData, {
-
+        refetchOnWindowFocus:false, 
     })
 }
 

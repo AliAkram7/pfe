@@ -12,6 +12,7 @@ import {
     LoadingOverlay,
     NumberInput,
     SimpleGrid,
+    Badge,
 } from '@mantine/core';
 import { keys } from '@mantine/utils';
 import { IconSearch } from '@tabler/icons';
@@ -292,8 +293,10 @@ export function FramerCrud(props) {
                 <td>{row.code}</td>
                 <td>{row.name}</td>
                 <td>{row.institutional_email}</td>
-                <td>{row.gradeAbName}</td>
-                <td>{row.numberOfAccptedTeam}</td>
+                    <td><Badge color="teal">{row.gradeAbName}</Badge></td>
+            
+
+                <td><Badge color="teal"> {row.numberOfAccptedTeam}</Badge></td>
             </tr>
         </>
         )

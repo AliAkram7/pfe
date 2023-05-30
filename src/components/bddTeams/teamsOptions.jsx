@@ -31,10 +31,12 @@ function TeamOption(props) {
     const [appointmentsDates, setAppointmentsDates] = useState([]);
 
     const [selectedPID, setSelectedPID] = useState()
+    const [periodInfo, setPeriodInfo] = useState()
 
     const listPeriods = props.row.periods.map((period, idx) => {
+        console.log(period)
         return (
-            <Menu.Item key={nanoid()} color='teal' icon={<IconZoomQuestion size={14} color='teal' />} onClick={() => { setSelectedDate(idx); openStatistic(); setSelectedPID(period.p_id) }}    >
+            <Menu.Item key={nanoid()} color='teal' icon={<IconZoomQuestion size={14} color='teal' />} onClick={() => { setSelectedDate(idx); openStatistic(); setSelectedPID(period.p_id); setPeriodInfo(period)  }}    >
                 <HoverCard width={300} shadow="md" key={nanoid()} >
                     <HoverCard.Target>
                         <Text key={nanoid()} >
@@ -73,6 +75,7 @@ function TeamOption(props) {
 
                     team_id={props.row.team_id}
                     PID={selectedPID}
+                    periodInfo={periodInfo}
                 />
             </Modal>
             <Modal

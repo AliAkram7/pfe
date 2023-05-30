@@ -13,7 +13,24 @@ export const useUploadStudentSeeder = () => {
                 color: 'red',
             })
         },
-        onSuccess: () => {
+        onSuccess: (response) => {
+
+
+            console.log(response.status) ; 
+            if (response.status == 202) {
+                showNotification({
+                    title: 'Warnings',
+                    message: 'some student not added',
+                    color: 'yellow',
+                })         
+            } else if(response.status == 201){
+                showNotification({
+                    title: 'Success',
+                    message: 'students add successfully',
+                    color: 'teal',
+                })         
+            }
+
 
             QueryClient.invalidateQueries('fetchStudentsData')
         }
@@ -34,6 +51,11 @@ export const useAddStudent = () => {
             })
         },
         onSuccess: () => {
+            showNotification({
+                title: 'Success',
+                message: 'student added successfully',
+                color: 'teal',
+            })
             QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
@@ -100,7 +122,11 @@ export const useResetStudent = () => {
             })
         },
         onSuccess: () => {
-
+            showNotification({
+                title: '',
+                message: 'student account  rested',
+                color: 'teal',
+            })
             QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
@@ -118,7 +144,12 @@ export const useUpdateStudent = () => {
                 color: 'red',
             })
         },
-        onSuccess: () => {
+        onSuccess: () => {            
+            showNotification({
+            title: 'Success',
+            message: 'student updated successfully',
+            color: 'teal',
+        })
             QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
@@ -135,6 +166,12 @@ export const useLockStudentAccount = () => {
             })
         },
         onSuccess: () => {
+             
+            showNotification({
+                title: '',
+                message: 'Account locked',
+                color: 'teal',
+            })
             QueryClient.invalidateQueries('fetchStudentsData')
         }
     })
@@ -150,6 +187,11 @@ export const useUnLockStudentAccount = () => {
             })
         },
         onSuccess: () => {
+            showNotification({
+                title: '',
+                message: 'Account unlocked',
+                color: 'teal',
+            })
             QueryClient.invalidateQueries('fetchStudentsData')
         }
     })

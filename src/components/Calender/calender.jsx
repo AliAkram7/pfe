@@ -1,9 +1,10 @@
-import { Header, Highlight, Indicator, Modal, Text } from '@mantine/core';
+import { Anchor, Button, Group, Header, Highlight, HoverCard, Indicator, Modal, Stack, Text } from '@mantine/core';
 import { Calendar, CalendarBase, Month } from '@mantine/dates'
 import { useDisclosure } from '@mantine/hooks';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react'
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { useFetchCalenderEvent } from './connexion';
 
 import { Table } from '@mantine/core'
@@ -11,8 +12,7 @@ import { Table } from '@mantine/core'
 
 function AppointmentsRowData(props) {
 
-    console.log(props.selectedAppointmentDate)
-
+    // console.log(props.selectedAppointmentDate)
 
 
 
@@ -20,9 +20,9 @@ function AppointmentsRowData(props) {
 
 
 
-    const specialties = props.selectedAppointment.filter(
+    const specialties = props?.selectedAppointment?.filter(
         (specialty) =>
-            new Date(specialty?.start_appointments).toDateString() === props.selectedAppointmentDate
+            new Date(specialty?.start_appointments)?.toDateString() === props?.selectedAppointmentDate
     )
 
 
@@ -30,31 +30,39 @@ function AppointmentsRowData(props) {
 
 
         return (<>
-{
-     specialty.method_of_aff == 1 ? 
 
-           <Header   > Designation of the jury members for the Master's degree in  <Highlight color={'teal'} > {specialty.specialty_name}</Highlight> ({specialty.abbreviated_name})</Header>
-           : 
-           <Header   > Designation of the jury members for the license degree in  <Highlight color={'teal'} > {specialty.specialty_name}</Highlight> ({specialty.abbreviated_name})</Header>
-    }
 
             <Table key={nanoid()} align='left'
+        
                 withBorder
                 withColumnBorders
-                horizontalSpacing="xl" 
-                verticalSpacing="xl"
+                horizontalSpacing="sm" 
+                verticalSpacing="sm"
                 // captionSide
-                sx={{ tableLayout: 'fixed', minWidth: 1200, maxWidth: 1400, minHeight: 260 }}
-                mb={50}
-                mt={80}
+
+                sx={{ tableLayout:  specialty?.method_of_aff == 1 ?   'fixed'  : "revert" , minWidth: 1200, maxWidth: 1400}}
+
             >
                 <thead>
+                    <tr>
+                        <th colSpan={7}>{
+     specialty?.method_of_aff == 1 ? 
+
+           <Header   > Designation of the jury members for the Master's degree in  <Highlight color={'teal'} > {specialty?.specialty_name}</Highlight> ({specialty?.abbreviated_name})</Header>
+           : 
+           <Header   > Designation of the jury members for the license degree in  <Highlight color={'teal'} > {specialty?.specialty_name}</Highlight> ({specialty?.abbreviated_name})</Header> }
+          
+    
+    </th>
+
+                        
+                    </tr>
                     <tr>
                         <th colSpan={2}  >jury members</th>
                         <th>students</th>
                         <th>theme</th>
                         <th>presentation date</th>
-                        {specialty.method_of_aff == 1 ?
+                        {specialty?.method_of_aff == 1 ?
                             <>
                                 <th>tester members</th>
                                 <th>presentation date</th>
@@ -65,17 +73,17 @@ function AppointmentsRowData(props) {
                 </thead>
                 <tbody>{
 
-                    specialty.affectation.map(item => {
+                    specialty?.affectation?.map(item => {
                         return (
                             <tr>
                                 <td> <Text>  supervisor </Text>
-                                    {specialty.method_of_aff == 1 ? <Text>  president </Text> : null}
+                                    {specialty?.method_of_aff == 1 ? <Text>  president </Text> : null}
                                     <Text>examiner 1</Text>
                                     <Text>examiner 2</Text>
                                     <Text>examiner 3</Text> </td>
 
-                                <td>{item?.supervisor_info.name} .
-                                    {item?.teacher_jury.map(teacher => {
+                                <td>{item?.supervisor_info?.name} .
+                                    {item?.teacher_jury?.map(teacher => {
                                         return <p> {teacher?.name} .</p>
                                     })}
                                 </td>
@@ -87,7 +95,7 @@ function AppointmentsRowData(props) {
                                     day: "numeric",
                                     hour: "numeric",
                                 })} </td>
-                                {specialty.method_of_aff == 1 ?
+                                {specialty?.method_of_aff == 1 ?
                                     <>
                                         <td>{item?.testers_group.map(teacher => {
                                             return <p>{teacher?.name}</p>
@@ -113,9 +121,12 @@ function AppointmentsRowData(props) {
 
 
     return (
-        <>
+        <div 
+        id='target-element'
+        >
+
             {tables}
-        </>)
+        </div>)
 }
 
 export default AppointmentsRowData
@@ -132,6 +143,8 @@ export function CalendarPresentation(props) {
 
     // console.log(selectedAppointment)
 
+
+
     return (
         <>
 
@@ -139,7 +152,7 @@ export function CalendarPresentation(props) {
                 opened={openedStatistic}
                 onClose={close}
                 size='100vw'
-            >
+                >
                 <AppointmentsRowData selectedAppointment={selectedAppointment} selectedAppointmentDate={selectedAppointmentDate} />
             </Modal>
 
@@ -181,7 +194,7 @@ export function CalendarPresentation(props) {
 
                     );
 
-                    console.log(appointmentDates)
+
 
                     if (isAppointmentDay) {
                         const appointmentInfo = appointmentDates.find(
@@ -190,21 +203,50 @@ export function CalendarPresentation(props) {
                         );
                         // new Date(appointmentDate.date_presentation).toDateString() === date.toDateString()
 
+
                         // console.log(appointmentInfo)
+
+                        const specialties = appointmentDates?.filter(
+                            (specialty) =>
+                                new Date(specialty?.start_appointments)?.toDateString() === date.toDateString()
+                        )
+                    
+
+
+                    
                         return (
+                            <HoverCard width={480} shadow="md" withArrow openDelay={200} closeDelay={100}>
+                            <HoverCard.Target>
                             <Indicator
-                                key={nanoid()}
-                                size={12}
-                                color="red"
-                                offset={8}
-                                disabled={!isAppointmentDay}
-                                onClick={() => { setSelectedAppointment(appointmentDates); setSelectedAppointmentDate(date.toDateString()); open() }}
-                            >
-                                <div key={nanoid()}
+                                    key={nanoid()}
+                                    size={12}
+                                    color="Teal"
+                                    offset={8}
+                                    disabled={!isAppointmentDay}
+                                    onClick={() => { setSelectedAppointment(appointmentDates); setSelectedAppointmentDate(date.toDateString()); open() }}
                                 >
-                                    {day}
-                                </div>
-                            </Indicator>
+                                    <div key={nanoid()}
+                                    >
+                                        {day}
+                                    </div>
+                                </Indicator>
+                            </HoverCard.Target>
+                            <HoverCard.Dropdown>
+                    
+                              <Text size="sm" mt="md">
+                  { specialties.map(specialty => {
+                    return ( specialty?.method_of_aff == 1 ? 
+           <div   > Designation of the jury members for the Master's degree in  <Highlight color={'teal'} > {specialty?.specialty_name}</Highlight> ({specialty?.abbreviated_name})</div>
+           : 
+           <div   > Designation of the jury members for the license degree in  <Highlight color={'teal'} > {specialty?.specialty_name}</Highlight> ({specialty?.abbreviated_name})</div> 
+          )
+
+                              }) }
+                              </Text>
+                    
+               
+                            </HoverCard.Dropdown>
+                          </HoverCard>
                         );
                     }
                     return <div>{day}</div>;

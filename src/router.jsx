@@ -1,19 +1,22 @@
-// import { Children } from "react";
+
+import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import BlogTask from "./components/teamSection/blogTask/blogTask";
 import DisserForm from "./components/dissertationsForm/disserForm";
 import PageNotFound from "./components/errorpages/404error/pageNotFound";
 import Faq from "./components/FAQ/faq";
-import HomeFooter from "./components/footers/homeFooter/homeFooter";
+// import HomeFooter from "./components/footers/homeFooter/homeFooter";
 import InvitePartner from "./components/invitePartner/invitePartner";
 import Login from "./components/loginForm/login";
-import HomeNav from "./components/navbars/homeNav/homeNav";
+// import HomeNav from "./components/navbars/homeNav/homeNav";
+
 import ProfileNavbar from "./components/navbars/profileNav/profileNavbar";
 import ProfilePage from "./components/profilePage/profilePage";
+
 import Ranking from "./components/ranking/ranking";
 import HeroSection from "./components/studentHome/heroSection";
 import TeamSection from "./components/teamSection/teamSection";
-import DefaultLayout from "./views/defaultLayout";
+// import DefaultLayout from "./views/defaultLayout";
 import GeustLayout from "./views/geustLayout";
 import BlogDiscussion from "./components/teamSection/blogTask/blogDiscussion";
 import HomeHeroSection from "./components/homePage/Home/heroSection";
@@ -22,36 +25,105 @@ import StuentLayout from "./views/stuentLayout";
 import TeacherLayout from "./views/teacherLayout";
 import TeacherHeroSection from "./components/teacherHome/heroSection";
 // import TeacherNavbar from "./components/navbars/teacherNavbar/teacherNavBar";
+
 import TeacherProfilePage from "./components/TeacherprofilePage/TeacherprofilePage";
+
 import TeaherProfileNavbar from "./components/navbars/teacherProfileNav/profileNavbar";
+// const TeaherProfileNavbar = lazy(() => { 
+//     import("./components/navbars/teacherProfileNav/profileNavbar")
+// })
+
 import TeamsSection from "./components/TeacherTeamsSection/teamSection";
+
+// const TeamsSection = lazy(()=>{
+//     import("./components/TeacherTeamsSection/teamSection")
+// })
+
+
+
+
+
 import TeacherBlogTask from "./components/TeacherTeamsSection/blogTask/blogTask";
 import TeacherBlogDiscussion from "./components/TeacherTeamsSection/blogTask/blogDiscussion";
 import { StudentsCrud } from "./components/bddStudents/studentsCrud";
 import StudentsManagement from "./components/bddStudents/StudentsManagement";
-import { HeaderStudent } from "./components/navbars/profileNav/header";
+
 import { SuggestionTheme } from "./components/SuggestionTheme/SuggestionForm";
 import ThemeManagement from "./components/BddThemes/themesManagement";
-import { Children } from "react";
+
 import { ThemeCrud } from "./components/BddThemes/ThemesCrud";
 import RankManagement from "./components/bddStudentRank/rankManagement";
 import { RankCrud } from "./components/bddStudentRank/rankCrud";
 import TeamsManagement from "./components/bddTeams/teamsManagement";
 import FramerManagement from "./components/bddFramers/framerManagement";
 import { nanoid } from "nanoid";
-import ResultAffectation from "./components/resultAffectation/resultAffectation";
+
 import AdminLayout from "./views/adminLayout";
 import AdminNavbar from "./components/navbars/adminNav/adminNavBar";
 import TeacherManagement from "./components/bddTeachers/TeacherManagement";
 import { TeacherCrud } from "./components/bddTeachers/crud";
 import { SuggestionThemeLicense } from "./components/SuggestionTheme/SuggestionFormLicence";
-import TeamsFollowUp from "./components/bddTeamFollowUp/followUp";
+
+// const TeacherBlogTask = lazy(() =>
+//   import("./components/TeacherTeamsSection/blogTask/blogTask")
+// );
+// const TeacherBlogDiscussion = lazy(() =>
+//   import("./components/TeacherTeamsSection/blogTask/blogDiscussion")
+// );
+// const StudentsCrud = lazy(() =>
+//   import("./components/bddStudents/studentsCrud")
+// );
+// const StudentsManagement = lazy(() =>
+//   import("./components/bddStudents/StudentsManagement")
+// );
+// const SuggestionTheme = lazy(() =>
+//   import("./components/SuggestionTheme/SuggestionForm")
+// );
+// const ThemeManagement = lazy(() =>
+//   import("./components/BddThemes/themesManagement")
+// );
+// const ThemeCrud = lazy(() =>
+//   import("./components/BddThemes/ThemesCrud")
+// );
+// const RankManagement = lazy(() =>
+//   import("./components/bddStudentRank/rankManagement")
+// );
+// const RankCrud = lazy(() =>
+//   import("./components/bddStudentRank/rankCrud")
+// );
+// const TeamsManagement = lazy(() =>
+//   import("./components/bddTeams/teamsManagement")
+// );
+// const FramerManagement = lazy(() =>
+//   import("./components/bddFramers/framerManagement")
+// );
+// const AdminLayout = lazy(() => import("./views/adminLayout"));
+// const AdminNavbar = lazy(() =>
+//   import("./components/navbars/adminNav/adminNavBar")
+// );
+// const TeacherManagement = lazy(() =>
+//   import("./components/bddTeachers/TeacherManagement")
+// );
+// const TeacherCrud = lazy(() =>
+//   import("./components/bddTeachers/crud")
+// );
+// const SuggestionThemeLicense = lazy(() =>
+//   import("./components/SuggestionTheme/SuggestionFormLicence")
+// );
+
+
 import { CalendarPresentation } from "./components/Calender/calender";
+import { LoadingOverlay, Overlay } from "@mantine/core";
+
+
+// const ProfileNavbar = lazy(() => import('./components/navbars/profileNav/profileNavbar'));
+// const ProfilePage = lazy(() => import('./components/profilePage/profilePage'));
 
 
 
 const router = createBrowserRouter([
     {
+
         path: "/",
         element: <GeustLayout />,
         children: [
@@ -71,8 +143,9 @@ const router = createBrowserRouter([
         element: <StuentLayout key={nanoid()} />,
         children: [
             {
+
                 path: "/student",
-                element: <ProfileNavbar key={nanoid()} />,
+                element: <>  <Suspense fallback={<LoadingOverlay visible />}><ProfileNavbar key={nanoid()} /></Suspense></>,
                 children: [
                     {
                         index: true,
@@ -87,7 +160,8 @@ const router = createBrowserRouter([
                         element: <InvitePartner key={nanoid()} />
                     }, {
                         path: 'profile',
-                        element: <ProfilePage key={nanoid()} />
+                        element: <><Suspense fallback={<LoadingOverlay visible />}><ProfilePage key={nanoid()} /></Suspense>  </>
+                        // element:<ProfilePage key={nanoid()} />
                     },
                     {
                         path: 'faq',
@@ -122,7 +196,9 @@ const router = createBrowserRouter([
                             }
                         ]
                     }
-                ]
+                ],
+
+
             },
             {
                 path: "student",
@@ -140,7 +216,9 @@ const router = createBrowserRouter([
 
             {
                 path: '/teacher',
-                element: <TeaherProfileNavbar />,
+                // element: <TeaherProfileNavbar />, 
+                element : <><Suspense fallback={<LoadingOverlay visible />}><TeaherProfileNavbar  key={nanoid()} /></Suspense></> 
+                ,
                 children: [
                     {
                         index: true,
@@ -172,10 +250,12 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'rank_management',
-                        element: <RankManagement />,
+                        // element: <RankManagement />,
+                        element:<><Suspense fallback={<LoadingOverlay visible />}><RankManagement key={nanoid()} /></Suspense></> ,
                         children: [{
                             index: true,
                             element: <RankCrud />
+                            // element:<><Suspense fallback={<LoadingOverlay visible />}><RankCrud key={nanoid()} /></Suspense></>
                         }]
                     },
                     {

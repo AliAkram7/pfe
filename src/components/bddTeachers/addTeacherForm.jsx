@@ -33,7 +33,7 @@ function AddTeacherForm(props) {
 
 
 
-    const { mutate: addTeacher } = useAddTeacher()
+    const { mutate: addTeacher,isLoading:addTeacherLoading  } = useAddTeacher()
 
     const {data : grades, isLoading, isFetched} = useAdminFetchGradesData()
 
@@ -92,7 +92,7 @@ function AddTeacherForm(props) {
             institutional_email: values.institutional_email
         }
         addTeacher(payload);
-
+        props.close()
         // props.closeModel()
     };
 
@@ -100,7 +100,8 @@ function AddTeacherForm(props) {
     return (
         <>
             <LoadingOverlay
-                  visible={!isFetched}
+                  visible={!isFetched || addTeacherLoading}
+                // visible
                 overlayBlur={1}
                 loaderProps={{ size: 'md', color: 'gold' }}
                 overlayOpacity={0.3}

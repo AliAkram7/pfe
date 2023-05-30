@@ -204,11 +204,13 @@ export function StudentsCrud() {
     const default_value = { name: props.row.name, code: props.row.code, default_password: props.row.default_password }
     const { mutate: updateStudent } = useUpdateStudent()
     const queryClient = useQueryClient();
+    const {selectedYearId} = useStateContext()
 
 
     const onUpdate = () => {
-      let payload = {}
-
+      let payload = {
+           yearId: selectedYearId 
+      }
       props.row.Edit = 'false'
 
       if (name !== props.row.name) {
@@ -276,9 +278,9 @@ export function StudentsCrud() {
         </Badge> : <Badge variant="filled" color='red' fullWidth>
           not yet
         </Badge>}</td>
-        <td>{row.logged_at !== 'null' ? row.logged_at : <Badge variant="outline" color='red' fullWidth>
+        {/* <td>{row.logged_at !== 'null' ? row.logged_at : <Badge variant="outline" color='red' fullWidth>
           not yet
-        </Badge>}</td>
+        </Badge>}</td> */}
         <td>{row.account_status === 'locked' ? <IconLockOff color='red' /> : <IconLockOpen color='green' />}</td>
       </tr>)
   }
@@ -301,8 +303,8 @@ export function StudentsCrud() {
           <Table
             horizontalSpacing="xs"
             verticalSpacing="lg"
-            sx={{ tableLayout: 'revert', minWidth: 1300, maxWidth: 1600, minHeight: 260 }}
-
+            sx={{ tableLayout: 'revert', minWidth: 1400, maxWidth: 1600, minHeight: 260 }}
+            align='center'
           >
             <thead>
               <tr>
@@ -330,11 +332,13 @@ export function StudentsCrud() {
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('logged')}
                   children='Logged'
-                /><Th sorted={sortBy === 'logged_at'}
+                />
+                {/* <Th sorted={sortBy === 'logged_at'}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('logged_at')}
                   children='Logged at'
-                /><Th sorted={sortBy === 'account_status'}
+                /> */}
+                <Th sorted={sortBy === 'account_status'}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting('account_status')}
                   children='Account status'

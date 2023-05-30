@@ -1,6 +1,6 @@
 {
   "name": "vite-project",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -39,7 +39,10 @@
     "dayjs": "^1.11.7",
     "formik": "^2.2.9",
     "gh-pages": "^5.0.0",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.1",
     "js-cookie": "^3.0.1",
+    "jspdf": "^2.5.1",
     "jwt-decode": "^3.1.2",
     "mantine-react-table": "^0.9.5",
     "mdb-react-ui-kit": "^5.1.0",
@@ -51,6 +54,7 @@
     "react-router-dom": "^6.6.1",
     "redux": "^4.2.0",
     "redux-toolkit": "^1.1.2",
+    "serve": "^14.2.0",
     "yup": "^0.32.11",
     "yup-phone-lite": "^2.0.1"
   },

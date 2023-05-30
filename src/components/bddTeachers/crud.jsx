@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, createContext, useEffect, useRef, useState } from 'react';
 import {
   createStyles,
   Table,
@@ -26,6 +26,7 @@ import { nanoid } from 'nanoid';
 import Option from './options';
 import { useAdminFetchGradesData } from './connection/fetchData/fetchData';
 import { useForm } from '@mantine/form';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -224,6 +225,7 @@ export function TeacherCrud() {
 
 
 
+  const [editIndex, setEditIndex] = useState(-1)
 
   function RenderUpdateRow(props) {
 
@@ -254,10 +256,11 @@ export function TeacherCrud() {
 
 
 
+
     const onUpdate = () => {
       let payload = {}
 
-      props.row.Edit = 'false'
+      
 
       if (name !== props.row.name) {
         payload = { ...payload, name: name }
@@ -286,13 +289,14 @@ export function TeacherCrud() {
       if (payload.name || payload.updated_code || payload.institutional_email || payload.sGrade || payload.sRole || payload.SSearchFoci.length > 0) {
         payload = { ...payload, code: Number(props.row.code) }
 
-        console.log(payload)
 
         updateTeacher(payload)
+        props.setEditIndex(-1)
+        queryClient.invalidateQueries('fetchTeachersData')  
       }
 
-      queryClient.invalidateQueries('fetchTeachersData')
 
+      // props.row.Edit = 'false'
     }
 
     return (<>
@@ -348,20 +352,15 @@ export function TeacherCrud() {
 
 
 
-  const rows = sortedData?.map((row) => {
-    const k = nanoid();
 
-    const setEdit = () => {
-      row.Edit = 'true'
-    }
+  const rows = sortedData?.map((row, idx) => {
+    const k = nanoid();
 
     return (
       <tr key={k}>
 
-
-
-        <td><Option row={row} setEdit={setEdit} /></td>
-        {row.Edit === 'false' ?
+        <td><Option row={row} setEditIndex={setEditIndex} index={idx} /></td>
+        { editIndex != idx ?
           (<>
             <td>{row.code}</td>
             <td>{row.name}</td>
@@ -406,7 +405,7 @@ export function TeacherCrud() {
 
 
           </>) :
-          <RenderUpdateRow row={row} />}
+          <RenderUpdateRow setEditIndex={setEditIndex}  row={row} />}
 
         <td>{row.logged === 'logged' ? <Badge variant="filled" color='teal' fullWidth>
           logged

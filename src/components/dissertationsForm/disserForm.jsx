@@ -128,16 +128,16 @@ function DisserForm() {
     const mapData = () => {
         return fetchedTheme?.data?.list_theme.map((obj, idx) => ({
             value: nanoid(),
-            label: obj.title,
-            id: obj.id,
+            label: obj?.title,
+            id: obj?.id,
             group: ''
         }));
     };
     const mapData2 = () => {
         return fetchedTheme?.data?.list_theme.map((obj) => ({
             key: nanoid(),
-            id: obj.id,
-            title: obj.title,
+            id: obj?.id,
+            title: obj?.title,
         }));
     };
 

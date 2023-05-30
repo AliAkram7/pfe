@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "react-query";
 import {  addTeacher,  deleteTeacher,  lockTeacherAccount,  resetTeacher,  unLockTeacherAccount,  updateTeacher, uploadStudentSeeder } from "./axiosUrl";
+import { showNotification } from "@mantine/notifications";
 
 export const useUploadStudentSeeder = () => {
     const QueryClient = useQueryClient();
     return useMutation(uploadStudentSeeder, {
-
         onError: (response) => {
             showNotification({
                 title: 'error',
@@ -13,13 +13,10 @@ export const useUploadStudentSeeder = () => {
             })
         },  
         onSuccess:()=>{
-            console.log('file uploaded')
                 QueryClient.invalidateQueries('fetchTeachersData')
         }
     })
 }
-
-
 
 export const useAddTeacher = () => {
     const QueryClient = useQueryClient();
@@ -30,8 +27,14 @@ export const useAddTeacher = () => {
                 message: 'some things goes wrong try again later',
                 color: 'red',
             })
+            QueryClient.invalidateQueries('fetchTeachersData')
         },  
         onSuccess:()=>{
+            showNotification({
+                title: 'Success',
+                message: 'Teacher Added and Credentials sended to email',
+                color: 'teal',
+            })
                 QueryClient.invalidateQueries('fetchTeachersData')
         }
     })
@@ -47,11 +50,16 @@ export const useDeleteTeacher = () => {
                 title: 'error',
                 message: 'some things goes wrong try again later',
                 color: 'red',
-                
             })
+            QueryClient.invalidateQueries('fetchTeachersData')
+
         },  
         onSuccess:()=>{
-            console.log('file uploaded')
+            showNotification({
+                title: 'Success',
+                message: 'Teacher deleted',
+                color: 'teal',
+            })
                 QueryClient.invalidateQueries('fetchTeachersData')
         }
     })
@@ -68,7 +76,12 @@ export const useResetTeacher = () => {
             })
         },  
         onSuccess:()=>{
-            console.log('file uploaded')
+
+            showNotification({
+                title: 'Success',
+                message: 'Account rested',
+                color: 'teal',
+            })
                 QueryClient.invalidateQueries('fetchTeachersData')
         }
     })
@@ -85,6 +98,11 @@ export const useUpdateTeacher = () => {
             })
         },  
         onSuccess:()=>{
+            showNotification({
+                title: 'Success',
+                message: 'Teacher information updated',
+                color: 'teal',
+            })
                 QueryClient.invalidateQueries('fetchTeachersData')
         }
     })
@@ -101,6 +119,11 @@ export const useLockTeacherAccount = () => {
             })
         },  
         onSuccess:()=>{
+            showNotification({
+                title: '',
+                message: 'Account locked',
+                color: 'teal',
+            })
                 QueryClient.invalidateQueries('fetchTeachersData')
         }
     })
@@ -116,6 +139,11 @@ export const useUnLockTeacherAccount = () => {
             })
         },  
         onSuccess:()=>{
+            showNotification({
+                title: '',
+                message: 'Account unlocked',
+                color: 'teal',
+            })
                 QueryClient.invalidateQueries('fetchTeachersData')
         }
     })

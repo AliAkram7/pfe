@@ -63,6 +63,7 @@ function AddFollowUpForm(props) {
 
         createPeriod(payload) ; 
 
+
     };
 
     return (

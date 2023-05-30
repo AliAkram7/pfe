@@ -56,7 +56,7 @@ function Option(props) {
       </Menu.Target>
       <Menu.Dropdown   >
         <Menu.Label>options</Menu.Label>
-        <Menu.Item icon={<IconEdit size={14} />}   onClick={()=>{props.setEdit()  ; queryClient.invalidateQueries('fetchTeachersData')}}   >edit information </Menu.Item>
+        <Menu.Item icon={<IconEdit size={14} />}   onClick={()=>{props.setEditIndex(props.index)  }}   >edit information </Menu.Item>
     { props.row.account_status !== 'locked' ? 
      <Menu.Item   color='red'  icon={<IconLockOff color='red' size={14}   />} onClick={onLock}  >lock  account</Menu.Item> : 
         <Menu.Item   color='teal'  icon={<IconLockOpen color='teal' size={14} /> } onClick={onUnLock}    > unlock  account</Menu.Item>

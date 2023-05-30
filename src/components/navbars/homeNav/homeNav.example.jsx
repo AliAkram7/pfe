@@ -12,6 +12,7 @@ import {
     Image,
     Container,
 } from '@mantine/core';
+// import logo from "../../../imgesuniv-logo.png";
 import logo from "../../../imges/1669627809076.png";
 // import logo from "../../../imges/1668930505521.png";
 import { useDisclosure } from '@mantine/hooks';

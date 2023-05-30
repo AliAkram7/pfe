@@ -111,9 +111,9 @@ function TeacherManagement() {
                     zIndex={9999}
                 >
                     <div className='add-students' >
-                        <div className='xlsx-method' >
+                        {/* <div className='xlsx-method' >
                             <UploadFile closeModel={close} />
-                        </div>
+                        </div> */}
                         <div className='byStudents'>
                             <AddTeacherForm closeModel={close} />
                         </div>

@@ -118,28 +118,28 @@ export function TeamsCrud(props) {
 
     const mapData = () => {
         return fetchListTeams?.data.map((obj) => ({
-            team_id: obj.team_id,
+            team_id: obj?.team_id,
             supervisor_info: {
-                teacher_code:obj.supervisor_info?.teacher_code , 
-                name: obj.supervisor_info?.name,
-                institutional_email: obj.supervisor_info?.institutional_email,
-                grad_abName: obj.supervisor_info?.abbreviated_name,
-                grad_fName: obj.supervisor_info?.fullname,
+                teacher_code:obj?.supervisor_info?.teacher_code , 
+                name: obj?.supervisor_info?.name,
+                institutional_email: obj?.supervisor_info?.institutional_email,
+                grad_abName: obj?.supervisor_info?.abbreviated_name,
+                grad_fName: obj?.supervisor_info?.fullname,
             },
             member_1: {
-                name: obj.member_1?.name,
-                code: obj.member_1?.code,
+                name: obj?.member_1?.name,
+                code: obj?.member_1?.code,
             },
             member_2: {
-                name: obj.member_2?.name,
-                code: obj.member_2?.code,
+                name: obj?.member_2?.name,
+                code: obj?.member_2?.code,
             },
 
-            list_theme: obj.list_theme,
+            list_theme: obj?.list_theme,
 
-            theme_workOn: obj.theme_workOn,
+            theme_workOn: obj?.theme_workOn,
 
-            periods: obj.periods,
+            periods: obj?.periods,
 
         }));
     };
@@ -173,14 +173,14 @@ export function TeamsCrud(props) {
                     <HoverCard width={300} shadow="md">
                         <HoverCard.Target key={nanoid()} >
                             <Text key={nanoid()} >
-                                {row.member_1.name}, {row.member_2.name}
+                                {row?.member_1?.name}, {row?.member_2?.name}
                             </Text>
                         </HoverCard.Target>
                         <HoverCard.Dropdown>
                             <Text key={nanoid()}> <Highlight color='teal'>  student : </Highlight>
-                                {row.member_1?.name} <Highlight color='teal'>  with code : </Highlight>  {row.member_1?.code}
+                                {row?.member_1?.name} <Highlight color='teal'>  with code : </Highlight>  {row?.member_1?.code}
                             </Text>
-                            {row.member_2.name != null && row.member_2.name != undefined ? (<Text key={nanoid()} > <Highlight color='teal'>  student : </Highlight> {row.member_2?.name}  <Highlight color='teal'>  with code : </Highlight> {row.member_2?.code} </Text>) : null}
+                            {row?.member_2?.name != null && row?.member_2?.name != undefined ? (<Text key={nanoid()} > <Highlight color='teal'>  student : </Highlight> {row?.member_2?.name}  <Highlight color='teal'>  with code : </Highlight> {row?.member_2?.code} </Text>) : null}
                         </HoverCard.Dropdown>
                     </HoverCard>
                 </td>
@@ -191,24 +191,24 @@ export function TeamsCrud(props) {
                     <HoverCard width={280} shadow="md" key={nanoid()} >
                         <HoverCard.Target key={nanoid()} >
                             {/* <Spoiler maxHeight={60} showLabel="Show more" hideLabel="Hide" onClick={() => (showMore(row))}   > */}
-                            {row.supervisor_info?.name ? (<Text key={nanoid()} >
-                                {row.supervisor_info?.name}
+                            {row?.supervisor_info?.name ? (<Text key={nanoid()} >
+                                {row?.supervisor_info?.name}
                             </Text>) :
                                 <Badge color='red'   >without</Badge>}
                             {/* </Spoiler> */}
                         </HoverCard.Target>
-                        {row.supervisor_info.name ? (
+                        {row?.supervisor_info?.name ? (
                             <HoverCard.Dropdown>
                                 <><Text display='flex' >
                                     <Highlight color='teal'  >teacher :  </Highlight>
-                                    {row.supervisor_info?.name}</Text>
+                                    {row?.supervisor_info?.name}</Text>
                                     <Text display='flex' >
                                         <Highlight color='teal'  >email : </Highlight>
-                                        {row.supervisor_info?.institutional_email}
+                                        {row?.supervisor_info?.institutional_email}
                                     </Text>
                                     <Text display='flex' >
                                         <Highlight color='teal' >Grade : </Highlight>
-                                        {row.supervisor_info?.grad_abName}
+                                        {row?.supervisor_info?.grad_abName}
                                     </Text>
                                 </>
                             </HoverCard.Dropdown>
@@ -223,7 +223,7 @@ export function TeamsCrud(props) {
                             <Spoiler key={nanoid()} maxHeight={40} showLabel="Show more" hideLabel="Hide"   >
                                 <Text key={nanoid()} >
                                     {/* { row.list_theme ?  */}
-                                    {row.list_theme?.map((theme, idx) => {
+                                    {row?.list_theme?.map((theme, idx) => {
                                         return (<><Text key={nanoid()} display='flex' >
                                             <Highlight color='green' >{idx + 1}</Highlight> - {theme?.title}
                                         </Text><br /> </>)
@@ -239,10 +239,10 @@ export function TeamsCrud(props) {
                 <td key={nanoid()} >
                     <HoverCard width={280} shadow="md">
                         <HoverCard.Target>
-                            <Text>{row.theme_workOn?.title.length > 30 ? row.theme_workOn?.title.slice(0, 30) + "..." : row.theme_workOn?.title}</Text>
+                            <Text>{row?.theme_workOn?.title.length > 30 ? row?.theme_workOn?.title.slice(0, 30) + "..." : row?.theme_workOn?.title}</Text>
                         </HoverCard.Target>
                         <HoverCard.Dropdown>
-                            {row.theme_workOn?.title}
+                            {row?.theme_workOn?.title}
                         </HoverCard.Dropdown>
                     </HoverCard>
                 </td>

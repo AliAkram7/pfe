@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "./homeNav.css";
+// import logo from "../../../imges/univ-logo.png";
 import logo from "../../../imges/1668930505521.png";
 import { Modal } from "@mantine/core";
 import { useState } from "react";

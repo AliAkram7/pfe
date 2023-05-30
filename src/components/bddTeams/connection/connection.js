@@ -36,10 +36,25 @@ const addSingleStudentInTeam = (payload) => {
 export const useAddSingleStudentInTeam = () => {
     const queryClient = useQueryClient()
     return useMutation(addSingleStudentInTeam, {
+        onError: (response) => {
+            showNotification({
+                title: 'Error',
+                message: 'some things goes wrong try again later',
+                color: 'red',
+            })
+        },
         onSuccess: () => {
+
             queryClient.invalidateQueries('fetchSingleStudents');
             queryClient.invalidateQueries('fetchListTeams');
+            showNotification({
+                title: 'Success',
+                message: 'Jury Group Members Created',
+                color: 'teal',
+            })
         }
+    
+        
     });
 }
 
@@ -54,10 +69,26 @@ const createPeriod = (payload) => {
 export const useCreatePeriod = () => {
     const queryClient = useQueryClient()
     return useMutation(createPeriod, {
+        onError: (response) => {
+            showNotification({
+                title: 'Error',
+                message: 'some things goes wrong try again later',
+                color: 'red',
+            })
+        },
         onSuccess: () => {
+
             queryClient.invalidateQueries('fetchSingleStudents');
             queryClient.invalidateQueries('fetchListTeams');
+            showNotification({
+                title: 'Success',
+                message: 'Jury Group Members Created',
+                color: 'teal',
+            })
         }
+    
+
+
     });
 }
 
@@ -106,7 +137,23 @@ const sendLicenseJuryMember = (payload) => {
 }
 
 export const useSendLicenseJuryMember = () => {
-    return useMutation(sendLicenseJuryMember, {});
+    return useMutation(sendLicenseJuryMember, {
+        onError: (response) => {
+            showNotification({
+                title: 'Error',
+                message: 'some things goes wrong try again later',
+                color: 'red',
+            })
+        },
+        onSuccess: () => {
+            showNotification({
+                title: 'Success',
+                message: 'Jury Group Members Created',
+                color: 'teal',
+            })
+        }
+    
+    });
 }
 
 // /teacher/specialty_manager/fetchJuryMembersGroups
@@ -131,7 +178,23 @@ const createPresentation = (payload) => {
 }
 
 export const useCreatePresentation = () => {
-    return useMutation(createPresentation, {});
+    return useMutation(createPresentation, {
+        onError: (response) => {
+            showNotification({
+                title: 'error',
+                message: 'some things goes wrong try again later',
+                color: 'red',
+            })
+        },
+        onSuccess: () => {
+            showNotification({
+                title: 'presentation date fixed successfully',
+                message: '',
+                color: 'green',
+            });
+
+        },
+    });
 }
 
 

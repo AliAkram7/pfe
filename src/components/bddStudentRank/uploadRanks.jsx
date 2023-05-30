@@ -34,7 +34,7 @@ function UploadRanks(props) {
     const openRef = useRef(null);
 
     const { selectedSpeciality } = useTeacherContext();
-    const { selectedYearId } = useStateContext
+    const { selectedYearId } = useStateContext()
     const { mutate: uploadStudentRanks } = useUploadStudentsRanks()
 
     return (
